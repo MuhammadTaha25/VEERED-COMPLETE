@@ -209,11 +209,27 @@ let camTimerInterval = null;
 let uploadDone = false;
 const STAGE3_LIMIT_SECONDS = 15 * 60; // 15-minute interview
 
+let _resolvedCandidateId = null;
+
 function getCandidateId() {
+  if (_resolvedCandidateId) return _resolvedCandidateId;
   const params = new URLSearchParams(window.location.search);
-  const cand = JSON.parse(sessionStorage.getItem('veerCandidate') || 'null');
-  return params.get('candidateId') || (cand ? cand.id : null) || 'candidate-guest';
+  let cand = null;
+  try { cand = JSON.parse(sessionStorage.getItem('veerCandidate') || 'null'); } catch (e) {}
+  _resolvedCandidateId = params.get('candidateId') || (cand && cand.id) || '';
+  return _resolvedCandidateId;
 }
+
+// If the URL has no candidateId, ask the server who we are (the candidate is
+// logged in after registering) and pin it — so the video/scorecard link to the
+// real candidate, never to a "guest".
+(async function resolveCandidate() {
+  if (getCandidateId()) return;
+  try {
+    const me = await (await fetch('/api/auth/me')).json();
+    if (me && me.user && me.user.id) _resolvedCandidateId = me.user.id;
+  } catch (e) {}
+})();
 
 function toggleHrConsentBtn() {
   const chk = document.getElementById('hrConsentCheck');
@@ -243,23 +259,31 @@ async function startInterview() {
 
   try {
     if (mediaStream) mediaStream.getTracks().forEach(t => t.stop());
-    mediaStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+    mediaStream = await navigator.mediaDevices.getUserMedia({
+      video: { width: { ideal: 640 }, height: { ideal: 480 }, frameRate: { ideal: 15, max: 24 } },
+      audio: true
+    });
     const videoEl = document.getElementById('videoPreview');
     videoEl.srcObject = mediaStream;
 
     recordedChunks = [];
     let mime = '';
-    ['video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm'].forEach(m => {
+    ['video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm;codecs=vp8', 'video/webm', 'video/mp4'].forEach(m => {
       if (!mime && window.MediaRecorder && MediaRecorder.isTypeSupported(m)) mime = m;
     });
-    mediaRecorder = mime ? new MediaRecorder(mediaStream, { mimeType: mime }) : new MediaRecorder(mediaStream);
+    const recOpts = { videoBitsPerSecond: 500000, audioBitsPerSecond: 64000 };
+    if (mime) recOpts.mimeType = mime;
+    try { mediaRecorder = new MediaRecorder(mediaStream, recOpts); }
+    catch (e) { mediaRecorder = mime ? new MediaRecorder(mediaStream, { mimeType: mime }) : new MediaRecorder(mediaStream); }
     mediaRecorder.ondataavailable = e => { if (e.data && e.data.size > 0) recordedChunks.push(e.data); };
-    mediaRecorder.start(1000); // gather chunks every second
+    mediaRecorder.onerror = e => console.error('MediaRecorder error:', e.error || e);
+    // 4s timeslice: chunks are flushed periodically so nothing is lost if the tab dies.
+    mediaRecorder.start(4000);
     isRecording = true;
-    document.getElementById('camStatus').textContent = '🔴 Recording — camera & microphone active. Do not switch windows.';
+    document.getElementById('camStatus').textContent = '🔴 Recording — camera & microphone active.';
   } catch (err) {
-    console.warn('Camera/mic access denied:', err);
-    document.getElementById('camStatus').textContent = '⚠️ Camera/microphone unavailable — your written answers will still be recorded, but no video will be captured.';
+    console.error('Camera/mic access failed:', err && (err.name + ': ' + err.message));
+    document.getElementById('camStatus').textContent = '⚠️ Camera/microphone unavailable (' + (err && err.name || 'error') + ') — your written answers will still be saved, but no video will be captured.';
     document.getElementById('recDot').style.display = 'none';
   }
 
@@ -281,31 +305,64 @@ async function startInterview() {
 function stopRecording() {
   return new Promise(resolve => {
     if (camTimerInterval) { clearInterval(camTimerInterval); camTimerInterval = null; }
-    if (mediaRecorder && isRecording) {
-      mediaRecorder.onstop = () => resolve();
-      try { mediaRecorder.stop(); } catch (e) { resolve(); }
-      isRecording = false;
-    } else {
+
+    let done = false;
+    const finish = () => {
+      if (done) return;
+      done = true;
+      // Only NOW is it safe to release the camera/mic — after the recorder has
+      // flushed its final chunk. Stopping tracks earlier loses the recording.
+      try { if (mediaStream) mediaStream.getTracks().forEach(t => t.stop()); } catch (e) {}
       resolve();
+    };
+
+    if (mediaRecorder && (mediaRecorder.state === 'recording' || mediaRecorder.state === 'paused')) {
+      isRecording = false;
+      mediaRecorder.onstop = finish;
+      try {
+        if (mediaRecorder.state === 'recording') mediaRecorder.requestData(); // force-flush pending data
+        mediaRecorder.stop();
+      } catch (e) { finish(); }
+      setTimeout(finish, 4000); // safety net if onstop never fires
+    } else {
+      isRecording = false;
+      finish();
     }
-    if (mediaStream) { try { mediaStream.getTracks().forEach(t => t.stop()); } catch (e) {} }
   });
 }
 
 async function uploadRecording(reason) {
   if (uploadDone) return;
   uploadDone = true;
-  if (!recordedChunks.length) return;
+  const type = (mediaRecorder && mediaRecorder.mimeType) || 'video/webm';
+  const blob = recordedChunks.length ? new Blob(recordedChunks, { type }) : null;
+  const status = document.getElementById('camStatus');
   try {
-    const blob = new Blob(recordedChunks, { type: (mediaRecorder && mediaRecorder.mimeType) || 'video/webm' });
+    if (!blob || blob.size === 0) {
+      console.warn('[STAGE3] No video data captured (chunks=' + recordedChunks.length + ').');
+      if (status) status.textContent = '⚠️ No video was captured for this interview.';
+      return;
+    }
+    if (status) status.textContent = '⬆️ Uploading interview video (' + (blob.size / 1048576).toFixed(1) + ' MB)…';
     const fd = new FormData();
     fd.append('video', blob, 'interview.webm');
     fd.append('candidateId', getCandidateId());
     fd.append('durationSeconds', String(secondsElapsed));
     fd.append('reason', reason || 'completed');
     // Trailing slash required: next.config trailingSlash:true 308-redirects and that breaks multipart POSTs
-    await fetch('/api/stage3/upload-video/', { method: 'POST', body: fd });
-  } catch (e) { console.warn('Video upload failed:', e); }
+    const res = await fetch('/api/stage3/upload-video/', { method: 'POST', body: fd });
+    const data = await res.json().catch(() => ({}));
+    if (res.ok && data.ok) {
+      console.log('[STAGE3] Video uploaded:', data.recordingId, data.sizeBytes, 'bytes');
+      if (status) status.textContent = '✓ Interview video saved.';
+    } else {
+      console.error('[STAGE3] Video upload failed:', res.status, data);
+      if (status) status.textContent = '⚠️ Video upload failed (HTTP ' + res.status + ').';
+    }
+  } catch (e) {
+    console.error('[STAGE3] Video upload error:', e);
+    if (status) status.textContent = '⚠️ Video upload error: ' + (e && e.message || e);
+  }
 }
 
 // Anti-cheating monitoring is DISABLED. Switching tabs/windows during the
@@ -361,18 +418,18 @@ async function submitStage3(auto) {
   const btn = document.getElementById('submitBtn');
   if (btn) { btn.disabled = true; btn.textContent = 'Evaluating & Generating Scorecard…'; }
 
-  const candidateId = getCandidateId();
-
-  // Stop + persist the interview recording before scoring
+  // Stop + persist the interview recording BEFORE scoring
   await stopRecording();
   await uploadRecording(auto ? 'timeup' : 'completed');
+
+  const candidateId = getCandidateId(); // resolved (incl. via /api/auth/me) by now
 
   try {
     const res = await fetch('/api/stage3/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        candidateId: candidateId || 'candidate-guest',
+        candidateId: candidateId || undefined, // server falls back to the logged-in session
         durationSeconds: secondsElapsed,
         interviewResponses: { q1: ans1, q2: ans2, q3: ans3 }
       })
