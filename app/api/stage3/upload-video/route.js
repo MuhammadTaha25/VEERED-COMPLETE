@@ -32,16 +32,21 @@ export async function POST(req) {
     }
 
     const buf = Buffer.from(await file.arrayBuffer());
+    if (!buf.length) {
+      return NextResponse.json({ ok: false, error: 'empty video file' }, { status: 400 });
+    }
+    const baseType = String(file.type || 'video/webm').split(';')[0].trim() || 'video/webm';
     const recordingId = uuidv4();
     const safeCand = String(candidateId).replace(/[^a-zA-Z0-9_-]/g, '');
-    const objectPath = `${safeCand}/${Date.now()}-${recordingId.slice(0, 8)}.webm`;
+    const ext = baseType === 'video/mp4' ? 'mp4' : 'webm';
+    const objectPath = `${safeCand}/${Date.now()}-${recordingId.slice(0, 8)}.${ext}`;
 
-    await uploadVideo(objectPath, buf, file.type || 'video/webm');
+    await uploadVideo(objectPath, buf, baseType);
 
     await dbRun(
       `INSERT INTO interview_recordings (id, candidate_id, stage, file_path, mime_type, size_bytes, duration_seconds, reason, created_at)
        VALUES (?, ?, 'stage3', ?, ?, ?, ?, ?, now())`,
-      [recordingId, candidateId, objectPath, file.type || 'video/webm', buf.length, durationSeconds, reason]
+      [recordingId, candidateId, objectPath, baseType, buf.length, durationSeconds, reason]
     );
 
     // Link the latest recording to the scorecard
