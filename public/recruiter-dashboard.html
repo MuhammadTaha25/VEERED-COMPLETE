@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Recruiter Dashboard — Veer</title>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAzMiAzMic+PHJlY3Qgd2lkdGg9JzMyJyBoZWlnaHQ9JzMyJyByeD0nNycgZmlsbD0nIzJiM2E0ZCcvPjxjaXJjbGUgY3g9JzE2JyBjeT0nMTYnIHI9JzknIGZpbGw9JyNGMjY4MEInLz48L3N2Zz4=" />
+<style>
+  :root{
+    --slate:#2b3a4d; --slate2:#3c5468;
+    --orange:#F2680B; --orange-d:#D9570A; --amber:#F8A03C; --orange-l:#FFF1E6;
+    --bad:#dc2626; --ok:#15803d;
+    --ink:#1f2a36; --muted:#5e6b78;
+    --line:#ece7e1; --bg:#faf8f6; --card:#ffffff;
+    --shadow:0 10px 30px rgba(43,58,77,.10);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1140px;margin:0 auto;padding:0 22px}
+  header.nav{background:rgba(255,255,255,.95);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:50}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:66px}
+  .brand{display:flex;align-items:center;gap:11px;font-weight:800;font-size:20px}
+  .brand img{height:34px;width:34px;border-radius:8px;background:#fff;padding:2px;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+  .btn{display:inline-flex;align-items:center;gap:8px;cursor:pointer;border:none;font-weight:700;border-radius:10px;padding:9px 16px;font-size:14px;background:var(--orange);color:#fff;transition:.18s}
+  .btn:hover{background:var(--orange-d)}
+  .btn.ghost{background:#fff;color:var(--slate);border:1px solid var(--line)}
+  .btn.ghost:hover{border-color:var(--orange);color:var(--orange)}
+  .dash-sec{padding:36px 0 60px}
+  .dash-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;flex-wrap:wrap;gap:16px}
+  .dash-head h1{font-size:28px;margin:0;letter-spacing:-.5px}
+  .dash-head .sub{color:var(--muted);font-size:14.5px;margin:4px 0 0}
+  .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:32px}
+  .stat-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px;box-shadow:var(--shadow)}
+  .stat-card b{font-size:32px;display:block;color:var(--slate);line-height:1.1}
+  .stat-card span{font-size:13px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:26px;box-shadow:var(--shadow);margin-bottom:28px}
+  .card h3{margin:0 0 16px;font-size:20px;letter-spacing:-.3px}
+  table{width:100%;border-collapse:collapse;margin-top:10px}
+  th,td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--line);font-size:13.5px}
+  th{font-weight:700;color:var(--muted);text-transform:uppercase;font-size:11.5px;letter-spacing:.6px;background:#faf8f6}
+  .tag{display:inline-block;padding:4px 9px;border-radius:999px;font-size:12px;font-weight:800}
+  .tag.pass{background:rgba(21,128,61,.12);color:var(--ok)}
+  .tag.fail{background:rgba(220,38,38,.1);color:var(--bad)}
+  .tag.pend{background:rgba(248,160,60,.18);color:var(--orange-d)}
+  .blocked-banner{background:#fef2f2;border:1px solid #fecaca;color:#991b1b;padding:24px;border-radius:16px;text-align:center;margin:40px auto;max-width:560px}
+  .blocked-banner h2{margin:0 0 8px;font-size:22px}
+  .blocked-banner p{margin:0 0 18px;font-size:14px;color:#7f1d1d}
+</style>
+</head>
+<body>
+  <header class="nav">
+    <div class="wrap nav-in">
+      <div class="brand"><img src="/veer-brand-logo.png" alt="Veer" />Recruiter Dashboard</div>
+      <div>
+        <span id="userCo" style="font-weight:700;margin-right:14px;color:var(--slate)"></span>
+        <button class="btn ghost" onclick="logoutRecruiter()">Sign out</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap dash-sec">
+    <!-- AUTH BLOCKED CONTAINER -->
+    <div id="blockedView" class="blocked-banner" style="display:none">
+      <h2>🔒 Access Denied — Recruiter Authentication Required</h2>
+      <p>This recruiter dashboard is strictly auth-gated and protected from public exposure. Please log in with a valid recruiter account to view your vacancies and scorecards.</p>
+      <a class="btn" href="/register.html#login">Go to Recruiter Login &rarr;</a>
+    </div>
+
+    <!-- MAIN DASHBOARD CONTENT -->
+    <div id="dashContent" style="display:none">
+      <div class="dash-head">
+        <div>
+          <h1 id="welcomeTitle">Company Dashboard</h1>
+          <div class="sub">Explainable AI recruitment pipeline &middot; Live candidates and scorecards</div>
+        </div>
+        <a class="btn" href="/vacancy.html">+ Post new vacancy</a>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card"><b id="statJobs">0</b><span>Active Vacancies</span></div>
+        <div class="stat-card"><b id="statApps">0</b><span>Total Applications</span></div>
+        <div class="stat-card"><b id="statShort">0</b><span>Explainable Shortlists</span></div>
+      </div>
+
+      <!-- MY VACANCIES -->
+      <div class="card">
+        <h3>My Vacancies</h3>
+        <table id="jobsTable">
+          <thead>
+            <tr><th>Job Title</th><th>Location</th><th>Type</th><th>Salary</th><th>Country</th><th>Status</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <!-- EXPLAINABLE SCORECARDS -->
+      <div class="card">
+        <h3>Candidate Scorecards &amp; Pipeline</h3>
+        <table id="scoreTable">
+          <thead>
+            <tr><th>Candidate</th><th>Email</th><th>ATS Match</th><th>Quiz Score</th><th>Stage 2/3</th><th>Total Score</th><th>Verdict</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+<script>
+async function loadDashboard() {
+  const blocked = document.getElementById('blockedView');
+  const content = document.getElementById('dashContent');
+
+  try {
+    const res = await fetch('/api/recruiter/dashboard');
+    const data = await res.json();
+
+    if (!res.ok || !data.ok) {
+      blocked.style.display = 'block';
+      content.style.display = 'none';
+      return;
+    }
+
+    blocked.style.display = 'none';
+    content.style.display = 'block';
+
+    document.getElementById('userCo').textContent = data.recruiter.companyName + ' (' + data.recruiter.plan + ')';
+    document.getElementById('welcomeTitle').textContent = data.recruiter.companyName + ' — Recruiter Hub';
+    document.getElementById('statJobs').textContent = data.stats.activeVacancies;
+    document.getElementById('statApps').textContent = data.stats.totalApplications;
+    document.getElementById('statShort').textContent = data.stats.shortlistedCandidates;
+
+    // Render Jobs Table
+    const jobsBody = document.getElementById('jobsTable').querySelector('tbody');
+    jobsBody.innerHTML = (data.jobs || []).map(j => `
+      <tr>
+        <td><b>${escapeHtml(j.title)}</b></td>
+        <td>${escapeHtml(j.location)}</td>
+        <td>${escapeHtml(j.employment_type)} (${escapeHtml(j.work_arrangement)})</td>
+        <td>${j.currency === 'EUR' ? '€' : '£'}${Number(j.salary).toLocaleString()}</td>
+        <td><span class="tag pend">${(j.country || 'uk').toUpperCase()}</span></td>
+        <td><span class="tag pass">${escapeHtml(j.status)}</span></td>
+      </tr>
+    `).join('') || '<tr><td colspan="6" style="text-align:center;color:var(--muted)">No vacancies posted yet. <a href="/vacancy.html">Post a vacancy now</a>.</td></tr>';
+
+    // Render Scorecards Table
+    const scoreBody = document.getElementById('scoreTable').querySelector('tbody');
+    scoreBody.innerHTML = (data.scorecards || []).map(sc => `
+      <tr>
+        <td><b>${escapeHtml(sc.first_name)} ${escapeHtml(sc.last_name)}</b></td>
+        <td>${escapeHtml(sc.email)}</td>
+        <td><b>${sc.ats_score || 0}%</b></td>
+        <td><b>${sc.quiz_percentage || 0}%</b> (${sc.quiz_score || 0}/35)</td>
+        <td>Stage 2: ${sc.stage2_status || 'pending'}<br>Stage 3: ${sc.stage3_status || 'pending'}</td>
+        <td><b style="font-size:16px;color:var(--slate)">${sc.total_score || 0}</b>/100</td>
+        <td><span class="tag ${(sc.total_score >= 80) ? 'pass' : 'pend'}">${(sc.total_score >= 80) ? 'SHORTLIST' : 'REVIEW'}</span></td>
+      </tr>
+    `).join('') || '<tr><td colspan="7" style="text-align:center;color:var(--muted)">No candidate scorecards available yet.</td></tr>';
+
+  } catch (err) {
+    console.error('Dashboard load error:', err);
+    blocked.style.display = 'block';
+    content.style.display = 'none';
+  }
+}
+
+async function logoutRecruiter() {
+  await fetch('/api/auth/logout', { method: 'POST' });
+  window.location.href = '/register.html#login';
+}
+
+function escapeHtml(value) {
+  return String(value || '').replace(/[&<>'"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[c]));
+}
+
+document.addEventListener('DOMContentLoaded', loadDashboard);
+</script>
+</body>
+</html>

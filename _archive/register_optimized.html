@@ -1,0 +1,1712 @@
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Veer — AI-Powered Recruitment for the UK &amp; Ireland</title>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAzMiAzMic+PHJlY3Qgd2lkdGg9JzMyJyBoZWlnaHQ9JzMyJyByeD0nNycgZmlsbD0nIzJiM2E0ZCcvPjxjaXJjbGUgY3g9JzE2JyBjeT0nMTYnIHI9JzknIGZpbGw9JyNGMjY4MEInLz48L3N2Zz4=" />
+<style>
+  :root{
+    --slate:#2b3a4d; --slate2:#3c5468;
+    --orange:#F2680B; --orange-d:#D9570A; --amber:#F8A03C; --orange-l:#FFF1E6;
+    --bad:#dc2626;
+    --ink:#1f2a36; --muted:#5e6b78;
+    --line:#ece7e1; --bg:#faf8f6; --card:#ffffff;
+    --ok:#15803d; --warn:#b45309;
+    --shadow:0 10px 30px rgba(43,58,77,.10);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);background:var(--bg);line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1140px;margin:0 auto;padding:0 22px}
+  /* NAV */
+  header.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:66px}
+  .brand{display:flex;align-items:center;gap:11px;font-weight:800;font-size:20px;letter-spacing:-.3px}
+  .brand img{height:34px;width:34px;border-radius:8px;background:#fff;padding:2px;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+  .brand .dot{color:var(--orange)}
+  .nav-links{display:flex;gap:26px;align-items:center}
+  .nav-links a{color:var(--muted);font-weight:600;font-size:14.5px;padding:9px 2px;display:inline-flex;align-items:center}
+  .nav-links a:hover{color:var(--ink)}
+  .btn{display:inline-flex;align-items:center;gap:8px;cursor:pointer;border:none;font-weight:700;
+    border-radius:11px;padding:11px 18px;font-size:14.5px;transition:.18s;background:var(--orange);color:#fff}
+  .btn:hover{background:var(--orange-d);transform:translateY(-1px)}
+  .btn.ghost{background:#fff;color:var(--slate);border:1px solid var(--line)}
+  .btn.ghost:hover{border-color:var(--orange);color:var(--orange)}
+  .btn.slate{background:var(--slate);color:#fff}
+  .btn.slate:hover{background:var(--slate2)}
+  .btn.lg{padding:14px 26px;font-size:16px;border-radius:13px}
+  .btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+  /* HERO */
+  .hero{background:linear-gradient(135deg,var(--slate) 0%,var(--slate2) 55%,#22303f 100%);color:#fff;position:relative;overflow:hidden}
+  .hero:after{content:"";position:absolute;right:-160px;top:-160px;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(242,104,11,.45),transparent 65%)}
+  .hero:before{content:"";position:absolute;left:-120px;bottom:-180px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(248,160,60,.35),transparent 65%)}
+  .hero-in{position:relative;z-index:2;padding:62px 0 66px;display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
+  .pill{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);padding:7px 14px;border-radius:999px;font-size:13px;font-weight:600;letter-spacing:.2px}
+  .pill .live{width:8px;height:8px;border-radius:50%;background:var(--amber);box-shadow:0 0 0 4px rgba(248,160,60,.25)}
+  h1{font-size:44px;line-height:1.08;margin:18px 0 14px;letter-spacing:-1px;font-weight:800}
+  h1 .grad{background:linear-gradient(90deg,#ffb066,#f8a03c);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero p.lead{font-size:18px;color:#c9d0da;max-width:540px;margin:0 0 26px}
+  .hero-cta{display:flex;gap:14px;flex-wrap:wrap}
+  .hero-stats{display:flex;gap:26px;margin-top:30px}
+  .hero-stats div{font-size:13.5px;color:#aeb9d4}
+  .hero-stats b{display:block;font-size:24px;color:#fff;font-weight:800}
+  .flags{display:flex;gap:8px;margin-top:18px;font-size:13px;color:#aeb9d4;align-items:center;flex-wrap:wrap}
+  .flags span{background:rgba(255,255,255,.1);padding:5px 11px;border-radius:8px;font-weight:600}
+  .hero-card{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:20px;padding:24px;backdrop-filter:blur(6px)}
+  .hero-card .lab{font-size:13px;color:#aeb9d4;font-weight:700;letter-spacing:.4px}
+  .hero-card .row{display:flex;align-items:center;gap:18px;margin-top:14px}
+  .ring{--p:0;width:110px;height:110px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;background:conic-gradient(var(--orange) calc(var(--p)*1%),rgba(255,255,255,.14) 0);position:relative}
+  .ring:after{content:"";position:absolute;inset:13px;background:var(--slate);border-radius:50%}
+  .ring .val{position:relative;z-index:2;text-align:center}
+  .ring .val b{font-size:28px;font-weight:800;display:block;line-height:1;color:#fff}
+  .ring .val span{font-size:12px;color:#c9d0da;font-weight:700}
+  .hero-card .t1{font-weight:800;font-size:17px}
+  .hero-card .t2{color:#ffd9b0;font-weight:700;font-size:14px;margin-top:4px}
+  .hero-card .t3{color:#c9d0da;font-size:13px;margin-top:6px}
+  .hero-card .bar{margin-top:18px;height:8px;background:rgba(255,255,255,.12);border-radius:8px;overflow:hidden}
+  .hero-card .bar>i{display:block;height:100%;width:92%;background:linear-gradient(90deg,var(--orange),var(--amber))}
+  /* FLOW */
+  .flow-sec{padding:52px 0 70px}
+  .sec-head{text-align:center;margin-bottom:28px}
+  .sec-head .eyebrow{color:var(--orange);font-weight:800;letter-spacing:1.2px;text-transform:uppercase;font-size:12.5px}
+  .sec-head h2{font-size:32px;margin:8px 0 6px;letter-spacing:-.6px}
+  .sec-head p{color:var(--muted);max-width:640px;margin:0 auto;font-size:15.5px}
+  .stepper{display:flex;align-items:center;justify-content:center;gap:0;margin:0 auto 32px;max-width:760px}
+  .step{display:flex;align-items:center;gap:12px;flex:1}
+  .step .num{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;background:#fff;border:2px solid var(--line);color:var(--muted);transition:.2s}
+  .step.active .num{background:var(--orange);border-color:var(--orange);color:#fff;box-shadow:0 0 0 5px rgba(242,104,11,.18)}
+  .step.done .num{background:var(--slate);border-color:var(--slate);color:#fff}
+  .step .lbl{font-size:13.5px;font-weight:700;color:var(--muted)}
+  .step.active .lbl,.step.done .lbl{color:var(--ink)}
+  .step .bar{flex:1;height:3px;background:var(--line);border-radius:3px;margin:0 6px}
+  .step.done .bar{background:var(--orange)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:30px;max-width:960px;margin:0 auto}
+  .card h3{margin:0 0 4px;font-size:22px;letter-spacing:-.4px}
+  .card .sub{color:var(--muted);margin:0 0 22px;font-size:14.5px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  label.fld{display:block;font-weight:700;font-size:13.5px;margin:0 0 7px;color:var(--slate)}
+  .drop{border:2px dashed var(--line);border-radius:14px;padding:22px;text-align:center;cursor:pointer;transition:.18s;background:#fffdfb}
+  .drop:hover{border-color:var(--orange);background:var(--orange-l)}
+  .drop.drag{border-color:var(--orange);background:var(--orange-l)}
+  .drop .ic{font-size:30px}
+  .drop p{margin:8px 0 0;font-size:14px;color:var(--muted)}
+  .drop b{color:var(--slate)}
+  textarea,input[type=text],input[type=email],input[type=tel],select{width:100%;border:1px solid var(--line);border-radius:11px;padding:12px 13px;font:inherit;font-size:14px;color:var(--ink);background:#fff;resize:vertical}
+  textarea:focus,input:focus,select:focus{outline:none;border-color:var(--orange);box-shadow:0 0 0 3px rgba(242,104,11,.15)}
+  textarea{min-height:170px;line-height:1.5}
+  .hint{font-size:12.5px;color:var(--muted);margin-top:7px}
+  .samples{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  .chip{background:var(--orange-l);border:1px solid #f3dcc4;color:var(--orange-d);border-radius:999px;padding:9px 14px;min-height:36px;display:inline-flex;align-items:center;font-size:12.5px;font-weight:700;cursor:pointer}
+  .chip:hover{background:#fde3cc}
+  .actions{display:flex;gap:12px;justify-content:center;margin-top:24px;flex-wrap:wrap}
+  /* RESULT (ATS) */
+  .result{display:none;margin-top:26px;border-top:1px solid var(--line);padding-top:24px}
+  .score-wrap{display:flex;gap:26px;align-items:center;flex-wrap:wrap}
+  .ring.sm{--p:0;width:130px;height:130px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;background:conic-gradient(var(--orange) calc(var(--p)*1%),#efeae4 0);position:relative}
+  .ring.sm:after{content:"";position:absolute;inset:13px;background:#fff;border-radius:50%}
+  .ring.sm .val{position:relative;z-index:2;text-align:center}
+  .ring.sm .val b{font-size:34px;font-weight:800;display:block;line-height:1;color:var(--ink)}
+  .ring.sm .val span{font-size:12px;color:var(--muted);font-weight:700}
+  .verdict{flex:1;min-width:0}
+  .verdict .tag{display:inline-block;font-weight:800;font-size:12.5px;letter-spacing:.4px;padding:5px 11px;border-radius:999px;margin-bottom:8px}
+  .tag.pass{background:rgba(21,128,61,.12);color:var(--ok)}
+  .tag.fail{background:rgba(220,38,38,.1);color:var(--bad)}
+  .kw{margin-top:18px}
+  .kw h4{font-size:13px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin:0 0 9px}
+  .kw ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+  .kw li{font-size:12.5px;font-weight:600;padding:6px 11px;border-radius:9px}
+  .kw li.m{background:rgba(242,104,11,.12);color:var(--orange-d);border:1px solid rgba(242,104,11,.25)}
+  .kw li.x{background:rgba(220,38,38,.08);color:#b91c1c;border:1px solid rgba(220,38,38,.22);text-decoration:line-through;opacity:.85}
+  .demo-note{background:#fff7ed;border:1px solid #fed7aa;color:#9a3b0a;padding:11px 14px;border-radius:11px;font-size:13.5px;margin-top:16px;display:none}
+  /* REGISTRATION */
+  .journey{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:26px}
+  .j-step{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px 18px;position:relative;transition:.18s}
+  .j-step:hover{box-shadow:var(--shadow);transform:translateY(-2px)}
+  .j-step .illu{width:92px;height:92px;margin:0 auto 10px;display:block}
+  .j-step .n{position:absolute;top:14px;left:14px;width:26px;height:26px;border-radius:50%;background:var(--orange);color:#fff;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center}
+  .j-step h4{margin:0 0 6px;text-align:center;font-size:16px}
+  .j-step p{margin:0;text-align:center;color:var(--muted);font-size:13.5px}
+  .reg-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:28px;align-items:start}
+  .field{margin-bottom:14px}
+  .field label{display:block;font-weight:700;font-size:13px;margin-bottom:6px;color:var(--slate)}
+  .field input,.field select{width:100%;border:1px solid var(--line);border-radius:10px;padding:11px 12px;font:inherit;font-size:14px;background:#fff;color:var(--ink)}
+  .field input:focus,.field select:focus{outline:none;border-color:var(--orange);box-shadow:0 0 0 3px rgba(242,104,11,.15)}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .consent{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--muted);margin:2px 0 18px}
+  .consent input{margin-top:3px}
+  .reg-aside{background:linear-gradient(160deg,var(--slate),var(--slate2));color:#fff;border-radius:18px;padding:26px}
+  .reg-aside h4{margin:0 0 6px;font-size:18px}
+  .reg-aside p{color:#c9d0da;font-size:14px;margin:0 0 16px}
+  .reg-aside ul{margin:0;padding-left:18px;color:#dfe4ec;font-size:14px;line-height:1.9}
+  .reg-aside .mini{display:flex;gap:14px;align-items:center;margin-top:18px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:12px;padding:12px}
+  .reg-aside .mini svg{flex:none}
+  .reg-aside .mini b{display:block;font-size:14px}
+  .reg-aside .mini span{font-size:12.5px;color:#c9d0da}
+  /* UPLOAD HERO */
+  .up-hero{display:flex;gap:22px;align-items:center;background:linear-gradient(135deg,var(--orange-l),#fff);border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:22px}
+  .up-hero .illu{width:128px;height:128px;flex:none}
+  .up-hero h3{margin:0 0 6px;font-size:20px}
+  .up-hero p{margin:0;color:var(--muted);font-size:14px}
+  .up-hero .pill{margin-top:10px}
+  /* QUIZ */
+  .quiz-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;gap:14px;flex-wrap:wrap}
+  .quiz-badge{display:inline-flex;align-items:center;gap:8px;background:var(--orange-l);color:var(--orange-d);border:1px solid #f3cba6;font-weight:800;font-size:12.5px;padding:6px 12px;border-radius:999px}
+  .prog{height:9px;background:#efeae4;border-radius:9px;overflow:hidden;margin:12px 0 22px}
+  .prog>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--orange),var(--amber));transition:.3s}
+  .qcount{font-weight:800;color:var(--muted)}
+  .q{font-size:19px;font-weight:700;letter-spacing:-.3px;margin:6px 0 4px}
+  .qtag{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;padding:4px 10px;border-radius:999px;margin-bottom:12px}
+  .qtag.ai{background:var(--orange-l);color:var(--orange-d)}
+  .qtag.logic{background:#e9eef3;color:var(--slate2)}
+  .opts{display:grid;gap:11px;margin:8px 0 4px}
+  .opt{border:1.5px solid var(--line);border-radius:12px;padding:14px 16px;cursor:pointer;font-weight:600;display:flex;gap:12px;align-items:flex-start;transition:.15s;background:#fff}
+  .opt:hover{border-color:var(--orange);background:var(--orange-l)}
+  .opt .mk{width:24px;height:24px;border-radius:50%;border:2px solid var(--line);flex:none;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:var(--muted)}
+  .opt.sel{border-color:var(--orange);background:var(--orange-l)}
+  .opt.correct{border-color:var(--ok);background:rgba(21,128,61,.08)}
+  .opt.wrong{border-color:var(--bad);background:rgba(220,38,38,.06)}
+  .explain{display:none;background:#f6f8fc;border:1px solid var(--line);border-left:4px solid var(--orange);border-radius:10px;padding:13px 15px;margin-top:14px;font-size:14px;color:var(--slate)}
+  .explain b{color:var(--slate)}
+  /* RESULT / SUCCESS */
+  .success{text-align:center;padding:8px 0}
+  .success .badge{width:84px;height:84px;border-radius:50%;margin:0 auto 18px;display:flex;align-items:center;justify-content:center;font-size:42px;background:linear-gradient(135deg,var(--amber),var(--orange));color:#fff;box-shadow:0 12px 30px rgba(242,104,11,.35)}
+  .success.fail .badge{background:linear-gradient(135deg,#dc2626,#b91c1c);box-shadow:0 12px 30px rgba(220,38,38,.3)}
+  .success h3{font-size:27px;margin:0 0 8px}
+  .success p{color:var(--muted);max-width:540px;margin:0 auto 22px}
+  .summary{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:760px;margin:0 auto 26px}
+  .summary .s{background:#f6f8fc;border:1px solid var(--line);border-radius:14px;padding:16px}
+  .summary .s b{display:block;font-size:24px;font-weight:800;color:var(--slate)}
+  .summary .s span{font-size:12px;color:var(--muted);font-weight:600}
+  /* HOW + EMPLOYERS */
+  .twocol{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:8px}
+  .feature{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px;box-shadow:var(--shadow)}
+  .feature .ic{width:44px;height:44px;border-radius:12px;background:var(--orange-l);color:var(--orange-d);display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:12px}
+  .feature h4{margin:0 0 6px;font-size:17px}
+  .feature p{margin:0;color:var(--muted);font-size:14px}
+  .employer{background:linear-gradient(135deg,var(--slate),var(--slate2));color:#fff;border-radius:18px;padding:34px;margin-top:30px;display:grid;grid-template-columns:1.2fr .8fr;gap:28px;align-items:center}
+  .employer h3{margin:0 0 8px;font-size:26px}
+  .employer p{color:#c9d0da;margin:0 0 18px;font-size:15px}
+  .employer ul{margin:12px 0 0;padding-left:18px;color:#dfe4ec;font-size:14px;line-height:1.9}
+  footer{background:var(--slate);color:#aeb9d4;padding:34px 0;font-size:13.5px;margin-top:50px}
+  .foot-in{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;align-items:center}
+  .foot-in .brand{color:#fff;font-size:17px}
+  .foot-in .brand img{background:#fff}
+  .hidden{display:none!important}
+
+  /* Mobile Nav Toggle */
+  .nav-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+  }
+  .nav-toggle span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--slate);
+    margin: 4px 0;
+    transition: 0.3s;
+  }
+  @media(max-width: 880px) {
+    .nav-toggle { display: block; order: 2; }
+    .brand { order: 1; }
+    .nav-in { display: flex; justify-content: space-between; align-items: center; }
+    .nav-links {
+      display: none;
+      position: absolute;
+      top: 66px;
+      left: 0;
+      width: 100%;
+      background: #fff;
+      flex-direction: column;
+      gap: 0 !important;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--line);
+      box-shadow: 0 10px 15px rgba(0,0,0,0.05);
+      z-index: 100;
+    }
+    .nav-links.active { display: flex; }
+    .nav-links a {
+      width: 100%;
+      padding: 15px 22px;
+      border-bottom: 1px solid var(--bg);
+    }
+    .nav-links .btn {
+      margin: 15px 22px;
+      display: flex;
+      justify-content: center;
+    }
+  }
+  @media(max-width:880px){
+    .hero-in{grid-template-columns:1fr;padding:44px 0 52px}
+    .grid2,.reg-grid,.twocol,.employer{grid-template-columns:1fr}
+    .journey{grid-template-columns:1fr}
+    .summary{grid-template-columns:1fr 1fr}
+    .nav-links{display:none}
+    h1{font-size:34px}
+    .stepper .lbl{display:none}
+  }
+
+  /* HOW IT WORKS — redesigned with vector graphics */
+  .how{padding:16px 0 8px}
+  .pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:4px 0 36px}
+  .pillar{display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;background:linear-gradient(135deg,#FFF1E6,#fff);border:1px solid var(--line);border-radius:16px;padding:18px 18px}
+  .pillar .pic{flex:none;width:46px;height:46px;border-radius:12px;background:#fff;box-shadow:0 6px 16px rgba(43,58,77,.10);display:flex;align-items:center;justify-content:center}
+  .pillar b{display:block;font-size:16px;color:var(--slate)}
+  .pillar span{font-size:13px;color:var(--muted);line-height:1.4}
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  .stepc{position:relative;background:#fff;border:1px solid var(--line);border-radius:18px;padding:26px 18px 20px;box-shadow:var(--shadow);transition:.2s}
+  .stepc:hover{transform:translateY(-3px);box-shadow:0 16px 38px rgba(43,58,77,.14)}
+  .stepc .badge{position:absolute;top:-14px;left:18px;width:30px;height:30px;border-radius:50%;background:var(--orange);color:#fff;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(242,104,11,.35)}
+  .stepc .pic{width:84px;height:84px;margin:4px auto 12px;display:block}
+  .stepc h4{margin:0 0 6px;text-align:center;font-size:16.5px;color:var(--slate)}
+  .stepc p{margin:0;text-align:center;color:var(--muted);font-size:13.5px}
+  @media(max-width:880px){
+    .pillars{grid-template-columns:1fr}
+    .steps{grid-template-columns:1fr 1fr}
+    .stepc .badge{left:50%;transform:translateX(-50%)}
+  }
+  @media(max-width:560px){ .steps{grid-template-columns:1fr} }
+
+
+  /* ANIMATED OFFICE BANNER BEHIND HERO HEADLINE */
+  .hero-banner{position:absolute;inset:0;z-index:1;overflow:hidden;pointer-events:none}
+  .hero-banner svg{position:absolute;right:-40px;bottom:-26px;width:min(72%,860px);height:auto;opacity:.95}
+  .hero-scrim{position:absolute;inset:0;z-index:1;pointer-events:none;
+    background:linear-gradient(90deg,rgba(43,58,77,.62) 0%,rgba(43,58,77,.38) 36%,rgba(43,58,77,.06) 62%,transparent 80%)}
+  .hero-in{position:relative;z-index:2}
+  .hero-banner .fig,.hero-banner .hub{transform-box:fill-box;transform-origin:center}
+  .hero-banner .fig{animation:bob 4s ease-in-out infinite}
+  .hero-banner .hub{animation:pulse 3s ease-in-out infinite}
+  .hero-banner .conn{stroke-dasharray:6 9;animation:dash 1.6s linear infinite}
+  .hero-banner .floatdoc{animation:floatUp 6s ease-in infinite;transform-box:fill-box}
+  .hero-banner .scan{animation:scan 3.2s ease-in-out infinite;transform-box:fill-box}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+  @keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.07);opacity:.85}}
+  @keyframes dash{to{stroke-dashoffset:-30}}
+  @keyframes floatUp{0%{transform:translateY(10px);opacity:0}12%{opacity:.95}85%{opacity:.95}100%{transform:translateY(-130px);opacity:0}}
+  @keyframes scan{0%{transform:translateY(0);opacity:0}12%{opacity:.55}88%{opacity:.55}100%{transform:translateY(60px);opacity:0}}
+  @media(prefers-reduced-motion:reduce){.hero-banner *{animation:none!important}}
+  @media(max-width:880px){.hero-banner{opacity:.4}.hero-scrim{background:rgba(43,58,77,.5)}}
+
+
+  /* HERO — full-width animated banner + centered opening UI */
+  .hero{padding:0; position:relative; perspective: 2000px; overflow: visible}
+  .hero-banner svg{left:50%;transform:translateX(-50%);bottom:-12px;width:min(1100px,100%);height:auto;opacity:.92}
+  .hero-scrim{background:radial-gradient(130% 100% at 50% 42%,rgba(43,58,77,.28),rgba(43,58,77,.72) 82%)}
+  
+  .hero-in{
+    display:flex;
+    justify-content:center;
+    padding:120px 0 160px; 
+    position:relative; 
+    z-index:5;
+    transform-style: preserve-3d;
+  }
+  
+  .hero-center{
+    max-width:1000px;
+    text-align:center;
+    margin:0 auto;
+    padding:80px 60px;
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 60px;
+    box-shadow: 
+      0 60px 120px -20px rgba(0, 0, 0, 0.7),
+      inset 0 1px 2px rgba(255, 255, 255, 0.15);
+    position: relative;
+    transform: rotateX(8deg) rotateY(-2deg);
+    transform-style: preserve-3d;
+    transition: transform 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+    animation: floatCard 6s ease-in-out infinite;
+  }
+  @keyframes floatCard {
+    0%, 100% { transform: rotateX(8deg) rotateY(-2deg) translateY(0); }
+    50% { transform: rotateX(10deg) rotateY(0deg) translateY(-15px); }
+  }
+  .hero-center:hover {
+    transform: rotateX(0deg) rotateY(0deg) translateY(-10px) !important;
+    animation-play-state: paused;
+  }
+  
+  /* 3D "Padding" Glow Aura */
+  .hero-center::before {
+    content: "";
+    position: absolute;
+    inset: -30px;
+    background: linear-gradient(135deg, var(--orange), transparent 30%, transparent 70%, var(--amber));
+    opacity: 0.12;
+    filter: blur(60px);
+    z-index: -1;
+    border-radius: 80px;
+    transform: translateZ(-50px);
+  }
+
+  .pill{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.15);
+    padding:10px 20px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    margin:0 auto 30px; 
+    color: #fff;
+    transform: translateZ(40px);
+  }
+  
+  .hero-center h1{
+    font-size:72px; 
+    line-height:0.95; 
+    margin:0 0 30px; 
+    letter-spacing:-3px; 
+    font-weight:900; 
+    text-shadow:0 20px 40px rgba(0,0,0,0.5);
+    transform: translateZ(80px);
+  }
+  
+  .hero-center .lead{
+    font-size:24px;
+    color:#d1d7e0;
+    max-width:760px;
+    margin:0 auto 40px;
+    line-height:1.5;
+    text-shadow:0 5px 15px rgba(0,0,0,0.3); 
+    font-weight: 400;
+    transform: translateZ(50px);
+  }
+  
+  .hero-cta{
+    display:flex;
+    gap:24px;
+    justify-content:center;
+    flex-wrap:wrap;
+    margin-top:30px;
+    transform: translateZ(100px);
+  }
+  
+  .btn-apply{
+    background:linear-gradient(135deg,var(--orange),var(--amber));
+    color:#fff;
+    box-shadow: 0 25px 50px -10px rgba(242,104,11,.5); 
+    padding: 22px 50px; 
+    font-size: 20px;
+    font-weight: 900;
+    border-radius: 20px;
+  }
+  .btn-apply:hover{
+    transform: scale(1.05) translateY(-5px);
+    box-shadow: 0 35px 60px -10px rgba(242,104,11,.6);
+  }
+  
+  .btn-live{
+    background: rgba(255,255,255,0.05); 
+    color: #fff; 
+    border: 1px solid rgba(255,255,255,0.15); 
+    backdrop-filter: blur(10px);
+    padding: 22px 40px;
+    border-radius: 20px;
+    font-size: 19px;
+    font-weight: 600;
+  }
+  .btn-live:hover{background: rgba(255,255,255,0.1); border-color: var(--amber); transform: translateY(-5px)}
+
+  .flags{
+    display:flex;
+    gap:16px;
+    margin-top:60px;
+    justify-content:center;
+    flex-wrap:wrap;
+    transform: translateZ(30px);
+  }
+  .flags .loc{
+    background:rgba(255,255,255,.03);
+    border:1px solid rgba(255,255,255,.1);
+    padding:12px 24px;
+    border-radius:16px;
+    font-weight:600;
+    font-size:15px;
+    color:#e7ecf3;
+    transition:.3s ease;
+  }
+  .flags .loc:hover{
+    background: rgba(255,255,255,0.07); 
+    border-color:var(--orange); 
+    color:#fff; 
+    transform: translateY(-5px) rotate(2deg);
+  }
+  
+  .hero-stats{
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap:30px;
+    margin:60px auto 0;
+    justify-content:center; 
+    border-top: 1px solid rgba(255,255,255,0.08); 
+    padding-top: 60px;
+    transform: translateZ(60px);
+    max-width: 700px;
+  }
+  .hero-stats .stat{
+    background:rgba(255,255,255,.04);
+    border:1px solid rgba(255,255,255,0.1);
+    border-radius:32px;
+    padding:40px 30px;
+    min-width:0;
+    transition:.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform-style: preserve-3d;
+  }
+    .hero-stats .stat:hover{
+    background:rgba(255,255,255,.07); 
+    border-color: rgba(242,104,11, 0.5); 
+    transform: translateY(-15px) translateZ(30px) scale(1.05); 
+    box-shadow: 0 40px 80px rgba(0,0,0,0.5);
+  }
+    .stat-ic{
+    width:80px;
+    height:80px;
+    margin:0 auto 20px;
+    border-radius:22px;
+    background:linear-gradient(135deg,var(--orange),var(--amber));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 12px 24px rgba(242,104,11,.35);
+    transform: translateZ(30px);
+  }
+  .stat-ic svg{
+    width:40px;
+    height:40px;
+  }
+  .stat-num{font-size:48px; font-weight:900; background: linear-gradient(135deg, #fff, #aeb9d4); -webkit-background-clip: text; background-clip: text; color: transparent; transform: translateZ(50px)}
+  .stat-lbl{font-size:16px; opacity: 0.7; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700; transform: translateZ(40px)}
+  
+  .hero-match{
+    display:flex;
+    justify-content:center;
+    margin-top:70px;
+    transform: translateZ(120px);
+  }
+  .hero-match .hero-card{
+    max-width:600px;
+    width:100%; 
+    border-radius: 32px; 
+    background: rgba(255,255,255,0.03); 
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 40px;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+  }
+
+  @media(max-width:880px){
+    .hero-center{padding:60px 24px; border-radius: 40px; transform: none !important}
+    .hero-center h1{font-size:44px; letter-spacing: -1.5px}
+    .hero-center .lead{font-size:18px}
+    .hero-stats{gap:15px; grid-template-columns: repeat(2, 1fr); align-items: center; padding-top: 30px}
+    .hero-stats .stat{width: 100%; max-width: none; padding: 20px}
+    .hero-in{padding: 60px 0 80px}
+  }
+
+
+  /* BENEFITS TRIO */
+  .benefits{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .benefit{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px;box-shadow:var(--shadow);transition:.2s}
+  .benefit:hover{transform:translateY(-3px)}
+  .ben-ic{width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,var(--orange),var(--amber));display:flex;align-items:center;justify-content:center;margin-bottom:12px;box-shadow:0 6px 14px rgba(242,104,11,.3)}
+  .benefit h4{margin:0 0 6px;font-size:17px;color:var(--slate)}
+  .benefit p{margin:0;color:var(--muted);font-size:14px}
+  /* EMPLOYER CAPABILITY GRID */
+  .capgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .cap{background:#fff;border:1px solid var(--line);border-radius:18px;padding:24px 20px;text-align:center;transition:.25s}
+  .cap:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(43,58,77,.14);border-color:#f6d8bd}
+  .cap:hover .cap-ic{transform:scale(1.08) rotate(-3deg)}
+  .cap-ic{width:58px;height:58px;border-radius:16px;background:linear-gradient(135deg,var(--orange),var(--amber));display:flex;align-items:center;justify-content:center;margin:0 auto 14px;box-shadow:0 10px 22px rgba(242,104,11,.30);transition:transform .25s}
+  .cap-ic svg{width:26px;height:26px}
+  .cap h4{margin:0 0 6px;font-size:16px;color:var(--slate)}
+  .cap p{margin:0;color:var(--muted);font-size:13.5px}
+  .hl{background:linear-gradient(90deg,var(--orange),var(--amber));-webkit-background-clip:text;background-clip:text;color:transparent}
+  /* TRUST BAND */
+  .trust{background:linear-gradient(135deg,var(--slate),var(--slate2));color:#fff;padding:48px 0;margin-top:30px}
+  .trust .sec-head h2{color:#fff}
+  .trust .sec-head p{color:#c9d0da}
+  .trust-stats{display:flex;gap:34px;justify-content:center;flex-wrap:wrap;margin:8px 0 26px}
+  .trust-stats div{text-align:center}
+  .trust-stats b{display:block;font-size:36px;font-weight:800;color:#fff;line-height:1}
+  .trust-stats span{font-size:13px;color:#c9d0da;font-weight:600}
+  .logos{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:30px}
+  .logo-chip{display:flex;align-items:center;gap:9px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);padding:10px 15px;border-radius:12px;font-weight:700;color:#dfe4ec;font-size:14px}
+  .testi{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .tcard{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:20px}
+  .tcard p{margin:0;color:#e7ecf3;font-size:14.5px;line-height:1.5}
+  .twho{display:flex;align-items:center;gap:10px;margin-top:14px;font-size:13px;color:#c9d0da}
+  .twho b{color:#fff;display:block;font-size:13.5px}
+  /* FINAL CTA BAND */
+  .cta-band{background:linear-gradient(135deg,var(--orange),var(--amber));color:#fff;text-align:center;padding:58px 0;margin-top:0;position:relative;overflow:hidden}
+  .cta-band .wrap{position:relative;z-index:1}
+  .cta-band:before,.cta-band:after{content:'';position:absolute;border-radius:50%;pointer-events:none}
+  .cta-band:before{width:380px;height:380px;top:-150px;right:-110px;background:rgba(255,255,255,.14)}
+  .cta-band:after{width:300px;height:300px;bottom:-150px;left:-90px;background:rgba(255,255,255,.10)}
+  .cta-band h2{color:#fff;font-size:32px;margin:0 0 8px}
+  .cta-band p{color:#fff;opacity:.95;margin:0 0 18px;font-size:16px}
+  .cta-band .btn-apply{background:#fff;color:var(--orange);box-shadow:0 10px 26px rgba(0,0,0,.18)}
+  .cta-band .btn-apply:hover{background:#fff7ef;color:var(--orange-d)}
+  .cta-band .btn-hire{background:transparent;color:#fff;border-color:#fff}
+  .cta-band .btn-hire:hover{background:#fff;color:var(--orange)}
+  @media(max-width:880px){
+    .benefits,.capgrid,.testi{grid-template-columns:1fr}
+    .trust-stats{gap:20px}
+  }
+
+
+  /* ATS EXPLAINABILITY */
+  .match-why{margin-top:14px;font-size:13.5px;color:var(--muted);background:#f6f8fc;border:1px solid var(--line);border-left:4px solid var(--orange);border-radius:10px;padding:12px 14px}
+  .match-why b{color:var(--slate)}
+  /* ASYNC AI VIDEO INTERVIEW */
+  .vid-q{background:#f6f8fc;border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:18px}
+  .vid-q h4{margin:0 0 8px;font-size:14px;color:var(--slate)}
+  .vid-q ol{margin:0;padding-left:20px;color:var(--muted);font-size:14px;line-height:1.6}
+  .vid-stage{position:relative;background:#0f172a;border-radius:16px;overflow:hidden;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center}
+  .vid-stage video{width:100%;height:100%;object-fit:cover;display:none;background:#0f172a}
+  .vid-ph{color:#9fb0c4;font-size:15px;text-align:center;padding:20px}
+  .vid-timer{position:absolute;top:12px;right:12px;background:rgba(0,0,0,.55);color:#fff;font-weight:700;font-size:13px;padding:5px 10px;border-radius:8px;font-variant-numeric:tabular-nums}
+  /* CANDIDATE STATUS TIMELINE */
+  .timeline{display:flex;gap:6px;justify-content:center;margin:6px 0 22px;flex-wrap:wrap}
+  .tl{display:flex;flex-direction:column;align-items:center;flex:1;min-width:120px}
+  .tl-dot{width:36px;height:36px;border-radius:50%;background:#fff;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--muted);font-size:13px}
+  .tl.done .tl-dot{background:var(--orange);border-color:var(--orange);color:#fff}
+  .tl-txt{font-size:12.5px;color:var(--muted);margin-top:6px;text-align:center;font-weight:600}
+  .tl.done .tl-txt{color:var(--slate)}
+  /* CONVERSATIONAL AI SCREENER (chatbot) */
+  .chatbot{position:fixed;right:22px;bottom:22px;z-index:200}
+  .chat-fab{width:56px;height:56px;border-radius:50%;border:none;background:linear-gradient(135deg,var(--orange),var(--amber));color:#fff;font-size:24px;cursor:pointer;box-shadow:0 10px 26px rgba(242,104,11,.4)}
+  .chat-fab:hover{transform:translateY(-2px)}
+  .chat-panel{position:absolute;right:0;bottom:70px;width:340px;max-width:calc(100vw - 32px);background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 20px 50px rgba(43,58,77,.22);overflow:hidden;display:flex;flex-direction:column}
+  .chat-head{background:linear-gradient(135deg,var(--slate),var(--slate2));color:#fff;padding:12px 14px;font-weight:700;display:flex;justify-content:space-between;align-items:center}
+  .chat-x{background:none;border:none;color:#fff;font-size:22px;cursor:pointer;line-height:1;width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:8px}
+  .chat-msgs{padding:14px;height:260px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;background:var(--bg)}
+  .msg{max-width:85%;padding:9px 12px;border-radius:12px;font-size:13.5px;line-height:1.4}
+  .msg.bot{background:#fff;border:1px solid var(--line);align-self:flex-start;border-bottom-left-radius:4px}
+  .msg.me{background:var(--orange);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+  .chat-quick{padding:10px 12px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:7px;background:#fff}
+  .qk{border:1px solid var(--line);background:var(--orange-l);color:var(--orange-d);border-radius:999px;padding:9px 14px;min-height:38px;display:inline-flex;align-items:center;font-size:12.5px;font-weight:600;cursor:pointer}
+  .qk:hover{background:#fde3cc}
+  @media(max-width:880px){ .journey{grid-template-columns:1fr 1fr} }
+  @media(max-width:560px){
+    .journey{grid-template-columns:1fr}
+    .chat-panel{width:300px}
+    .card{padding:20px}
+    .row2{grid-template-columns:1fr}
+    .up-hero{flex-direction:column;text-align:center;gap:14px}
+    .up-hero .illu{width:96px;height:96px}
+    .score-wrap{flex-direction:column;align-items:flex-start}
+    .verdict{min-width:0}
+  }
+
+
+  /* EMPLOYER SECTION — "Hire in days, not months" redesign */
+  .emp-sec{background:linear-gradient(180deg,#ffffff 0%,#fff7f1 100%);border-radius:22px;margin-top:30px;box-shadow:var(--shadow), inset 0 4px 0 var(--orange)}
+  .emp-hero{display:flex;justify-content:center;margin:6px 0 26px}
+  .emp-svg{width:min(360px,82%);height:auto}
+  .cap{text-align:center}
+  .cap-ic{width:52px;height:52px;border-radius:13px;background:#fff;box-shadow:0 6px 16px rgba(43,58,77,.10);margin:0 auto 14px}
+  .cap-ic svg{width:26px;height:26px}
+  .cap h4{font-size:16.5px}
+
+
+  /* WHY VEER — "Faster, fairer, auditable" redesign */
+  .why-sec{background:#fff;border-radius:22px;box-shadow:var(--shadow);margin-top:30px}
+  .why-head{text-align:center;max-width:740px;margin:0 auto 30px}
+  .why-hook{font-size:40px;line-height:1.1;margin:8px 0 12px;letter-spacing:-.6px;font-weight:800}
+  .why-hook .ac-o{color:var(--orange)}
+  .why-hook .ac-a{background:linear-gradient(90deg,var(--orange),var(--amber));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .why-sub{color:var(--muted);font-size:16px;margin:0 0 14px}
+  .why-pill{display:inline-block;background:var(--orange-l);color:var(--orange-d);border:1px solid #f3cba6;font-weight:700;font-size:13px;padding:7px 14px;border-radius:999px}
+  .why-foot{text-align:center;color:var(--muted);font-size:13.5px;margin:22px 0 0}
+  .benefits{gap:20px}
+  .benefit{position:relative;background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px 20px;box-shadow:var(--shadow);transition:.2s;text-align:center}
+  .benefit:hover{transform:translateY(-3px)}
+  .ben-num{position:absolute;top:14px;right:16px;font-size:13px;font-weight:800;color:var(--orange);opacity:.45}
+  .ben-ic{width:54px;height:54px;border-radius:13px;background:linear-gradient(135deg,var(--orange),var(--amber));display:flex;align-items:center;justify-content:center;margin:0 auto 14px;box-shadow:0 6px 14px rgba(242,104,11,.3)}
+  .ben-ic svg{width:28px;height:28px}
+  .benefit h4{margin:0 0 6px;font-size:17px;color:var(--slate)}
+  .benefit p{margin:0;color:var(--muted);font-size:14px}
+  .benefit.feat{border-color:var(--orange);box-shadow:0 16px 38px rgba(242,104,11,.18)}
+  .benefit.feat .ben-ic{background:linear-gradient(135deg,var(--slate),var(--slate2))}
+  @media(max-width:880px){ .why-hook{font-size:30px} }
+
+
+  /* Keep employers + Why-Veer grids from collapsing to a single stack too early */
+  @media(max-width:880px) and (min-width:561px){
+    .capgrid{grid-template-columns:repeat(3,1fr)}
+    .benefits{grid-template-columns:repeat(3,1fr)}
+  }
+  @media(max-width:560px) and (min-width:400px){
+    .capgrid{grid-template-columns:repeat(2,1fr)}
+    .benefits{grid-template-columns:repeat(3,1fr)}
+  }
+
+  /* Keep the "Fair, fast, transparent" pillars in a single row (not stacked) on tablet/desktop */
+  @media(max-width:880px) and (min-width:481px){
+    .pillars{grid-template-columns:repeat(3,1fr)}
+  }
+
+  /* ===== Dark "strong hook" theme: Fair/Fast/Transparent + Hire-in-days ===== */
+  #how{background:linear-gradient(135deg,#1b2530 0%,#243443 55%,#141b22 100%);border-radius:24px;padding:54px 40px;margin-top:30px;color:#e7ecf3}
+  #how .why-sub{color:#c9d0da}
+  #how .why-hook{color:#fff}
+  #how .sec-head h2{color:#fff}
+  #how .sec-head p{color:#c9d0da}
+  .pillar{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);border-radius:18px;padding:26px 20px;box-shadow:0 12px 30px rgba(0,0,0,.25)}
+  .pillar b{color:#fff}
+  .pillar span{color:#c9d0da}
+  .pillar .pic{width:68px;height:68px;border-radius:50%;border:2px solid var(--orange);background:rgba(255,255,255,.06);box-shadow:0 8px 22px rgba(0,0,0,.30)}
+  .pillar .pic svg{width:32px;height:32px}
+  .stepc{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);box-shadow:0 12px 30px rgba(0,0,0,.25)}
+  .stepc h4{color:#fff}
+  .stepc p{color:#c9d0da}
+
+  #employers .emp-sec{background:linear-gradient(135deg,var(--slate) 0%,var(--slate2) 55%,#22303f 100%);border-radius:24px;margin-top:30px;box-shadow:var(--shadow), inset 0 4px 0 var(--orange);color:#e7ecf3}
+  #employers .sec-head h2{color:#fff}
+  #employers .sec-head p{color:#c9d0da}
+  .cap{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);border-radius:18px;padding:26px 20px}
+  .cap:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(0,0,0,.35);border-color:rgba(255,255,255,.4)}
+  .cap:hover .cap-ic{transform:scale(1.08) rotate(-3deg)}
+  .cap h4{color:#fff}
+  .cap p{color:#c9d0da}
+  .cap-ic{width:64px;height:64px;border-radius:50%;border:2px solid var(--orange);background:rgba(255,255,255,.06);box-shadow:0 8px 22px rgba(0,0,0,.30);margin:0 auto 14px}
+  .cap-ic svg{width:30px;height:30px}
+</style>
+</head><body>
+  <style>
+:root{--veer-logo:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAzMiAzMic+PHJlY3Qgd2lkdGg9JzMyJyBoZWlnaHQ9JzMyJyByeD0nNycgZmlsbD0nIzJiM2E0ZCcvPjxjaXJjbGUgY3g9JzE2JyBjeT0nMTYnIHI9JzknIGZpbGw9JyNGMjY4MEInLz48L3N2Zz4=')}
+.cta-band{position:relative;overflow:hidden}
+.cta-band::before{content:"";position:absolute;inset:0;background-image:var(--veer-logo);background-repeat:no-repeat;background-position:center;background-size:contain;opacity:.42;z-index:0;pointer-events:none}
+.cta-band h2{text-shadow:0 2px 14px rgba(43,58,77,.35)}
+.testi .tcard{display:flex;gap:14px;align-items:flex-start;text-align:left}
+.tavatar{flex:0 0 auto;width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.10);border:2px solid var(--orange);display:flex;align-items:center;justify-content:center;color:var(--amber)}
+.tavatar svg{display:none}
+.testi .ttext{display:flex;flex-direction:column}
+.testi .twho{margin-top:auto}
+.testi{max-width:1040px;margin:0 auto}
+  </style>
+  <header class="nav">
+    <div class="wrap nav-in">
+      <button class="nav-toggle" onclick="toggleMenu()" aria-label="Toggle Navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <div class="brand"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAzMiAzMic+PHJlY3Qgd2lkdGg9JzMyJyBoZWlnaHQ9JzMyJyByeD0nNycgZmlsbD0nIzJiM2E0ZCcvPjxjaXJjbGUgY3g9JzE2JyBjeT0nMTYnIHI9JzknIGZpbGw9JyNGMjY4MEInLz48L3N2Zz4=" alt="Veer" style="height:46px;width:46px;border-radius:14px;background:rgba(242,104,11,.10);border:1px solid rgba(242,104,11,.22);padding:7px;box-shadow:0 4px 14px rgba(43,58,77,.18)" />
+    </div>
+    <nav class="nav-links">
+      <a href="#how">How it works</a>
+      <a href="#employers">For employers</a>
+      <a href="#why">Why Veer</a>
+    </nav>
+    <button class="btn" onclick="document.getElementById('flow').scrollIntoView({behavior:'smooth'})">Start application</button>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="hero-banner" aria-hidden="true">
+    
+    <svg viewBox="0 0 1200 540" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="hubg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#F8A03C"/><stop offset="1" stop-color="#F2680B"/>
+        </linearGradient>
+      </defs>
+      <line class="conn" x1="600" y1="170" x2="330" y2="250" stroke="#F8A03C" stroke-width="2.5" fill="none" opacity=".5"/>
+      <line class="conn" x1="600" y1="170" x2="870" y2="250" stroke="#F8A03C" stroke-width="2.5" fill="none" opacity=".5"/>
+      <line class="conn" x1="600" y1="170" x2="600" y2="430" stroke="#F8A03C" stroke-width="2.5" fill="none" opacity=".5"/>
+      <g class="fig" opacity=".9">
+        <rect x="300" y="250" width="86" height="58" rx="10" fill="#fff" opacity=".10"/>
+        <circle cx="343" cy="232" r="20" fill="#F8A03C" opacity=".9"/>
+        <rect x="318" y="250" width="50" height="40" rx="8" fill="#fff" opacity=".14"/>
+      </g>
+      <g class="fig" opacity=".9">
+        <rect x="814" y="250" width="86" height="58" rx="10" fill="#fff" opacity=".10"/>
+        <circle cx="857" cy="232" r="20" fill="#F2680B" opacity=".9"/>
+        <rect x="832" y="250" width="50" height="40" rx="8" fill="#fff" opacity=".14"/>
+      </g>
+      <g class="fig" opacity=".9">
+        <rect x="560" y="430" width="86" height="58" rx="10" fill="#fff" opacity=".10"/>
+        <circle cx="603" cy="412" r="20" fill="#F8A03C" opacity=".9"/>
+        <rect x="578" y="430" width="50" height="40" rx="8" fill="#fff" opacity=".14"/>
+      </g>
+      <g class="hub">
+        <circle cx="600" cy="170" r="62" fill="url(#hubg)"/>
+        <circle cx="600" cy="170" r="62" fill="none" stroke="#fff" stroke-width="2" opacity=".5"/>
+        <path d="M578 170 l16 16 28-34" stroke="#fff" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+      <g class="floatdoc">
+        <rect x="470" y="120" width="64" height="46" rx="8" fill="#fff" opacity=".16"/>
+        <rect x="482" y="132" width="40" height="5" rx="2.5" fill="#fff" opacity=".5"/>
+        <rect x="482" y="144" width="30" height="5" rx="2.5" fill="#fff" opacity=".4"/>
+      </g>
+      <g class="floatdoc" style="animation-delay:2.4s">
+        <rect x="680" y="100" width="64" height="46" rx="8" fill="#fff" opacity=".16"/>
+        <rect x="692" y="112" width="40" height="5" rx="2.5" fill="#fff" opacity=".5"/>
+        <rect x="692" y="124" width="30" height="5" rx="2.5" fill="#fff" opacity=".4"/>
+      </g>
+      <g class="scan"><rect x="520" y="150" width="160" height="3" rx="1.5" fill="#fff" opacity=".5"/></g>
+    </svg>
+  </div>
+  <div class="hero-scrim"></div>
+  <div class="wrap hero-in">
+    <div class="hero-center">
+      <span class="pill"><span class="live"></span> Live AI screening across the UK &amp; Ireland</span>
+      <h1>Hire faster with <span class="grad">explainable AI</span></h1>
+      <p class="lead">Veer matches candidates to roles with transparent, auditable AI — an 80+ ATS gate, a validated skills quiz and an async video interview, all in one flow.</p>
+      <div class="hero-cta">
+        <button class="btn btn-apply" onclick="goStep(0)">Start your application <span class="arr">→</span></button>
+        <button class="btn btn-live" onclick="alert('Prototype — redirecting to job board...')">View Live Roles</button>
+        <button class="btn btn-hire" onclick="document.getElementById('employers').scrollIntoView({behavior:'smooth'})">I'm hiring</button>
+      </div>
+      <div class="flags">
+        <span class="loc">🏴󠁧󠁢󠁥󠁮󠁧󠁿 England</span>
+        <span class="loc">🏴󠁧󠁢󠁳󠁣󠁴󠁿 Scotland</span>
+        <span class="loc">🏴󠁷󠁳󠁿 Wales</span>
+        <span class="loc">🇮🇪 Ireland</span>
+        <span class="loc">🌍 Remote / Hybrid</span>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><div class="stat-ic"><svg viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h10" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg></div><div class="stat-num">4</div><div class="stat-lbl">steps to apply</div></div>
+        <div class="stat"><div class="stat-ic"><svg viewBox="0 0 24 24" fill="none"><path d="M7 4h7l4 4v12H7z" stroke="#fff" stroke-width="2" stroke-linejoin="round"/><path d="M14 4v4h4" stroke="#fff" stroke-width="2" stroke-linejoin="round"/></svg></div><div class="stat-num">30</div><div class="stat-lbl">quiz questions</div></div>
+        <div class="stat"><div class="stat-ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3l2.5 5 5.5.8-4 4 1 5.5L12 21l-5 2.3 1-5.5-4-4 5.5-.8z" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/></svg></div><div class="stat-num">80%</div><div class="stat-lbl">pass threshold</div></div>
+        <div class="stat"><div class="stat-ic"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#fff" stroke-width="2"/><path d="M8 12l3 3 5-6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="stat-num">100%</div><div class="stat-lbl">auditable</div></div>
+      </div>
+      <div class="hero-match">
+        <div class="hero-card">
+          <div class="lab">Your AI match</div>
+          <div class="row" style="align-items:center">
+            <div class="ring" style="--p:92"><div class="val"><b>92</b><span>ATS</span></div></div>
+            <div>
+              <div class="t1">Jane Doe — AI Engineer</div>
+              <div class="t2">✓ Passed the 80+ keyword gate</div>
+              <div class="t3">Matched 18 / 20 core skills</div>
+            </div>
+          </div>
+          <div class="bar"><i></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FLOW ============ -->
+<section class="flow-sec" id="flow">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Candidate application</div>
+      <h2>Three clear steps, one transparent screen</h2>
+      <p>Register, let our AI match your CV to the role, prove your skills, and complete a short async video interview.</p>
+    </div>
+
+    <div class="stepper" id="stepper">
+      <div class="step" data-s="0"><div class="num">1</div><div class="lbl">Register</div><div class="bar"></div></div>
+      <div class="step" data-s="1"><div class="num">2</div><div class="lbl">Upload CV</div><div class="bar"></div></div>
+      <div class="step" data-s="2"><div class="num">3</div><div class="lbl">Skills quiz</div><div class="bar"></div></div>
+      <div class="step" data-s="3"><div class="num">4</div><div class="lbl">AI interview</div><div class="bar"></div></div>
+    </div>
+
+    <!-- PANEL 0: REGISTER -->
+    <div id="panel-0">
+      <div class="card">
+        <h3>Create your candidate profile</h3>
+        <p class="sub">Tell us who you are and where you're looking. It takes under a minute.</p>
+        <div class="journey">
+          <div class="j-step">
+            <svg class="illu" viewBox="0 0 80 80" fill="none"><circle cx="40" cy="28" r="14" fill="#FFF1E6" stroke="#F2680B" stroke-width="3"/><path d="M18 64c0-13 10-20 22-20s22 7 22 20" fill="#FFF1E6" stroke="#F2680B" stroke-width="3"/></svg>
+            <div class="n">1</div><h4>Register</h4><p>Create a profile with your details and location.</p>
+          </div>
+          <div class="j-step">
+            <svg class="illu" viewBox="0 0 80 80" fill="none"><rect x="20" y="16" width="40" height="50" rx="6" fill="#FFF1E6" stroke="#F2680B" stroke-width="3"/><path d="M40 44V28M32 36l8-8 8 8" stroke="#F2680B" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <div class="n">2</div><h4>Upload CV</h4><p>We run an AI keyword match against the role.</p>
+          </div>
+          <div class="j-step">
+            <svg class="illu" viewBox="0 0 80 80" fill="none"><rect x="18" y="16" width="44" height="48" rx="6" fill="#FFF1E6" stroke="#F2680B" stroke-width="3"/><path d="M28 32l7 7 12-14" stroke="#F2680B" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M28 50h18" stroke="#F2680B" stroke-width="3" stroke-linecap="round"/></svg>
+            <div class="n">3</div><h4>Skills quiz</h4><p>Answer 30 questions on AI and logic — pass at 80%.</p>
+          </div>
+          <div class="j-step">
+            <svg class="illu" viewBox="0 0 80 80" fill="none"><rect x="16" y="24" width="34" height="32" rx="6" fill="#FFF1E6" stroke="#F2680B" stroke-width="3"/><path d="M50 34l10-6v24l-10-6z" fill="#FFF1E6" stroke="#F2680B" stroke-width="3" stroke-linejoin="round"/></svg>
+            <div class="n">4</div><h4>AI interview</h4><p>A short async video interview, scored by AI.</p>
+          </div>
+        </div>
+
+        <div class="reg-grid">
+          <form id="regForm" onsubmit="return submitReg(event)">
+            <div class="row2">
+              <div class="field"><label for="fname">First name</label><input id="fname" type="text" placeholder="Ada" required /></div>
+              <div class="field"><label for="lname">Last name</label><input id="lname" type="text" placeholder="Lovelace" required /></div>
+            </div>
+            <div class="field"><label for="email">Email</label><input id="email" type="email" placeholder="you@email.com" required /></div>
+            <div class="row2">
+              <div class="field"><label for="loc">Location</label><select id="loc">
+                <option>England</option><option>Scotland</option><option>Wales</option>
+                <option>Northern Ireland</option><option>Republic of Ireland</option>
+                <option>Remote / Hybrid</option>
+              </select></div>
+              <div class="field"><label for="role">Area of interest</label><select id="role">
+                <option>AI / ML</option><option>Data</option><option>Software Engineering</option>
+                <option>Product</option><option>Other</option>
+              </select></div>
+            </div>
+            <label class="consent"><input id="consent" type="checkbox" /><span>I agree to Veer processing my data for recruitment, in line with UK &amp; Ireland GDPR.</span></label>
+            <div class="actions">
+              <button class="btn" type="submit">Continue →</button>
+            </div>
+          </form>
+          <aside class="reg-aside">
+            <h4>What happens next</h4>
+            <p>You'll move through a single, transparent screen — no black boxes.</p>
+            <ul>
+              <li>AI match your CV to the live role</li>
+              <li>Validate skills with a 30-question quiz</li>
+              <li>Record a short async video interview</li>
+            </ul>
+            <div class="mini">
+              <svg width="34" height="34" viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6z" stroke="#F8A03C" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="#F8A03C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <div><b>Explainable by design</b><span>Every score shows why.</span></div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL 1: UPLOAD CV + ATS -->
+    <div id="panel-1" class="hidden">
+      <div class="card">
+        <h3>Upload your CV &amp; run the AI match<span id="hiName"></span></h3>
+        <p class="sub">Paste your CV (or upload a file) and we'll match it against the job description using keyword triggering and an ATS model. You need 80+ to advance.</p>
+
+        <div class="up-hero">
+          <svg class="illu" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="14" y="20" width="92" height="80" rx="10" fill="#FFF1E6" stroke="#F2680B" stroke-width="3"/>
+            <path d="M40 54l12 12 26-30" stroke="#F2680B" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+            <rect x="34" y="74" width="52" height="8" rx="4" fill="#F8A03C"/>
+            <circle cx="94" cy="28" r="13" fill="#F2680B"/>
+            <text x="94" y="33" font-size="13" text-anchor="middle" fill="#fff" font-family="sans-serif" font-weight="700">AI</text>
+          </svg>
+          <div>
+            <h3 style="margin:0 0 6px">Let the AI read your CV</h3>
+            <p>We score your experience against the role's core skills — transparently, with the keywords that triggered the match.</p>
+            <span class="pill"><span class="live"></span> AI scoring · 80+ to pass</span>
+          </div>
+        </div>
+
+        <div class="grid2">
+          <div>
+            <label class="fld" for="cv">Your CV</label>
+            <div class="drop" id="drop">
+              <div class="ic">📄</div>
+              <p><b>Click to upload</b> or drag &amp; drop your CV here<br><span style="font-size:12.5px;color:var(--muted)">TXT parses for real · PDF/DOCX stubbed in prototype</span></p>
+            </div>
+            <input type="file" id="file" style="display:none" />
+            <textarea id="cv" placeholder="Paste your CV text here…"></textarea>
+            <div class="samples">
+              <span class="chip" onclick="loadSample('ai')">Load sample: AI Engineer CV</span>
+              <span class="chip" onclick="loadSample('weak')">Load sample: weak CV</span>
+            </div>
+          </div>
+          <div>
+            <label class="fld" for="jd">Job description (the role you're applying to)</label>
+            <textarea id="jd">AI Engineer — UK &amp; Ireland (Remote / Hybrid)
+We're hiring an AI Engineer to build LLM products with RAG and agentic workflows.
+Required: Python, PyTorch, LangChain, Prompt engineering, RAG, agentic systems, tool use, APIs, vector databases, embeddings, problem solving, logic, and remote collaboration.</textarea>
+            <div class="hint">Edit the JD to match the live role. The ATS gate is 80+ matched keywords.</div>
+          </div>
+        </div>
+
+        <div class="actions" style="justify-content:flex-start">
+          <button class="btn" onclick="runMatch()">Run AI Match</button>
+        </div>
+
+        <div class="result" id="result">
+          <div class="score-wrap">
+            <div class="ring sm" id="ring" style="--p:0"><div class="val"><b id="scoreVal">0</b><span>/100</span></div></div>
+            <div class="verdict">
+              <span class="tag" id="verdictTag"></span>
+              <div id="verdictText"></div>
+            </div>
+          </div>
+          <div class="kw">
+            <h4>Matched &amp; missing keywords</h4>
+            <ul id="kwList"></ul>
+          </div>
+          <div class="match-why" id="matchWhy"></div>
+          <div class="demo-note" id="demoNote">Demo mode: this is a prototype. In production the ATS score is computed by a trained model, not a simple keyword count.</div>
+          <div class="actions" id="passActions" style="display:none">
+            <button class="btn" onclick="goStep(2)">Continue to skills quiz →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL 2: QUIZ -->
+    <div id="panel-2" class="hidden">
+      <div class="card">
+        <div class="quiz-head">
+          <h3 style="margin:0">Skills quiz</h3>
+          <span class="quiz-badge">🧠 30 questions · pass at 80% (24/30)</span>
+        </div>
+        <div class="qcount" id="qcount" style="margin-bottom:6px">Question 1 of 30</div>
+        <div class="prog"><i id="progBar"></i></div>
+        <div id="quizBody"></div>
+        <div class="actions">
+          <button class="btn" id="nextBtn" onclick="nextQuestion()">Next question →</button>
+          <button class="btn hidden" id="finishBtn" onclick="finishQuiz()">Finish &amp; submit</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL 3: INTERVIEW -->
+    <div id="panel-3" class="hidden">
+      <div class="card">
+        <h3>Async AI video interview</h3>
+        <p class="sub">Answer a few short questions on camera. Your responses are assessed by AI on communication, structure and technical clarity.</p>
+        <div class="vid-q">
+          <h4>Sample questions</h4>
+          <ol>
+            <li>Tell us about a project where you used AI or automation.</li>
+            <li>How do you keep an LLM-based system safe and on-task?</li>
+            <li>Walk us through how you'd debug a failing agentic workflow.</li>
+          </ol>
+        </div>
+        <div class="vid-stage">
+          <video id="vidPreview" autoplay muted playsinline></video>
+          <div class="vid-ph" id="vidPlaceholder">🎥 Camera off — start when ready, or skip with a simulated interview.</div>
+          <div class="vid-timer" id="vidTimer" style="display:none">00:00</div>
+        </div>
+        <div class="actions">
+          <button class="btn" id="vidStart" onclick="startVideo()">Start recording</button>
+          <button class="btn hidden" id="vidStop" onclick="stopVideo()">Stop &amp; score</button>
+          <button class="btn ghost" id="vidSkip" onclick="simulateInterview()">Skip with simulated interview</button>
+        </div>
+        <div class="result hidden" id="vidResult" style="display:none"></div>
+      </div>
+    </div>
+
+    <!-- PANEL 4: RESULT -->
+    <div id="panel-4" class="hidden">
+      <div class="card">
+        <div class="success" id="successBox">
+          <div class="badge" id="resBadge">✓</div>
+          <h3 id="resTitle"></h3>
+          <p id="resText"></p>
+          <div class="summary">
+            <div class="s"><b id="sumName">—</b><span>Candidate</span></div>
+            <div class="s"><b id="sumAts">—</b><span>ATS score</span></div>
+            <div class="s"><b id="sumQuiz">—</b><span>Quiz</span></div>
+            <div class="s"><b id="sumInterview">—</b><span>Interview</span></div>
+          </div>
+          <div class="timeline" id="timeline"></div>
+          <div class="actions" style="justify-content:center">
+            <button class="btn" id="resAction"></button>
+            <button class="btn ghost" onclick="resetAll()">Start over</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ HOW IT WORKS ============ -->
+<section class="wrap how" id="how">
+  <div class="sec-head">
+    <div class="eyebrow">How it works</div>
+    <h2>Fair, fast, transparent screening</h2>
+    <p>Every stage is designed to be explainable — candidates and employers always see why a decision was made.</p>
+  </div>
+  <div class="pillars">
+    <div class="pillar"><div class="pic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 3v18M5 7h14M5 7l-2 3h4zM19 7l2 3h-4z" stroke="#F2680B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><b>Fair</b><span>Consistent, bias-aware scoring for every candidate.</span></div></div>
+    <div class="pillar"><div class="pic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h6l-1 8 9-12h-6z" stroke="#F2680B" stroke-width="1.8" stroke-linejoin="round"/></svg></div><div><b>Fast</b><span>From apply to shortlist in days, not months.</span></div></div>
+    <div class="pillar"><div class="pic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#F2680B" stroke-width="1.8"/><path d="M8 12l3 3 5-6" stroke="#F2680B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><b>Transparent</b><span>Every score shows the keywords and signals behind it.</span></div></div>
+  </div>
+  <div class="steps">
+    <div class="stepc"><div class="badge">1</div><svg class="pic" viewBox="0 0 80 80" fill="none"><circle cx="40" cy="28" r="14" fill="#FFF1E6" stroke="#F2680B" stroke-width="3"/><path d="M18 64c0-13 10-20 22-20s22 7 22 20" fill="#FFF1E6" stroke="#F2680B" stroke-width="3"/></svg><h4>Register</h4><p>Build a profile in under a minute.</p></div>
+    <div class="stepc"><div class="badge">2</div><svg class="pic" viewBox="0 0 80 80" fill="none"><rect x="20" y="16" width="40" height="50" rx="6" fill="#FFF1E6" stroke="#F2680B" stroke-width="3"/><path d="M40 44V28M32 36l8-8 8 8" stroke="#F2680B" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg><h4>AI match</h4><p>CV scored against the role at 80+.</p></div>
+    <div class="stepc"><div class="badge">3</div><svg class="pic" viewBox="0 0 80 80" fill="none"><rect x="18" y="16" width="44" height="48" rx="6" fill="#FFF1E6" stroke="#F2680B" stroke-width="3"/><path d="M28 32l7 7 12-14" stroke="#F2680B" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg><h4>Skills quiz</h4><p>Validate with a 30-question quiz.</p></div>
+    <div class="stepc"><div class="badge">4</div><svg class="pic" viewBox="0 0 80 80" fill="none"><rect x="16" y="24" width="34" height="32" rx="6" fill="#FFF1E6" stroke="#F2680B" stroke-width="3"/><path d="M50 34l10-6v24l-10-6z" fill="#FFF1E6" stroke="#F2680B" stroke-width="3" stroke-linejoin="round"/></svg><h4>AI interview</h4><p>Short async video, scored by AI.</p></div>
+  </div>
+</section>
+
+<!-- ============ EMPLOYERS ============ -->
+<section class="wrap" id="employers" style="padding:40px 22px">
+  <div class="emp-sec" style="padding:34px">
+    <div class="emp-hero">
+      <svg class="emp-svg" viewBox="0 0 360 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="emphub" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#F2680B"/><stop offset="1" stop-color="#F8A03C"/>
+          </linearGradient>
+        </defs>
+        <path d="M180 100 96 64M180 100 264 64M180 100 180 168M180 100 96 150M180 100 264 150" stroke="#F8A03C" stroke-width="3" opacity=".55"/>
+        <circle cx="96" cy="64" r="16" fill="#FFF1E6" stroke="#F2680B" stroke-width="3"/>
+        <circle cx="264" cy="64" r="16" fill="#FFF1E6" stroke="#F2680B" stroke-width="3"/>
+        <circle cx="180" cy="168" r="16" fill="#FFF1E6" stroke="#F2680B" stroke-width="3"/>
+        <circle cx="96" cy="150" r="16" fill="#FFF1E6" stroke="#F2680B" stroke-width="3"/>
+        <circle cx="264" cy="150" r="16" fill="#FFF1E6" stroke="#F2680B" stroke-width="3"/>
+        <circle cx="180" cy="100" r="42" fill="url(#emphub)"/>
+        <circle cx="180" cy="100" r="42" fill="none" stroke="#fff" stroke-width="2.5" opacity=".6"/>
+        <path d="M166 101l9 9 17-20" stroke="#fff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="sec-head" style="margin-bottom:8px">
+      <div class="eyebrow">For employers</div>
+      <h2 style="color:var(--slate)">Hire in <span class="hl">days</span>, not months</h2>
+      <p>Veer pre-screens every candidate so you only meet the shortlist.</p>
+    </div>
+    <div class="capgrid">
+      <div class="cap"><div class="cap-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#F2680B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15 15l5 5"/><path d="M10.5 7.8v5.4M7.8 10.5h5.4"/></svg></div><h4>AI sourcing</h4><p>Match talent to roles across the UK &amp; Ireland.</p></div>
+      <div class="cap"><div class="cap-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#F2680B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16l-6 7v6l-4 2v-8z"/></svg></div><h4>ATS gate</h4><p>80+ keyword match on every CV, automatically.</p></div>
+      <div class="cap"><div class="cap-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#F2680B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2.5"/><path d="M9 4h6v3H9z"/><path d="M8.5 13l2.2 2.2 4-4.4"/></svg></div><h4>Skills validation</h4><p>Validated 30-question quiz per candidate.</p></div>
+      <div class="cap"><div class="cap-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#F2680B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="14" height="14" rx="3"/><path d="M10 9.2l4.5 2.8-4.5 2.8z"/></svg></div><h4>Video interviews</h4><p>Async, AI-scored interviews at scale.</p></div>
+      <div class="cap"><div class="cap-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#F2680B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg></div><h4>Bias-aware</h4><p>Consistent, auditable scoring for fairness.</p></div>
+      <div class="cap"><div class="cap-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#F2680B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V11M9.5 19V7M15 19V13M20 19V9"/><path d="M4.5 9.5l5-4 4 3 5.5-6"/></svg></div><h4>Analytics</h4><p>Funnel, time-to-hire and quality dashboards.</p></div>
+    </div>
+    <div class="actions" style="justify-content:center;margin-top:26px;gap:15px">
+      <button class="btn" onclick="alert('Prototype — redirecting to vacancy posting...')">Post a Vacancy &rarr;</button>
+      <button class="btn ghost" onclick="alert('Prototype — opening AI screening sandbox...')">Try the AI Screener</button>
+      <button class="btn ghost" onclick="alert('Prototype — employer demo request received.')">Request a demo</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WHY VEER ============ -->
+<section class="wrap why-sec" id="why" style="padding:46px 30px">
+  <div class="why-head">
+    <div class="eyebrow" style="color:var(--orange);font-weight:800;letter-spacing:1.2px;text-transform:uppercase;font-size:12.5px">Why Veer</div>
+    <div class="why-hook">Faster, <span class="ac-o">fairer</span>, <span class="ac-a">auditable</span></div>
+    <p class="why-sub">AI recruiting shouldn't be a black box. Veer shows its work at every step.</p>
+    <span class="why-pill">✓ Explainable, auditable scoring</span>
+  </div>
+  <div class="benefits">
+    <div class="benefit"><div class="ben-num">01</div><div class="ben-ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 4v16M5 8h14M5 8l-2 3h4z" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h4>Fairer by default</h4><p>Structured, bias-aware evaluation replaces gut-feel screening.</p></div>
+    <div class="benefit feat"><div class="ben-num">02</div><div class="ben-ic"><svg viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h6l-1 8 9-12h-6z" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/></svg></div><h4>Faster shortlists</h4><p>Candidates move from apply to interview in days, not months.</p></div>
+    <div class="benefit"><div class="ben-num">03</div><div class="ben-ic"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#fff" stroke-width="1.8"/><path d="M8 12l3 3 5-6" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h4>Auditable</h4><p>Every score ships with the keywords and signals behind it.</p></div>
+  </div>
+  <p class="why-foot">Prototype build · Veer.com — AI-powered recruitment for the UK &amp; Ireland.</p>
+</section>
+
+<!-- ============ TRUST BAND ============ -->
+<section class="trust">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Trusted screening</div>
+      <h2>Built for the UK &amp; Ireland market</h2>
+      <p>Transparent AI screening that candidates and employers can trust.</p>
+    </div>
+    <div class="trust-stats">
+      <div><b>80+</b><span>ATS gate</span></div>
+      <div><b>30</b><span>quiz questions</span></div>
+      <div><b>3 steps</b><span>to shortlist</span></div>
+      <div><b>100%</b><span>auditable</span></div>
+    </div>
+    <div class="logos">
+      <div class="logo-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#F8A03C" stroke-width="2"/></svg> Northwind</div>
+      <div class="logo-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="4" stroke="#F8A03C" stroke-width="2"/></svg> Lumen</div>
+      <div class="logo-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 3l9 16H3z" stroke="#F8A03C" stroke-width="2" stroke-linejoin="round"/></svg> Vertex</div>
+      <div class="logo-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 19V9m5 10V5m5 14v-7" stroke="#F8A03C" stroke-width="2" stroke-linecap="round"/></svg> Meridian</div>
+      <div class="logo-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#F8A03C" stroke-width="2"/><path d="M8 12l3 3 5-6" stroke="#F8A03C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Albion</div>
+      <div class="logo-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="4" y="7" width="13" height="10" rx="2" stroke="#F8A03C" stroke-width="2"/><path d="M17 11l3-2v6l-3-2z" stroke="#F8A03C" stroke-width="2" stroke-linejoin="round"/></svg> Celtia</div>
+    </div>
+    <div class="testi">
+      <div class="tcard">
+        <div class="tavatar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.5" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg></div>
+        <div class="ttext"><p>"We shortlisted in days. The explainable scorecard made hiring decisions easy to defend."</p><div class="twho"><b>Priya N.</b> Talent Lead, London</div></div>
+      </div>
+      <div class="tcard">
+        <div class="tavatar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.5" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg></div>
+        <div class="ttext"><p>"As a candidate, I finally understood why I advanced. No black boxes."</p><div class="twho"><b>Conor M.</b> AI Engineer, Dublin</div></div>
+      </div>
+      <div class="tcard">
+        <div class="tavatar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.5" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg></div>
+        <div class="ttext"><p>"The 80+ gate filters noise, and the quiz proves real skill. Huge time-saver."</p><div class="twho"><b>Sarah L.</b> Eng Manager, Manchester</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FINAL CTA ============ -->
+<section class="cta-band">
+  <div class="wrap">
+    <h2>Put AI to work. Hire in days.</h2>
+    <p>Start your application or book an employer demo — both take minutes.</p>
+    <div class="hero-cta">
+      <button class="btn btn-apply" onclick="goStep(0)">Start your application <span class="arr">→</span></button>
+      <button class="btn btn-live" onclick="alert('Prototype — redirecting to job board...')">View Live Roles</button>
+      <button class="btn btn-hire" onclick="document.getElementById('employers').scrollIntoView({behavior:'smooth'})">I'm hiring</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap foot-in">
+    <div class="brand"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAzMiAzMic+PHJlY3Qgd2lkdGg9JzMyJyBoZWlnaHQ9JzMyJyByeD0nNycgZmlsbD0nIzJiM2E0ZCcvPjxjaXJjbGUgY3g9JzE2JyBjeT0nMTYnIHI9JzknIGZpbGw9JyNGMjY4MEInLz48L3N2Zz4=" alt="Veer" style="height:36px;width:36px;border-radius:10px;padding:5px" /> Veer<span style="color:var(--orange)">.</span>com</div>
+    <div>© 2026 Veer.com — AI-powered recruitment for the UK &amp; Ireland. Prototype build.</div>
+  </div>
+</footer>
+
+<!-- ============ CHATBOT ============ -->
+<div class="chatbot" id="chatbot">
+  <div class="chat-panel hidden" id="chatPanel">
+    <div class="chat-head"><span>Veer AI assistant</span><button class="chat-x" onclick="toggleChat()" aria-label="Close">×</button></div>
+    <div class="chat-msgs" id="chatMsgs"></div>
+    <div class="chat-quick" id="chatQuick"></div>
+  </div>
+  <button class="chat-fab" id="chatFab" onclick="toggleChat()" aria-label="Open chat">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M4 5h16v11H8l-4 4z" stroke="#fff" stroke-width="2" stroke-linejoin="round"/><path d="M8 9h8M8 12h5" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+  </button>
+</div>
+
+<script>
+/* ============================================================
+   Veer — AI-powered recruitment prototype
+   Self-contained app logic. Drives index.html (body.html).
+   ============================================================ */
+
+/* ---------- Skill keyword bank (used by the ATS demo) ---------- */
+var SKILLS = [
+  'python', 'pytorch', 'langchain', 'prompt engineering', 'rag',
+  'agentic', 'agentic workflows', 'agentic systems', 'tool use', 'tool usage',
+  'api', 'apis', 'vector database', 'vector databases', 'embedding', 'embeddings',
+  'problem solving', 'logic', 'remote collaboration', 'machine learning',
+  'llm', 'llms', 'sql', 'docker', 'kubernetes', 'react', 'communication', 'data analysis'
+];
+
+/* ---------- 30-question quiz (18 AI/agentic/prompt + 12 logic) ---------- */
+const QUIZ = [
+  /* --- AI / agentic / prompt engineering (18) --- */
+  { area: 'ai', q: 'What does "RAG" stand for in modern LLM systems?',
+    opts: ['Recursive AI Graph', 'Retrieval-Augmented Generation', 'Random Access Gateway', 'Reinforced Agentic Guidance'], answer: 1 },
+  { area: 'ai', q: 'In prompt engineering, "few-shot prompting" means…',
+    opts: ['Using a smaller model', 'Training for only a few epochs', 'Providing a few examples inside the prompt', 'Limiting the output length'], answer: 2 },
+  { area: 'ai', q: 'An "agentic" AI system is one that…',
+    opts: ['Plans and uses tools to complete tasks autonomously', 'Only answers single questions', 'Requires a human at every step', 'Is a single LLM call'], answer: 0 },
+  { area: 'ai', q: 'What is a key risk of LLM hallucination?',
+    opts: ['The model generates plausible but false content', 'The model runs too quickly', 'The model uses too little memory', 'The model refuses valid prompts'], answer: 0 },
+  { area: 'ai', q: 'Chain-of-thought prompting encourages the model to…',
+    opts: ['Switch to a foreign language', 'Compress the prompt', 'Skip the examples', 'Reason step by step'], answer: 3 },
+  { area: 'ai', q: 'An embedding is best described as…',
+    opts: ['A dense vector representing text semantics', 'An image file', 'A database index', 'A type of GPU'], answer: 0 },
+  { area: 'ai', q: 'Vector databases are primarily used in RAG to…',
+    opts: ['Render 3D graphics', 'Store and search embeddings by similarity', 'Train the model', 'Cache HTML pages'], answer: 1 },
+  { area: 'ai', q: 'In agents, "tool use" refers to…',
+    opts: ['Letting the model call external functions/APIs', 'Using a physical screwdriver', 'Disabling the model', 'A debugging technique'], answer: 0 },
+  { area: 'ai', q: 'A sampling temperature near 0 makes output…',
+    opts: ['More deterministic', 'More random', 'Longer', 'Faster'], answer: 0 },
+  { area: 'ai', q: 'A system prompt is used to…',
+    opts: ['Set the model’s role and constraints', 'Speed up inference', 'Store user data', 'Count tokens'], answer: 0 },
+  { area: 'ai', q: 'Fine-tuning differs from prompting because it…',
+    opts: ['Updates model weights via training', 'Only changes the UI', 'Requires no data', 'Is exactly the same thing'], answer: 0 },
+  { area: 'ai', q: '"Guardrails" in an LLM app…',
+    opts: ['Constrain outputs to be safe and on-task', 'Increase the temperature', 'Remove the context window', 'Disable logging'], answer: 0 },
+  { area: 'ai', q: 'A model’s token context window refers to…',
+    opts: ['The maximum tokens it can consider at once', 'The number of users', 'The GPU memory', 'The API rate limit'], answer: 0 },
+  { area: 'ai', q: 'In an agentic workflow, "planning" means…',
+    opts: ['Decomposing a goal into ordered steps', 'Writing the final answer first', 'Deleting memory', 'Caching responses'], answer: 0 },
+  { area: 'ai', q: 'Which helps reduce prompt-injection risk?',
+    opts: ['Using a bigger model', 'Removing the system prompt', 'Validating and isolating untrusted input', 'Disabling tools'], answer: 2 },
+  { area: 'ai', q: 'Evaluation of LLM outputs often uses…',
+    opts: ['Human ratings or automated metrics', 'Only the model size', 'Random guessing', 'The GPU count'], answer: 0 },
+  { area: 'ai', q: 'Hallucination mitigation can include…',
+    opts: ['Retrieval grounding plus citations', 'A higher temperature', 'Fewer examples', 'Disabling search'], answer: 0 },
+  { area: 'ai', q: 'In multi-agent systems, an "orchestrator" is…',
+    opts: ['A component that coordinates the agents', 'A database', 'A GPU', 'A user interface'], answer: 0 },
+  /* --- Logic / reasoning (12) --- */
+  { area: 'logic', q: 'All Bloops are Razzies and all Razzies are Lazzies. Are all Bloops definitely Lazzies?',
+    opts: ['True', 'False', 'Uncertain', 'None of these'], answer: 0 },
+  { area: 'logic', q: 'What comes next: 2, 4, 8, 16, ?',
+    opts: ['24', '30', '32', '18'], answer: 2 },
+  { area: 'logic', q: 'A train travels 60 km in 1.5 hours. What is its average speed?',
+    opts: ['90 km/h', '60 km/h', '40 km/h', '30 km/h'], answer: 2 },
+  { area: 'logic', q: 'If 3 machines make 3 widgets in 3 minutes, how long for 1 machine to make 1 widget?',
+    opts: ['3 minutes', '1 minute', '9 minutes', '6 minutes'], answer: 0 },
+  { area: 'logic', q: '"If it rains the ground is wet. The ground is wet. Therefore it rained." Is this valid?',
+    opts: ['No — the ground could be wet for other reasons', 'Yes, always', 'Cannot tell', 'Only on Tuesdays'], answer: 0 },
+  { area: 'logic', q: 'What comes next: 1, 1, 2, 3, 5, 8, ?',
+    opts: ['13', '11', '12', '10'], answer: 0 },
+  { area: 'logic', q: 'What is the probability of heads twice in a row with a fair coin?',
+    opts: ['50%', '100%', '25%', '75%'], answer: 2 },
+  { area: 'logic', q: 'Which is the odd one out: 4, 9, 16, 25, 36, 50?',
+    opts: ['4', '9', '36', '50'], answer: 3 },
+  { area: 'logic', q: 'A shop buys an item for £10 and sells it for £15. Profit per item?',
+    opts: ['£10', '£15', '£5', '£25'], answer: 2 },
+  { area: 'logic', q: 'If A > B and B > C, then…',
+    opts: ['A > C', 'C > A', 'A = C', 'None of these'], answer: 0 },
+  { area: 'logic', q: '15 workers build a wall in 6 days. How long for 30 workers?',
+    opts: ['12 days', '6 days', '3 days', '9 days'], answer: 2 },
+  { area: 'logic', q: 'Some cats are pets. Some pets are dogs. Which must be true?',
+    opts: ['All cats are dogs', 'All dogs are cats', 'All pets are cats', 'None of the above is necessarily true'], answer: 3 }
+];
+
+let qIdx = 0;
+let selected = new Array(QUIZ.length).fill(null);
+
+/* Flow state (exposed on window for the test harness) */
+window.__ats = 0;
+window.__quiz = 0;
+window.__quizCorrect = 0;
+window.__interview = 0;
+window.__candidate = null;
+
+const DEFAULT_JD = "AI Engineer — UK & Ireland (Remote / Hybrid)\nWe're hiring an AI Engineer to build LLM products with RAG and agentic workflows.\nRequired: Python, PyTorch, LangChain, Prompt engineering, RAG, agentic systems, tool use, APIs, vector databases, embeddings, problem solving, logic, and remote collaboration.";
+
+/* ============================================================
+   Navigation / stepper
+   ============================================================ */
+function goStep(n, scroll) {
+  if (typeof scroll === 'undefined') scroll = true;
+  for (let i = 0; i <= 4; i++) {
+    const p = document.getElementById('panel-' + i);
+    if (p) p.classList.toggle('hidden', i !== n);
+  }
+  document.querySelectorAll('#stepper .step').forEach(function (s) {
+    const sN = parseInt(s.getAttribute('data-s'), 10);
+    s.classList.toggle('active', sN === n);
+    s.classList.toggle('done', sN < n);
+  });
+  if (n === 2) initQuiz();
+  if (n === 4) fillSummary();
+  if (scroll) {
+    const flow = document.getElementById('flow');
+    if (flow) flow.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+/* ============================================================
+   Step 0 — Registration
+   ============================================================ */
+function submitReg(e) {
+  e.preventDefault();
+  const fname = (document.getElementById('fname').value || '').trim();
+  const lname = (document.getElementById('lname').value || '').trim();
+  const email = (document.getElementById('email').value || '').trim();
+  const loc = document.getElementById('loc').value;
+  const role = document.getElementById('role').value;
+  const consent = document.getElementById('consent').checked;
+  if (!fname || !lname || !email) {
+    alert('Please complete your name and email.');
+    return false;
+  }
+  if (!consent) {
+    alert('Please agree to Veer processing your data for recruitment.');
+    return false;
+  }
+  window.__candidate = { first: fname, last: lname, email: email, loc: loc, role: role };
+  document.getElementById('hiName').textContent = ' — ' + fname;
+  goStep(1);
+  return false;
+}
+
+/* ============================================================
+   Step 1 — CV upload + ATS match
+   ============================================================ */
+function loadSample(which) {
+  if (which === 'weak') {
+    document.getElementById('cv').value =
+      'Name: Sam Smith\n' +
+      'About: I am a hard-working person who enjoys learning new things. ' +
+      'I have worked in retail and customer service for several years and am ' +
+      'looking for a new challenge in technology.';
+    return;
+  }
+  // strong AI Engineer CV
+  document.getElementById('cv').value =
+    'Jane Doe — AI Engineer\n' +
+    'Skills: Python, PyTorch, LangChain, Prompt engineering, RAG, agentic workflows, ' +
+    'tool use, APIs, vector databases, embeddings, problem solving, logic, remote collaboration.\n' +
+    'Experience: Built LLM products with RAG and agentic systems.\n' +
+    'Education: MSc Artificial Intelligence, University of Edinburgh.';
+  document.getElementById('jd').value = DEFAULT_JD;
+}
+
+function runMatch() {
+  const cv = (document.getElementById('cv').value || '').toLowerCase();
+  const jd = (document.getElementById('jd').value || '').toLowerCase();
+  const required = SKILLS.filter(function (s) { return jd.indexOf(s) !== -1; });
+  const matched = required.filter(function (s) { return cv.indexOf(s) !== -1; });
+  const missing = required.filter(function (s) { return cv.indexOf(s) === -1; });
+  const score = required.length ? Math.round((matched.length / required.length) * 100) : 0;
+
+  window.__ats = score;
+
+  const ring = document.getElementById('ring');
+  if (ring) ring.style.setProperty('--p', score);
+  document.getElementById('scoreVal').textContent = score;
+
+  const tag = document.getElementById('verdictTag');
+  const pass = score >= 80;
+  tag.className = 'tag ' + (pass ? 'pass' : 'fail');
+  tag.textContent = pass ? 'PASS · cleared the 80+ gate' : 'BELOW GATE · needs 80+';
+
+  document.getElementById('verdictText').textContent = pass
+    ? 'You cleared the ATS gate. Continue to the skills quiz.'
+    : 'You are below the 80+ gate. Add more relevant skills or keywords and try again.';
+
+  // matched / missing keyword list
+  const kw = document.getElementById('kwList');
+  kw.innerHTML = '';
+  matched.slice(0, 12).forEach(function (k) {
+    const li = document.createElement('li');
+    li.className = 'ok';
+    li.innerHTML = '<span>✓</span> ' + k;
+    kw.appendChild(li);
+  });
+  missing.slice(0, 12).forEach(function (k) {
+    const li = document.createElement('li');
+    li.className = 'miss';
+    li.innerHTML = '<span>✕</span> ' + k;
+    kw.appendChild(li);
+  });
+
+  document.getElementById('matchWhy').textContent = pass
+    ? 'Match driven by ' + matched.length + ' of ' + required.length + ' role keywords found in your CV.'
+    : 'Only ' + matched.length + ' of ' + required.length + ' role keywords were found. Strengthen the CV to pass.';
+
+  document.getElementById('result').classList.remove('hidden');
+  document.getElementById('passActions').style.display = pass ? 'flex' : 'none';
+}
+
+/* ============================================================
+   Step 2 — Skills quiz
+   ============================================================ */
+function initQuiz() {
+  qIdx = 0;
+  selected = new Array(QUIZ.length).fill(null);
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const Q = QUIZ[qIdx];
+  document.getElementById('qcount').textContent = 'Question ' + (qIdx + 1) + ' of ' + QUIZ.length;
+  document.getElementById('progBar').style.width = Math.round(((qIdx + 1) / QUIZ.length) * 100) + '%';
+
+  const body = document.getElementById('quizBody');
+  body.innerHTML = '';
+
+  const h = document.createElement('div');
+  h.className = 'q';
+  h.textContent = Q.q;
+  body.appendChild(h);
+
+  Q.opts.forEach(function (opt, i) {
+    const o = document.createElement('button');
+    o.type = 'button';
+    o.className = 'opt';
+    if (selected[qIdx] === i) o.classList.add('sel');
+    o.textContent = opt;
+    o.onclick = function () { choose(i); };
+    body.appendChild(o);
+  });
+
+  const last = qIdx === QUIZ.length - 1;
+  document.getElementById('nextBtn').classList.toggle('hidden', last);
+  document.getElementById('finishBtn').classList.toggle('hidden', !last);
+}
+
+function choose(i) {
+  selected[qIdx] = i;
+  document.querySelectorAll('#quizBody .opt').forEach(function (o, idx) {
+    o.classList.toggle('sel', idx === i);
+  });
+}
+
+function nextQuestion() {
+  if (selected[qIdx] == null) {
+    alert('Please choose an answer before continuing.');
+    return;
+  }
+  if (qIdx < QUIZ.length - 1) {
+    qIdx++;
+    renderQuestion();
+  }
+}
+
+function finishQuiz() {
+  let correct = 0;
+  for (let i = 0; i < QUIZ.length; i++) {
+    if (selected[i] === QUIZ[i].answer) correct++;
+  }
+  const pct = Math.round((correct / QUIZ.length) * 100);
+  window.__quizCorrect = correct;
+  window.__quiz = pct;
+  goStep(3, false);
+}
+
+/* ============================================================
+   Step 3 — Async AI video interview
+   ============================================================ */
+let _vidStream = null;
+let _vidTimer = null;
+let _vidSecs = 0;
+
+function startVideo() {
+  const ph = document.getElementById('vidPlaceholder');
+  const prev = document.getElementById('vidPreview');
+  const startBtn = document.getElementById('vidStart');
+  const stopBtn = document.getElementById('vidStop');
+  const skipBtn = document.getElementById('vidSkip');
+  const timer = document.getElementById('vidTimer');
+
+  ph.textContent = 'Requesting camera…';
+  if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+    navigator.mediaDevices.getUserMedia({ video: true, audio: false }).then(function (stream) {
+      _vidStream = stream;
+      prev.srcObject = stream;
+      prev.style.display = 'block';
+      ph.style.display = 'none';
+      startBtn.classList.add('hidden');
+      stopBtn.classList.remove('hidden');
+      skipBtn.classList.add('hidden');
+      _vidSecs = 0;
+      timer.style.display = 'block';
+      _vidTimer = setInterval(function () {
+        _vidSecs++;
+        const m = String(Math.floor(_vidSecs / 60)).padStart(2, '0');
+        const s = String(_vidSecs % 60).padStart(2, '0');
+        timer.textContent = m + ':' + s;
+      }, 1000);
+    }).catch(function () {
+      ph.textContent = "Camera unavailable in this prototype — use “Skip with simulated interview” to continue.";
+    });
+  } else {
+    ph.textContent = "Camera unavailable in this prototype — use “Skip with simulated interview” to continue.";
+  }
+}
+
+function stopVideo() {
+  if (_vidStream) { _vidStream.getTracks().forEach(function (t) { t.stop(); }); _vidStream = null; }
+  if (_vidTimer) { clearInterval(_vidTimer); _vidTimer = null; }
+  const score = Math.floor(70 + Math.random() * 25); // 70–94
+  showInterviewScore(score);
+}
+
+function simulateInterview() {
+  showInterviewScore(88);
+}
+
+function showInterviewScore(score) {
+  window.__interview = score;
+  const r = document.getElementById('vidResult');
+  const verdict = score >= 80 ? 'Strong' : (score >= 60 ? 'Moderate' : 'Developing');
+  r.classList.remove('hidden');
+  r.style.display = 'block';
+  r.innerHTML =
+    '<div class="score-wrap">' +
+      '<div class="ring sm" style="--p:' + score + '"><div class="val"><b>' + score + '</b><span>/100</span></div></div>' +
+      '<div class="verdict">' +
+        '<span class="tag ' + (score >= 80 ? 'pass' : 'fail') + '">' + verdict + ' interview</span>' +
+        '<div>AI assessed communication, structure and technical clarity.</div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="actions" style="justify-content:center">' +
+      '<button class="btn" onclick="goStep(4)">See your result →</button>' +
+    '</div>';
+  document.getElementById('vidStart').classList.add('hidden');
+  document.getElementById('vidStop').classList.add('hidden');
+  document.getElementById('vidSkip').classList.add('hidden');
+}
+
+/* ============================================================
+   Step 4 — Result / summary
+   ============================================================ */
+function fillSummary() {
+  const c = window.__candidate || { first: 'Candidate', last: '' };
+  const ats = window.__ats || 0;
+  const quiz = window.__quiz || 0;
+  const interview = window.__interview || 0;
+
+  document.getElementById('sumName').textContent = (c.first || 'Candidate') + ' ' + (c.last || '').trim();
+  document.getElementById('sumAts').textContent = ats + '/100';
+  document.getElementById('sumQuiz').textContent = quiz + '%';
+  document.getElementById('sumInterview').textContent = interview + '/100';
+
+  const pass = ats >= 80 && quiz >= 80;
+  const box = document.getElementById('successBox');
+  box.classList.toggle('fail', !pass);
+
+  document.getElementById('resBadge').textContent = pass ? '✓' : '!';
+  document.getElementById('resTitle').textContent = pass
+    ? 'Congratulations — you passed screening'
+    : 'Not this time';
+  document.getElementById('resText').textContent = pass
+    ? 'You cleared the ATS gate, the skills quiz and the AI interview. You are on the shortlist.'
+    : 'You didn’t reach the 80+ threshold at every stage. Review your CV and skills, then try again.';
+
+  const action = document.getElementById('resAction');
+  action.textContent = pass ? 'Continue to Veer.com' : 'Try again';
+  action.onclick = function () { if (pass) alert('Prototype — redirecting to Veer.com'); else resetAll(); };
+
+  const tl = document.getElementById('timeline');
+  const steps = [
+    ['Register', true],
+    ['ATS match', ats >= 80],
+    ['Skills quiz', quiz >= 80],
+    ['AI interview', interview >= 60]
+  ];
+  tl.innerHTML = '';
+  steps.forEach(function (s) {
+    const d = document.createElement('div');
+    d.className = 'tl' + (s[1] ? ' done' : '');
+    d.innerHTML = '<div class="tl-dot">' + (s[1] ? '✓' : '•') + '</div><div class="tl-txt">' + s[0] + '</div>';
+    tl.appendChild(d);
+  });
+}
+
+function resetAll() {
+  const form = document.getElementById('regForm');
+  if (form && form.reset) form.reset();
+  document.getElementById('cv').value = '';
+  document.getElementById('jd').value = DEFAULT_JD;
+  ['result', 'vidResult', 'passActions'].forEach(function (id) {
+    const el = document.getElementById(id);
+    if (el) el.classList.add('hidden');
+  });
+  document.getElementById('passActions').style.display = 'none';
+  const vid = document.getElementById('vidPreview');
+  if (vid) { vid.style.display = 'none'; vid.srcObject = null; }
+  document.getElementById('vidPlaceholder').style.display = 'block';
+  document.getElementById('vidTimer').style.display = 'none';
+  ['vidStart', 'vidSkip'].forEach(function (id) { document.getElementById(id).classList.remove('hidden'); });
+  document.getElementById('vidStop').classList.add('hidden');
+  window.__ats = 0; window.__quiz = 0; window.__quizCorrect = 0; window.__interview = 0; window.__candidate = null;
+  qIdx = 0;
+  goStep(0, false);
+}
+
+/* ============================================================
+   Veer AI assistant (chatbot)
+   ============================================================ */
+
+function toggleMenu() {
+  document.querySelector('.nav-links').classList.toggle('active');
+}
+function toggleChat() {
+  const p = document.getElementById('chatPanel');
+  const opening = p.classList.contains('hidden');
+  p.classList.toggle('hidden');
+  if (opening && document.getElementById('chatMsgs').children.length === 0) {
+    botSay("Hi! I'm the Veer assistant. Are you a candidate or hiring?");
+    renderQuick([
+      { t: "I'm a candidate", f: 'candidateFlow' },
+      { t: "I'm hiring", f: 'hireFlow' }
+    ]);
+  }
+}
+
+function botSay(text) {
+  const m = document.createElement('div');
+  m.className = 'msg bot';
+  m.textContent = text;
+  const box = document.getElementById('chatMsgs');
+  box.appendChild(m);
+  box.scrollTop = box.scrollHeight;
+}
+
+function userSay(text) {
+  const m = document.createElement('div');
+  m.className = 'msg me';
+  m.textContent = text;
+  const box = document.getElementById('chatMsgs');
+  box.appendChild(m);
+  box.scrollTop = box.scrollHeight;
+}
+
+function renderQuick(items) {
+  const q = document.getElementById('chatQuick');
+  q.innerHTML = '';
+  items.forEach(function (it) {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'qk';
+    b.textContent = it.t;
+    b.onclick = function () {
+      userSay(it.t);
+      q.innerHTML = '';
+      if (typeof window[it.f] === 'function') window[it.f]();
+    };
+    q.appendChild(b);
+  });
+}
+
+function candidateFlow() {
+  botSay('The flow is: register, an AI CV match (80+ gate), a 30-question skills quiz, then a short async video interview.');
+  renderQuick([
+    { t: 'Tell me about the quiz', f: 'quizInfo' },
+    { t: 'How is the AI match scored?', f: 'matchInfo' }
+  ]);
+}
+
+function hireFlow() {
+  botSay('Employers: we pre-screen with an 80+ ATS gate, a validated 30-question quiz and AI video interviews.');
+  renderQuick([
+    { t: 'Request a demo', f: 'demoInfo' },
+    { t: 'Back', f: 'backHome' }
+  ]);
+}
+
+function quizInfo() {
+  botSay('The quiz has 18 AI / prompt-engineering questions and 12 logic questions. You pass at 80% (24/30).');
+  renderQuick([{ t: 'Back', f: 'backHome' }]);
+}
+
+function matchInfo() {
+  botSay('The ATS gate scores your CV against the role’s core keywords. 80+ advances you to the quiz.');
+  renderQuick([{ t: 'Back', f: 'backHome' }]);
+}
+
+function demoInfo() {
+  botSay('Thanks! This is a prototype — an employer demo request would be captured here.');
+  renderQuick([{ t: 'Back', f: 'backHome' }]);
+}
+
+function backHome() {
+  botSay('Anything else I can help with?');
+  renderQuick([
+    { t: "I'm a candidate", f: 'candidateFlow' },
+    { t: "I'm hiring", f: 'hireFlow' }
+  ]);
+}
+
+/* ============================================================
+   Boot
+   ============================================================ */
+function boot() {
+  // seed chatbot so quick replies are always present
+  if (document.getElementById('chatMsgs').children.length === 0) {
+    botSay("Hi! I'm the Veer assistant. Are you a candidate or hiring?");
+    renderQuick([
+      { t: "I'm a candidate", f: 'candidateFlow' },
+      { t: "I'm hiring", f: 'hireFlow' }
+    ]);
+  }
+  goStep(0, false);
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', boot);
+} else {
+  boot();
+}
+
+</script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a1b4192df908c1f6',t:'MTc4NDA2OTU1Mg=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a1bd51eacfe296b3',t:'MTc4NDE2NjI0OA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

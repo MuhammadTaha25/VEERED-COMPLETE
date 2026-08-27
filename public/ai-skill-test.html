@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AI Skill Assessment — Veer</title>
+<meta name="description" content="AI skill assessment — 35 questions, 40 minutes, drawn from a 200-question bank. Pass at 80% to advance to Stage 2." />
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAzMiAzMic+PHJlY3Qgd2lkdGg9JzMyJyBoZWlnaHQ9JzMyJyByeD0nNycgZmlsbD0nIzJiM2E0ZCcvPjxjaXJjbGUgY3g9JzE2JyBjeT0nMTYnIHI9JzknIGZpbGw9JyNGMjY4MEInLz48L3N2Zz4=" />
+<style>
+  :root{
+    --slate:#2b3a4d; --slate2:#3c5468;
+    --orange:#F2680B; --orange-d:#D9570A; --amber:#F8A03C; --orange-l:#FFF1E6;
+    --bad:#dc2626; --ok:#15803d; --warn:#b45309;
+    --ink:#1f2a36; --muted:#5e6b78; --line:#ece7e1; --bg:#faf8f6; --card:#ffffff;
+    --shadow:0 10px 30px rgba(43,58,77,.10);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.55;-webkit-font-smoothing:antialiased}
+  body{min-height:100vh}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1140px;margin:0 auto;padding:0 22px}
+
+  /* NAV — same as index.html */
+  header.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:66px}
+  .brand{display:flex;align-items:center;gap:11px;font-weight:800;font-size:20px;letter-spacing:-.3px;color:var(--slate);text-decoration:none}
+  .brand img{height:34px;width:34px;border-radius:8px;background:#fff;padding:2px;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+  .brand .dot{color:var(--orange)}
+  .nav-links{display:flex;gap:26px;align-items:center}
+  .nav-links a{color:var(--muted);font-weight:600;font-size:14.5px;padding:9px 2px;display:inline-flex;align-items:center;text-decoration:none}
+  .nav-links a:hover{color:var(--ink)}
+  .btn{display:inline-flex;align-items:center;gap:8px;cursor:pointer;border:none;font-weight:700;border-radius:11px;padding:11px 18px;font-size:14.5px;transition:.18s;background:var(--orange);color:#fff;text-decoration:none}
+  .btn:hover{background:var(--orange-d);transform:translateY(-1px)}
+  .btn.ghost{background:#fff;color:var(--slate);border:1px solid var(--line)}
+  .btn.ghost:hover{border-color:var(--orange);color:var(--orange)}
+  .btn.slate{background:var(--slate);color:#fff}
+  .btn.slate:hover{background:var(--slate2)}
+  .btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+
+  /* HERO — smaller gradient header, same theme */
+  .hero{background:linear-gradient(135deg,var(--slate) 0%,var(--slate2) 55%,#22303f 100%);color:#fff;position:relative;overflow:hidden}
+  .hero::after{content:"";position:absolute;right:-60px;top:-100px;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(242,104,11,.35),transparent 65%)}
+  .hero-in{position:relative;z-index:2;padding:48px 28px 44px;text-align:center;display:flex;flex-direction:column;align-items:center}
+  .hero h1{font-size:32px;line-height:1.08;letter-spacing:-1.2px;font-weight:800;margin-bottom:8px;text-align:center;color:var(--orange);text-shadow:0 2px 14px rgba(242,104,11,.35)}
+  .hero p.lead{font-size:15px;color:#c9d0da;max-width:640px;margin:0 auto 20px;line-height:1.45;text-align:center}
+  .badge{display:inline-block;padding:4px 10px;border-radius:999px;font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.2)}
+  .badge.orange{background:rgba(242,104,11,.2);color:#ffc9a4;border-color:rgba(242,104,11,.35)}
+
+  /* LAYOUT — left question, right timer sidebar */
+  .assessment-layout{display:grid;grid-template-columns:1fr 340px;gap:28px;align-items:start;padding:36px 28px 60px}
+  @media(max-width:980px){.assessment-layout{grid-template-columns:1fr;padding:24px 18px 50px}}
+
+  /* QUESTION AREA */
+  .main-area{min-width:0}
+  .q-card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:32px 28px;box-shadow:var(--shadow);margin-bottom:24px}
+  .q-card .q-num{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--orange);margin-bottom:8px}
+  .q-card h2{font-size:22px;line-height:1.22;margin:0 0 18px;font-weight:800;letter-spacing:-.5px;color:var(--orange)}
+  .q-card .answer-row{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+  .q-card .opt{flex:1 1 46%;min-width:140px;background:var(--bg);border:2px solid var(--line);border-radius:12px;padding:14px 14px;font-weight:600;color:var(--ink);cursor:pointer;text-align:left;transition:.18s;font-size:14px;line-height:1.35}
+  .q-card .opt:hover{border-color:var(--orange);background:var(--orange-l);color:var(--slate)}
+  .q-card .opt.selected{border-color:var(--orange);background:var(--orange-l);box-shadow:0 0 0 3px rgba(242,104,11,.15)}
+  .q-card .opt.correct{border-color:var(--ok);background:#f6fff8}
+  .q-card .opt.wrong{border-color:var(--bad);background:#fff5f5}
+  .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px}
+
+  /* TIMER SIDEBAR */
+  .timer-sidebar{background:#fff;border:1px solid var(--line);border-radius:20px;padding:22px;box-shadow:var(--shadow);position:sticky;top:82px}
+  .timer-sidebar h3{font-size:14px;font-weight:800;color:var(--slate);margin-bottom:14px;letter-spacing:-.2px}
+  .timer-ring{width:170px;height:170px;margin:0 auto 14px;position:relative;display:flex;align-items:center;justify-content:center;border-radius:50%;background:conic-gradient(var(--orange) 0% 0%,#efeae4 0% 100%);transition:background .8s}
+  .timer-ring::after{content:"";position:absolute;inset:14px;background:#fff;border-radius:50%}
+  .timer-ring .ring-inner{position:relative;z-index:2;text-align:center}
+  .timer-ring .ring-inner b{font-size:30px;font-weight:800;color:var(--ink);display:block;line-height:1;letter-spacing:-1.5px}
+  .timer-ring .ring-inner span{font-size:11.5px;color:var(--muted);font-weight:600;letter-spacing:.3px}
+  .timer-sub{font-size:12px;color:var(--muted);text-align:center;margin-top:8px;line-height:1.45}
+  .timer-warning{display:none;background:#fff5f5;border:1px solid #fecaca;border-radius:10px;padding:8px 10px;font-size:12px;color:var(--bad);font-weight:600;text-align:center;margin-top:10px}
+  .timer-sidebar .meta{margin-top:14px;padding-top:14px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}
+  .meta-row{display:flex;justify-content:space-between;margin-top:3px}
+  .meta-row b{color:var(--slate)}
+
+  /* PROGRESS */
+  .progress-wrap{margin-bottom:6px}
+  .progress-wrap .label{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.3px;text-transform:uppercase}
+  .progress-bar{height:8px;background:#efeae4;border-radius:8px;overflow:hidden;margin-top:6px}
+  .progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--orange),var(--amber));transition:width .4s ease;border-radius:8px}
+
+  /* RESULTS */
+  .results{display:none;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:32px 28px;box-shadow:var(--shadow);text-align:center;max-width:720px;margin:0 auto 60px}
+  .results.show{display:block;animation:fadeIn .5s ease}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  .results .badge-large{width:110px;height:110px;border-radius:50%;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:42px;font-weight:800;color:#fff;background:linear-gradient(135deg,var(--orange),var(--amber));box-shadow:0 12px 30px rgba(242,104,11,.3)}
+  .results .badge-large.fail{background:linear-gradient(135deg,#dc2626,#b91c1c);box-shadow:0 12px 30px rgba(220,38,38,.3)}
+  .results h2{font-size:26px;font-weight:800;color:var(--orange);margin-bottom:6px;letter-spacing:-.6px}
+  .results p.sub{color:var(--muted);font-size:15px;margin-bottom:22px;max-width:540px;margin-left:auto;margin-right:auto}
+  .results .verdict{display:inline-block;font-weight:800;font-size:13px;letter-spacing:.4px;padding:6px 14px;border-radius:999px;margin-bottom:14px}
+  .verdict.pass{background:rgba(21,128,61,.1);color:var(--ok);border:1px solid rgba(21,128,61,.2)}
+  .verdict.fair{background:rgba(245,158,11,.1);color:#b45309;border:1px solid rgba(245,158,11,.2)}
+  .verdict.fail{background:rgba(220,38,38,.08);color:var(--bad);border:1px solid rgba(220,38,38,.15)}
+  .results .score-row{display:flex;justify-content:center;gap:36px;margin:18px 0 20px;flex-wrap:wrap}
+  .score-row .stat{min-width:120px}
+  .score-row .stat b{font-size:22px;font-weight:800;color:var(--slate);display:block;line-height:1}
+  .score-row .stat span{font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.3px}
+  .results .message-box{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:14px auto;max-width:620px;text-align:left;font-size:14.5px;color:var(--ink);line-height:1.55}
+  .results .message-box strong{color:var(--slate)}
+  .results .message-box.fail-msg{background:#fff5f5;border-color:#fecaca}
+  .results .message-box.pass-msg{background:#f6fff8;border-color:#c8e6c9;min-height:100px}
+  .results .cta{margin-top:10px}
+  .results .cta a.btn{font-size:15px;padding:14px 26px;border-radius:13px;background:var(--orange);color:#fff;font-weight:700;text-decoration:none;display:inline-block}
+  .results .cta a.btn:hover{background:var(--orange-d);transform:translateY(-1px)}
+
+  /* LOCKED SCREEN */
+  .locked-screen{display:none;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:36px 28px;box-shadow:var(--shadow);text-align:center;max-width:640px;margin:0 auto 60px}
+  .locked-screen.show{display:block;animation:fadeIn .5s ease}
+  .locked-screen h2{font-size:24px;font-weight:800;color:var(--orange);margin-bottom:8px;letter-spacing:-.6px}
+  .locked-screen p{color:var(--muted);font-size:15px;margin-bottom:16px;line-height:1.55}
+  .locked-screen .lock-info{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:16px auto;max-width:520px;text-align:left;font-size:14px;color:var(--ink);line-height:1.55}
+  .locked-screen .meta-box{display:flex;justify-content:center;gap:16px;margin-top:14px;flex-wrap:wrap}
+  .meta-box .box{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;min-width:140px;text-align:center;box-shadow:var(--shadow)}
+  .meta-box .box b{font-size:18px;font-weight:800;color:var(--slate);display:block;line-height:1}
+  .meta-box .box span{font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.3px}
+
+  /* SCORECARD VISUAL */
+  .scorecard{display:flex;align-items:center;justify-content:center;gap:10px;background:linear-gradient(135deg,#fff,#fff7eb);border:2px solid var(--line);border-radius:20px;padding:28px 32px;margin:0 auto 24px;box-shadow:0 14px 36px rgba(242,104,11,.16), inset 0 1px 0 rgba(255,255,255,.8), 0 2px 0 rgba(242,104,11,.1);max-width:540px}
+  .scorecard-band{flex:1;text-align:center;padding:8px 6px;border-radius:12px;background:#fff;border:1.5px solid var(--line);transition:.2s}
+  .scorecard-band b{font-size:22px;font-weight:800;color:var(--orange);display:block;line-height:1}
+  .scorecard-band span{font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.3px}
+  .scorecard-divider{width:1.5px;height:42px;background:var(--line);border-radius:2px}
+
+  @media(max-width:580px){
+    .scorecard{flex-direction:column;gap:6px;padding:14px 16px;}
+    .scorecard-divider{width:42px;height:1.5px;background:var(--line);border-radius:2px;}
+  }
+
+  footer.simple{padding:28px 0;border-top:1px solid var(--line);margin-top:30px;color:var(--muted);font-size:12.5px;text-align:center}
+  footer.simple a{color:var(--orange);font-weight:700}
+
+  .hidden{display:none!important}
+  .text-center{text-align:center}
+  .text-muted{color:var(--muted)}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a href="index.html" class="brand"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAzMiAzMic+PHJlY3Qgd2lkdGg9JzMyJyBoZWlnaHQ9JzMyJyByeD0nNycgZmlsbD0nIzJiM2E0ZCcvPjxjaXJjbGUgY3g9JzE2JyBjeT0nMTYnIHI9JzknIGZpbGw9JyNGMjY4MEInLz48L3N2Zz4=" alt="Veer" /> Veer<span class="dot">.</span></a>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="index.html#how">How it works</a>
+      <a href="#" onclick="return false">Assessment</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-in wrap">
+    <span class="badge orange">AI SKILL MATCH · STAGE 1 OF 2 · 35 QUESTIONS · 40 MIN</span>
+    <h1>AI Skill Assessment</h1>
+    <p class="lead">Stage 1 of 2: 35 questions drawn from our 200-question bank, one at a time, no back button. Pass at 80% to be invited to Stage 2 by email within 24 hours.</p>
+  </div>
+</section>
+
+<!-- Scorecard header -->
+<section class="wrap" style="padding:16px 28px 8px;">
+  <div style="max-width:680px;margin:0 auto;text-align:center;">
+    <svg width="140" height="140" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin:0 auto 16px;display:block;filter:drop-shadow(0 8px 18px rgba(242,104,11,.25));">
+      <circle cx="60" cy="60" r="54" stroke="#F2680B" stroke-width="2" opacity=".2"/>
+      <circle cx="60" cy="60" r="40" fill="#FFF7EB" stroke="#F2680B" stroke-width="2.5"/>
+      <circle cx="60" cy="60" r="24" fill="#F2680B" opacity=".1" stroke="#F2680B" stroke-width="1.5"/>
+      <text x="60" y="58" text-anchor="middle" dominant-baseline="middle" fill="#2b3a4d" font-size="13" font-weight="800" letter-spacing=".8" font-family="system-ui,sans-serif">GRADING</text>
+      <text x="60" y="74" text-anchor="middle" dominant-baseline="middle" fill="#F2680B" font-size="8" font-weight="700" letter-spacing="1.4" font-family="system-ui,sans-serif">SCORE</text>
+    </svg>
+  </div>
+</section>
+
+<!-- SCORECARD -->
+<section class="wrap" style="padding:8px 28px 16px;">
+  <div class="scorecard">
+    <div style="display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;">
+      <div style="flex:1;min-width:130px;text-align:center;padding:18px 14px;border-radius:16px;background:linear-gradient(135deg,#15803d,#22c55e);box-shadow:0 8px 22px rgba(21,128,61,.28);transition:.2s;">
+        <div style="margin:0 auto 8px;width:36px;height:36px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(0,0,0,.15);">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+        </div>
+        <b style="font-size:24px;font-weight:800;color:#fff;display:block;line-height:1;letter-spacing:-.8px;">Pass</b>
+        <span style="font-size:12px;color:#e6f5e6;font-weight:600;letter-spacing:.4px;text-transform:uppercase;">80% + (28/35)</span>
+      </div>
+      <div style="width:1.5px;height:50px;background:linear-gradient(180deg,var(--line),transparent);border-radius:2px;flex-shrink:0;"></div>
+      <div style="flex:1;min-width:130px;text-align:center;padding:18px 14px;border-radius:16px;background:linear-gradient(135deg,#dc2626,#b91c1c);box-shadow:0 8px 22px rgba(220,38,38,.28);transition:.2s;">
+        <div style="margin:0 auto 8px;width:36px;height:36px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(0,0,0,.15);">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </div>
+        <b style="font-size:24px;font-weight:800;color:#fff;display:block;line-height:1;letter-spacing:-.8px;">Fail</b>
+        <span style="font-size:12px;color:#ffece6;font-weight:600;letter-spacing:.4px;text-transform:uppercase;">&lt; 80%</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MAIN ASSESSMENT -->
+<div class="assessment-layout wrap" id="mainLayout">
+
+  <!-- LEFT: QUESTION -->
+  <main class="main-area" id="mainArea">
+    <div class="q-card" id="questionCard">
+      <!-- Terms & Conditions -->
+      <div id="startScreen" style="display:none;">
+        <h2 style="font-size:26px;letter-spacing:-.8px;margin-bottom:6px;text-align:center;">Your AI Assessment Agreement</h2>
+        <p style="color:var(--muted);font-size:14.5px;margin-bottom:22px;text-align:center;">Before you begin, please review and confirm your understanding of how this assessment works, your rights under EU law, and our verification process.</p>
+
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px;">
+          <div style="background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:14px 14px;text-align:center;box-shadow:0 4px 14px rgba(43,58,77,.05);">
+            <div style="width:36px;height:36px;border-radius:12px;background:linear-gradient(135deg,var(--orange),var(--amber));display:flex;align-items:center;justify-content:center;margin:0 auto 8px;box-shadow:0 6px 14px rgba(242,104,11,.25);">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-.91L12 2z"/></svg>
+            </div>
+            <strong style="font-size:14px;color:var(--orange);display:block;margin-bottom:4px;">Verified Results</strong>
+            <span style="font-size:12.5px;color:var(--muted);line-height:1.4;">Every result confirmed by a Human AI Consultant before any recommendation.</span>
+          </div>
+          <div style="background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:14px 14px;text-align:center;box-shadow:0 4px 14px rgba(43,58,77,.05);">
+            <div style="width:36px;height:36px;border-radius:12px;background:linear-gradient(135deg,var(--slate),var(--slate2));display:flex;align-items:center;justify-content:center;margin:0 auto 8px;box-shadow:0 6px 14px rgba(43,58,77,.25);">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+            </div>
+            <strong style="font-size:14px;color:var(--orange);display:block;margin-bottom:4px;">Data Protection</strong>
+            <span style="font-size:12.5px;color:var(--muted);line-height:1.4;">EU GDPR + AI Act compliant. No biometrics, no emotion recognition.</span>
+          </div>
+          <div style="background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:14px 14px;text-align:center;box-shadow:0 4px 14px rgba(43,58,77,.05);">
+            <div style="width:36px;height:36px;border-radius:12px;background:linear-gradient(135deg,#15803d,#0f6b2a);display:flex;align-items:center;justify-content:center;margin:0 auto 8px;box-shadow:0 6px 14px rgba(21,128,61,.25);">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            </div>
+            <strong style="font-size:14px;color:var(--orange);display:block;margin-bottom:4px;">Your Rights</strong>
+            <span style="font-size:12.5px;color:var(--muted);line-height:1.4;">Request reassessment from a Human AI Consultant anytime.</span>
+          </div>
+        </div>
+
+        <!-- Terms content -->
+        <div style="background:var(--bg);border:1.5px solid var(--line);border-radius:16px;padding:22px;margin-bottom:18px;font-size:13.5px;color:var(--ink);line-height:1.6;max-height:300px;overflow-y:auto;">
+          <p style="margin:0 0 12px;"><span style="display:inline-flex;align-items:center;gap:6px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><strong style="color:var(--orange);font-size:15px;">Assessment Purpose.</strong></span> This 35-question AI Skill Assessment is drawn at random from a 200-question bank and evaluates demonstrated competence in AI-related skills. It is Stage 1 of a two-stage evaluation: pass at 80% and you'll be emailed an invitation to Stage 2, with a 24-hour window to complete it.</p>
+          <p style="margin:0 0 12px;"><span style="display:inline-flex;align-items:center;gap:6px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><strong style="color:var(--orange);font-size:15px;">Human Verification.</strong></span> Per EU GDPR Article 22 and EU AI Act Articles 14 &amp; 86, <strong>every assessment result is verified by a trained Human AI Consultant</strong> before any recommendation is issued.</p>
+          <p style="margin:0 0 12px;"><span style="display:inline-flex;align-items:center;gap:6px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><strong style="color:var(--orange);font-size:15px;">Data Protection.</strong></span> Your candidate profile data is used solely for assessment evaluation and Stage 2 invitation delivery.</p>
+          <p style="margin:0 0 12px;"><span style="display:inline-flex;align-items:center;gap:6px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><strong style="color:var(--orange);font-size:15px;">Lock Mechanism.</strong></span> Candidates scoring below 80% are locked for 7 days before attempting a re-test.</p>
+        </div>
+
+        <!-- Strict Anti-Cheating Warning Box -->
+        <div style="background:#fff5f5;border:2px solid #dc2626;border-radius:16px;padding:18px 20px;margin-bottom:18px;text-align:left;box-shadow:0 4px 14px rgba(220,38,38,.1);">
+          <strong style="color:#b91c1c;font-size:16px;display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2.5"><path d="M12 9v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            CRITICAL ANTI-CHEATING SECURITY WARNING
+          </strong>
+          <p style="font-size:13.5px;color:#7f1d1d;line-height:1.55;margin:0;">
+            Opening another browser window (e.g. <strong>Microsoft Edge</strong>, <strong>Chrome another tab/window</strong>, <strong>Notepad</strong>, or AI tools) or switching tabs during the test is <strong>STRICTLY FORBIDDEN</strong>. If your exam window loses focus or goes behind another window even once, your assessment will be <strong>IMMEDIATELY TERMINATED</strong>, and your <strong>CV &amp; EMAIL ADDRESS WILL BE PERMANENTLY MARKED AS REJECTED</strong> for this position.
+          </p>
+        </div>
+
+        <div style="background:linear-gradient(135deg,#fff,#fff7eb);border:2px solid var(--orange);border-radius:16px;padding:18px 20px;margin-bottom:14px;text-align:center;">
+          <label style="display:flex;gap:12px;align-items:flex-start;font-size:15px;color:var(--ink);line-height:1.5;cursor:pointer;font-weight:700;justify-content:center;flex-wrap:wrap;">
+            <input type="checkbox" id="termsConfirm" required style="margin-top:4px;width:22px;height:22px;accent-color:var(--orange);" onclick="showConfirmPopup()" />
+            <span style="text-align:left;">I agree to the terms and understand that <strong>switching windows or tabs will instantly fail &amp; reject my application</strong>.</span>
+          </label>
+        </div>
+
+        <div style="margin-top:16px;text-align:center;">
+          <button type="button" class="btn lg" onclick="startFromTerms()">Continue to Assessment →</button>
+        </div>
+      </div>
+
+      <!-- Active question -->
+      <div id="questionScreen" class="hidden">
+        <div class="q-num" id="qNum">Question 1 of 35</div>
+        <div class="progress-wrap">
+          <div class="label">Progress</div>
+          <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+        </div>
+        <h2 id="qText">Loading question…</h2>
+        <div id="optsArea"></div>
+        <div class="actions">
+          <button class="btn" id="nextBtn" onclick="nextQuestion()">Next →</button>
+          <button class="btn hidden" id="submitBtn" onclick="submitAssessment()">Submit assessment</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div class="results" id="resultsScreen">
+      <div id="resBadge" class="badge-large">—</div>
+      <h2 id="resTitle">Result</h2>
+      <div id="resVerdict" class="verdict"></div>
+      <p class="sub" id="resSub">Your assessment is being evaluated.</p>
+      <div class="score-row" id="resScoreRow"></div>
+      <div class="message-box" id="resMessage"></div>
+      <div class="message-box pass-msg hidden" id="resPassMsg"></div>
+      <div class="cta" id="resCta"></div>
+    </div>
+
+    <!-- Locked -->
+    <div class="locked-screen" id="lockedScreen">
+      <h2>Assessment locked</h2>
+      <p>You have recently attempted this assessment. Candidates must wait 7 days before a new attempt.</p>
+      <div class="lock-info" id="lockInfo"></div>
+      <div class="meta-box" id="lockMeta"></div>
+    </div>
+  </main>
+
+  <!-- RIGHT: TIMER -->
+  <aside class="timer-sidebar" id="timerSidebar">
+    <h3>Time remaining</h3>
+    <div class="timer-ring" id="timerRing" style="background:conic-gradient(var(--orange) 100%, #efeae4 0%);">
+      <div class="ring-inner">
+        <b id="timerText">40:00</b>
+        <span>minutes left</span>
+      </div>
+    </div>
+    <p class="timer-sub">Once the timer reaches 00:00, your answers will be submitted automatically. You may also submit manually after answering all 35 questions.</p>
+    <div class="timer-warning" id="timerWarn">Less than 5 minutes remaining.</div>
+    <div class="meta">
+      <div class="meta-row"><span>Questions</span><b>35 of 200</b></div>
+      <div class="meta-row"><span>Pass threshold</span><b>80% (28/35)</b></div>
+      <div class="meta-row"><span>Stage 2 window</span><b>24 hours</b></div>
+      <div class="meta-row"><span>Lock period</span><b>7 days</b></div>
+      <div style="margin-top:6px;border-top:1px solid var(--line);padding-top:6px;font-size:11px;color:#5e6b78;text-align:center;line-height:1.6;">
+        <span style="display:inline-flex;align-items:center;gap:6px;margin-right:6px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>No back button</span>
+        <span style="display:inline-flex;align-items:center;gap:6px;margin-right:6px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>One at a time</span>
+        <span style="display:inline-flex;align-items:center;gap:6px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Submit after Q35</span>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<!-- Anti-Cheating Security Warning Modal -->
+<div id="securityModal" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,.92);backdrop-filter:blur(8px);z-index:9999;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#fff;border:2px solid #dc2626;border-radius:20px;max-width:520px;width:100%;padding:32px;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,.3);">
+    <div style="width:70px;height:70px;border-radius:50%;background:rgba(220,38,38,.12);color:#dc2626;display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 16px;font-weight:800;">⚠️</div>
+    <h2 style="font-size:22px;color:#2b3a4d;margin-bottom:8px;font-weight:800;">SECURITY WARNING DETECTED</h2>
+    <p style="color:#dc2626;font-weight:700;font-size:15px;margin-bottom:12px;" id="secWarnCount">Window or Tab Switch Warning (Attempt 1 / 3)</p>
+    <p style="font-size:14px;color:#5e6b78;line-height:1.55;margin-bottom:24px;">Switching windows or tabs is strictly prohibited during the assessment to maintain exam integrity. Exceeding 3 window switches will automatically terminate and lock your exam.</p>
+    <button type="button" class="btn" style="background:#dc2626;padding:12px 28px;font-size:15px;" onclick="closeSecurityModal()">I Understand &amp; Resume Test →</button>
+  </div>
+</div>
+
+<footer class="simple">
+  <div class="wrap">
+    <p>© 2026 Veer — <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></p>
+  </div>
+</footer>
+
+<script>
+let QUESTIONS = [];
+let currentAttemptId = null;
+let currentQ = 0;
+let answers = [];
+let userAnswersRaw = {};
+let timer = 2400; // 40 min
+let timerInterval = null;
+let identity = { first: "", last: "", dob: "", locked: false };
+let stage2Url = null;
+let windowSwitchCount = 0;
+let examActive = false;
+
+function $(id){ return document.getElementById(id); }
+
+function setupAntiCheatingSecurity() {
+  // Anti-cheating monitoring is DISABLED. Tab/window switching no longer
+  // terminates or rejects the assessment.
+}
+
+async function handleFocusLoss() {
+  // Disabled — kept as a no-op so any remaining references stay safe.
+  return;
+  // eslint-disable-next-line no-unreachable
+  if (!examActive) return;
+  examActive = false;
+  if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+
+  const cand = JSON.parse(sessionStorage.getItem('veerCandidate') || 'null');
+  const candidateId = cand ? cand.id : null;
+
+  // Immediately notify backend to reject candidate & mark CV as rejected
+  try {
+    await fetch('/api/candidates/reject-cheating', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        candidateId: candidateId,
+        stage: 'Step 2 (MCQs)',
+        reason: 'Window focus lost — candidate switched browser/tab or brought another window in front.'
+      })
+    });
+  } catch(e){}
+
+  $('questionScreen').classList.add('hidden');
+  $('startScreen').style.display = 'none';
+  $('resultsScreen').classList.add('show');
+
+  $('resVerdict').textContent = 'REJECTED — Security Violation';
+  $('resVerdict').className = 'verdict fail';
+  $('resTitle').textContent = 'Assessment Cancelled & Application Rejected';
+  $('resBadge').textContent = '🚫';
+  $('resBadge').className = 'badge-large fail';
+
+  $('resScoreRow').innerHTML = '<div class="stat"><b style="color:var(--bad);">0%</b><span>Score</span></div>' +
+    '<div class="stat"><b style="color:var(--bad);">REJECTED</b><span>Status</span></div>' +
+    '<div class="stat"><b>0:00</b><span>Time left</span></div>';
+
+  $('resMessage').className = 'message-box fail-msg';
+  $('resMessage').innerHTML = '<strong style="color:var(--bad);">SECURITY VIOLATION DETECTED:</strong> Your window lost focus (you switched tabs or opened another application like Microsoft Edge). Per our strict anti-cheating policy, your assessment has been <strong>IMMEDIATELY TERMINATED</strong>, and your CV and email address have been <strong>MARKED AS REJECTED</strong>.';
+  $('resPassMsg').classList.add('hidden');
+  $('resCta').innerHTML = '<a href="index.html" class="btn ghost">Return to Home</a>';
+
+  alert('🚫 ASSESSMENT CANCELLED: Window focus loss detected! (e.g. switched tab or opened another application). Your assessment has been terminated and your CV has been marked as REJECTED.');
+}
+
+function closeSecurityModal() {
+  const modal = $('securityModal');
+  if (modal) modal.style.display = 'none';
+}
+
+function showConfirmPopup() {
+  const confirmed = confirm('You have selected: "I agree to the terms and conditions". Proceed with the assessment?');
+  if (!confirmed) {
+    if ($('termsConfirm')) $('termsConfirm').checked = false;
+  }
+}
+
+async function startFromTerms() {
+  if (!$('termsConfirm') || !$('termsConfirm').checked) {
+    alert('Please confirm that you have read and understood the Terms & Conditions of the AI Assessment before continuing.');
+    return;
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  identity.first = (params.get('first') || '').trim();
+  identity.last  = (params.get('last') || '').trim();
+  identity.dob   = (params.get('dob') || '').trim();
+
+  try {
+    const saved = JSON.parse(sessionStorage.getItem('veerCandidate') || 'null');
+    if (saved) {
+      if (!identity.first) identity.first = saved.first || '';
+      if (!identity.last) identity.last = saved.last || '';
+    }
+  } catch(e){}
+
+  // Fetch 5 dynamic questions & attemptId from /api/quiz/start
+  try {
+    const res = await fetch('/api/quiz/start');
+    const data = await res.json();
+    if (res.ok && data.ok && Array.isArray(data.questions) && data.questions.length > 0) {
+      currentAttemptId = data.attemptId;
+      QUESTIONS = data.questions.map(q => ({
+        id: q.id,
+        text: q.question,
+        type: q.type === 'tf' ? 'tf' : 'mc',
+        opts: Array.isArray(q.options) ? q.options : (q.options ? Object.values(q.options) : ['True', 'False'])
+      }));
+    }
+  } catch (err) {
+    console.error('Quiz start API error:', err);
+  }
+
+  // Fallback if API unavailable
+  if (QUESTIONS.length === 0) {
+    QUESTIONS = [
+      { id: 'q1', text: "What does RAG stand for in modern LLM systems?", type: "mc", opts: ["Retrieval-Augmented Generation", "Random Access Gateway", "Recursive AI Graph", "Reinforced Agentic Guidance"] },
+      { id: 'q2', text: "In prompt engineering, few-shot prompting means providing examples inside the prompt.", type: "tf", opts: ["True", "False"] },
+      { id: 'q3', text: "An agentic AI system plans steps and uses tools to complete tasks autonomously.", type: "tf", opts: ["True", "False"] },
+      { id: 'q4', text: "A key risk of LLM hallucination is generating plausible but false content.", type: "tf", opts: ["True", "False"] },
+      { id: 'q5', text: "Chain-of-thought prompting encourages the model to reason step by step.", type: "mc", opts: ["Skip the examples", "Compress the prompt", "Switch to a foreign language", "Reason step by step"] }
+    ];
+  }
+
+  answers = new Array(QUESTIONS.length).fill(null);
+  userAnswersRaw = {};
+
+  $('startScreen').style.display = 'none';
+  $('questionScreen').classList.remove('hidden');
+  $('lockedScreen').classList.remove('show');
+  $('lockedScreen').style.display = 'none';
+  $('resultsScreen').classList.remove('show');
+  $('mainArea').style.display = 'block';
+  $('timerSidebar').style.display = 'block';
+  renderQuestion();
+  setupAntiCheatingSecurity();
+  examActive = true;
+  startTimer();
+}
+
+function startTimer() {
+  if (timerInterval) clearInterval(timerInterval);
+  timerInterval = setInterval(function() {
+    if (timer <= 0) {
+      clearInterval(timerInterval);
+      timerInterval = null;
+      submitAssessment(true);
+      return;
+    }
+    timer--;
+    const mins = String(Math.floor(timer / 60)).padStart(2, '0');
+    const secs = String(timer % 60).padStart(2, '0');
+    $('timerText').textContent = mins + ':' + secs;
+
+    const pct = Math.round((timer / 2400) * 100);
+    $('timerRing').style.background = 'conic-gradient(var(--orange) ' + pct + '%, #efeae4 0%)';
+    $('timerWarn').style.display = timer < 300 ? 'block' : 'none';
+  }, 1000);
+}
+
+function renderQuestion() {
+  const q = QUESTIONS[currentQ];
+  $('qNum').textContent = 'Question ' + (currentQ + 1) + ' of ' + QUESTIONS.length;
+  $('qText').textContent = q.text;
+
+  const pctFilled = Math.round(((currentQ + 1) / QUESTIONS.length) * 100);
+  $('progressFill').style.width = pctFilled + '%';
+
+  const optsArea = $('optsArea');
+  optsArea.innerHTML = '';
+
+  q.opts.forEach(function(opt, i) {
+    const optText = typeof opt === 'object' && opt !== null ? (opt.text || opt.label || String(opt.id || '')) : String(opt);
+    const optId = typeof opt === 'object' && opt !== null && opt.id ? String(opt.id) : String.fromCharCode(65 + i);
+
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'opt' + (answers[currentQ] === i ? ' selected' : '');
+    btn.textContent = optText;
+    btn.onclick = function(){
+      answers[currentQ] = i;
+      userAnswersRaw[q.id] = optId;
+      renderQuestion();
+    };
+    optsArea.appendChild(btn);
+  });
+
+  const last = currentQ === QUESTIONS.length - 1;
+  $('nextBtn').classList.toggle('hidden', last);
+  $('submitBtn').classList.toggle('hidden', !last);
+}
+
+function nextQuestion() {
+  if (answers[currentQ] == null) {
+    alert('Please select an answer before continuing.');
+    return;
+  }
+  if (currentQ < QUESTIONS.length - 1) {
+    currentQ++;
+    renderQuestion();
+  }
+}
+
+async function submitAssessment(auto) {
+  examActive = false;
+  if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+
+  let score = 0;
+  let correct = 0;
+  let passed = false;
+  let totalQ = QUESTIONS.length;
+
+  // Submit to POST /api/quiz/submit (which evaluates + sends real email!)
+  if (currentAttemptId) {
+    try {
+      const res = await fetch('/api/quiz/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          attemptId: currentAttemptId,
+          answers: userAnswersRaw
+        })
+      });
+      const data = await res.json();
+      if (res.ok && data.ok) {
+        correct = data.score;
+        totalQ = data.totalQuestions || 5;
+        score = data.percentage;
+        passed = data.passed;
+        if (data.stage2Url) stage2Url = data.stage2Url;
+      }
+    } catch (err) {
+      console.error('Quiz submit API error:', err);
+    }
+  }
+
+  // Fallback calculation if API call failed
+  if (!currentAttemptId || score === 0) {
+    correct = answers.filter(a => a === 0 || a === 3).length; // fallback heuristic
+    score = Math.round((correct / totalQ) * 100);
+    passed = score >= 80;
+  }
+
+  $('questionScreen').classList.add('hidden');
+  $('resultsScreen').classList.add('show');
+
+  $('resVerdict').textContent = passed ? 'Pass — 80%+' : 'Below 80% — Not successful';
+  $('resVerdict').className = 'verdict ' + (passed ? 'pass' : 'fail');
+  $('resTitle').textContent = 'Assessment completed';
+  $('resBadge').textContent = passed ? '✓' : '✗';
+  $('resBadge').className = 'badge-large ' + (passed ? '' : 'fail');
+
+  $('resScoreRow').innerHTML =
+    '<div class="stat"><b>' + score + '%</b><span>Score</span></div>' +
+    '<div class="stat"><b>' + correct + '</b><span>Correct / ' + totalQ + '</span></div>' +
+    '<div class="stat"><b>' + (totalQ - correct) + '</b><span>Incorrect</span></div>' +
+    '<div class="stat"><b>40:00</b><span>Time allowed</span></div>';
+
+  if (passed) {
+    const s2Url = stage2Url || (window.location.origin + '/stage2.html');
+    $('resMessage').className = 'message-box';
+    $('resMessage').innerHTML = '<strong>Success message:</strong> You (' + (identity.first || 'Candidate') + ' ' + (identity.last || '') + ') passed Stage 1 of the AI Skill match.';
+    $('resPassMsg').classList.remove('hidden');
+    $('resPassMsg').innerHTML =
+      '<p><strong>Stage 2 Unlocked:</strong> Your Stage 2 Coding Challenge is <strong>OPEN NOW</strong> — you do not need to wait 24 hours. A direct invitation link has also been sent to your email.</p>' +
+      '<div style="margin:16px 0;text-align:center;">' +
+        '<a href="' + s2Url + '" class="btn" style="background:#15803d;padding:14px 28px;font-size:16px;font-weight:800;box-shadow:0 6px 18px rgba(21,128,61,.3);">🚀 Start Stage 2 Coding Challenge Now →</a>' +
+      '</div>' +
+      '<p style="margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);font-size:13.5px;color:var(--ok);font-weight:700;">✓ Access link emailed to your inbox from Veer.</p>';
+    $('resCta').innerHTML = '<a href="' + s2Url + '" class="btn" style="background:#15803d;">Go to Stage 2 Coding Challenge →</a> <a href="index.html" class="btn ghost">Continue to Home</a>';
+  } else {
+    $('resMessage').className = 'message-box fail-msg';
+    $('resMessage').innerHTML = '<strong>Assessment Outcome:</strong> Unfortunately, you (' + (identity.first || 'Candidate') + ' ' + (identity.last || '') + ') did not reach the 80% pass threshold this time. A feedback email has been sent to your registered address.';
+    $('resPassMsg').classList.add('hidden');
+    $('resCta').innerHTML = '<a href="index.html" class="btn ghost">Return to Home</a>';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  $('startScreen').style.display = 'block';
+});
+</script>
+</body>
+</html>

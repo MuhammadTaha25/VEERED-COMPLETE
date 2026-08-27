@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Stage 2 — Coding &amp; AI Interview — Veer</title>
+<meta name="description" content="Stage 2 of Veer's AI-assisted assessment — 2 coding questions plus a short structured video interview, accessed via a 24-hour emailed invite link." />
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAzMiAzMic+PHJlY3Qgd2lkdGg9JzMyJyBoZWlnaHQ9JzMyJyByeD0nNycgZmlsbD0nIzJiM2E0ZCcvPjxjaXJjbGUgY3g9JzE2JyBjeT0nMTYnIHI9JzknIGZpbGw9JyNGMjY4MEInLz48L3N2Zz4=" />
+<style>
+  :root{
+    --slate:#2b3a4d; --slate2:#3c5468;
+    --orange:#F2680B; --orange-d:#D9570A; --amber:#F8A03C; --orange-l:#FFF1E6;
+    --bad:#dc2626; --ok:#15803d; --warn:#b45309;
+    --ink:#1f2a36; --muted:#5e6b78; --line:#ece7e1; --bg:#faf8f6; --card:#ffffff;
+    --shadow:0 10px 30px rgba(43,58,77,.10);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.55;-webkit-font-smoothing:antialiased}
+  body{min-height:100vh}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:900px;margin:0 auto;padding:0 22px}
+
+  header.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:66px;max-width:1140px;margin:0 auto;padding:0 22px}
+  .brand{display:flex;align-items:center;gap:11px;font-weight:800;font-size:20px;letter-spacing:-.3px;color:var(--slate);text-decoration:none}
+  .brand img{height:34px;width:34px;border-radius:8px;background:#fff;padding:2px;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+  .brand .dot{color:var(--orange)}
+  .nav-links{display:flex;gap:26px;align-items:center}
+  .nav-links a{color:var(--muted);font-weight:600;font-size:14.5px;padding:9px 2px;text-decoration:none}
+  .nav-links a:hover{color:var(--ink)}
+
+  .btn{display:inline-flex;align-items:center;gap:8px;cursor:pointer;border:none;font-weight:700;border-radius:11px;padding:11px 18px;font-size:14.5px;transition:.18s;background:var(--orange);color:#fff;text-decoration:none}
+  .btn:hover{background:var(--orange-d);transform:translateY(-1px)}
+  .btn.ghost{background:#fff;color:var(--slate);border:1px solid var(--line)}
+  .btn.ghost:hover{border-color:var(--orange);color:var(--orange)}
+  .btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+
+  .hero{background:linear-gradient(135deg,var(--slate) 0%,var(--slate2) 55%,#22303f 100%);color:#fff;position:relative;overflow:hidden}
+  .hero::after{content:"";position:absolute;right:-60px;top:-100px;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(242,104,11,.35),transparent 65%)}
+  .hero-in{position:relative;z-index:2;padding:44px 28px 40px;text-align:center;display:flex;flex-direction:column;align-items:center}
+  .hero h1{font-size:30px;line-height:1.08;letter-spacing:-1.2px;font-weight:800;margin-bottom:8px;text-align:center;color:var(--orange);text-shadow:0 2px 14px rgba(242,104,11,.35)}
+  .hero p.lead{font-size:15px;color:#c9d0da;max-width:620px;margin:0 auto;line-height:1.45;text-align:center}
+  .badge{display:inline-block;padding:4px 10px;border-radius:999px;font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.2);margin-bottom:12px}
+  .badge.orange{background:rgba(242,104,11,.2);color:#ffc9a4;border-color:rgba(242,104,11,.35)}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:32px 28px;box-shadow:var(--shadow);margin:28px auto;max-width:820px}
+  .card h2{font-size:22px;font-weight:800;color:var(--orange);margin-bottom:10px;letter-spacing:-.5px}
+  .card p{color:var(--ink);font-size:14.5px;margin-bottom:10px}
+  .card p.muted{color:var(--muted);font-size:13.5px}
+
+  .countdown-box{display:flex;justify-content:center;gap:16px;margin:18px 0;flex-wrap:wrap}
+  .countdown-box .box{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:14px 20px;min-width:120px;text-align:center}
+  .countdown-box .box b{font-size:22px;font-weight:800;color:var(--slate);display:block;line-height:1}
+  .countdown-box .box span{font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.3px}
+
+  .vid-q{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:16px 0}
+  .vid-q h4{font-size:13px;color:var(--slate);margin-bottom:8px}
+  .vid-q ol{padding-left:18px;font-size:14px;color:var(--ink);line-height:1.6}
+
+  .code-q{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:16px}
+  .code-q .q-label{font-size:11px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--orange);margin-bottom:6px}
+  .code-q p{font-size:14.5px;color:var(--ink);margin-bottom:10px}
+  .code-q textarea{width:100%;min-height:140px;border:1.5px solid var(--line);border-radius:10px;padding:12px 14px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13.5px;color:var(--ink);background:#fff;resize:vertical}
+  .code-q textarea:focus{outline:none;border-color:var(--orange)}
+  .stage-progress{display:flex;gap:8px;margin-bottom:18px}
+  .stage-progress .sp{flex:1;text-align:center;padding:8px 10px;border-radius:10px;background:var(--bg);border:1px solid var(--line);font-size:11.5px;font-weight:700;color:var(--muted)}
+  .stage-progress .sp.current{background:var(--orange-l);border-color:var(--orange);color:var(--orange-d)}
+  .stage-progress .sp.done{background:#f6fff8;border-color:var(--ok);color:var(--ok)}
+
+  .vid-stage{position:relative;background:#0f172a;border-radius:16px;overflow:hidden;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+  .vid-stage video{width:100%;height:100%;object-fit:cover;display:none;background:#0f172a}
+  .vid-ph{color:#9fb0c4;font-size:13px;text-align:center;padding:20px;max-width:320px}
+  .vid-timer{position:absolute;top:12px;right:12px;background:rgba(0,0,0,.55);color:#fff;font-weight:700;font-size:13px;padding:5px 10px;border-radius:8px;font-variant-numeric:tabular-nums}
+
+  .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px}
+  .hidden{display:none!important}
+
+  .result-box{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:18px;margin-top:16px}
+  .demo-note{font-size:12.5px;color:var(--muted);margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)}
+
+  footer.simple{padding:28px 0;border-top:1px solid var(--line);margin-top:30px;color:var(--muted);font-size:12.5px;text-align:center}
+  footer.simple a{color:var(--orange);font-weight:700}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-in">
+    <a href="index.html" class="brand"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAzMiAzMic+PHJlY3Qgd2lkdGg9JzMyJyBoZWlnaHQ9JzMyJyByeD0nNycgZmlsbD0nIzJiM2E0ZCcvPjxjaXJjbGUgY3g9JzE2JyBjeT0nMTYnIHI9JzknIGZpbGw9JyNGMjY4MEInLz48L3N2Zz4=" alt="Veer" /> Veer<span class="dot">.</span></a>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="ai-skill-test.html">Stage 1 assessment</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-in wrap">
+    <span class="badge orange">STAGE 2 OF 2 · CODING + STRUCTURED AI INTERVIEW</span>
+    <h1>Stage 2 — Coding &amp; AI Interview</h1>
+    <p class="lead">You're here because you passed Stage 1. This link was emailed to you and is valid for a 24-hour window from when it was issued. Stage 2 has two parts: 2 coding questions, then a short video interview.</p>
+  </div>
+</section>
+
+<div class="wrap">
+
+  <!-- Checking token -->
+  <div class="card" id="checkingScreen">
+    <h2>Checking your invite…</h2>
+    <p class="muted">One moment while we verify your link.</p>
+  </div>
+
+  <!-- Invalid token -->
+  <div class="card hidden" id="invalidScreen">
+    <h2>Invite link not recognised</h2>
+    <p>We couldn't find a Stage 2 invite for this link. It may have been mistyped, or you may not have completed Stage 1 yet.</p>
+    <p class="muted">If you believe this is an error, please contact support with the email address you registered with.</p>
+    <div class="actions"><a href="ai-skill-test.html" class="btn">Go to Stage 1 assessment</a></div>
+  </div>
+
+  <!-- Expired token -->
+  <div class="card hidden" id="expiredScreen">
+    <h2>This invite has expired</h2>
+    <p>Stage 2 invites are valid for <strong>24 hours</strong> from when they're issued, to keep the process fair and timely for every candidate. This link expired on <strong id="expiredDate">—</strong>.</p>
+    <p class="muted">You'll need to be re-invited. Please contact your recruiter, or retake Stage 1 if a new attempt is available to you.</p>
+    <div class="actions"><a href="ai-skill-test.html" class="btn">Go to Stage 1 assessment</a></div>
+  </div>
+
+  <!-- Already used -->
+  <div class="card hidden" id="usedScreen">
+    <h2>This interview has already been submitted</h2>
+    <p>Our records show you've already completed Stage 2 with this invite link. A human reviewer will follow up with next steps.</p>
+    <div class="actions"><a href="index.html" class="btn ghost">Return to Home</a></div>
+  </div>
+
+  <!-- Valid: coding screen (Stage 2, part 1) -->
+  <div class="card hidden" id="codingScreen">
+    <h2 id="codingWelcomeMsg">Welcome back</h2>
+    <div class="countdown-box">
+      <div class="box"><b id="cdHoursA">--</b><span>Hours left</span></div>
+      <div class="box"><b id="cdMinutesA">--</b><span>Minutes left</span></div>
+      <div class="box"><b id="cdExpiresAtA">--</b><span>Window expires</span></div>
+    </div>
+    <div class="stage-progress">
+      <div class="sp current">1. Coding questions</div>
+      <div class="sp">2. Video interview</div>
+    </div>
+    <p>Answer both questions in your own words/code — any language. These are captured for a human reviewer alongside your Stage 1 score and interview; they are not auto-graded pass/fail.</p>
+    <div class="code-q">
+      <div class="q-label">Question 1</div>
+      <p>Write a function that returns the top-k most frequent words in a block of text.</p>
+      <textarea id="code1" placeholder="// Any language — pseudocode is fine"></textarea>
+    </div>
+    <div class="code-q">
+      <div class="q-label">Question 2</div>
+      <p>Given a list of numbers, write a function to find the second-largest value without fully sorting the list.</p>
+      <textarea id="code2" placeholder="// Any language — pseudocode is fine"></textarea>
+    </div>
+    <div class="actions">
+      <button class="btn" onclick="submitCoding()">Continue to interview →</button>
+    </div>
+  </div>
+
+  <!-- Valid: interview screen (Stage 2, part 2) -->
+  <div class="card hidden" id="interviewScreen">
+    <h2 id="welcomeMsg">Welcome back</h2>
+    <div class="countdown-box">
+      <div class="box"><b id="cdHours">--</b><span>Hours left</span></div>
+      <div class="box"><b id="cdMinutes">--</b><span>Minutes left</span></div>
+      <div class="box"><b id="cdExpiresAt">--</b><span>Window expires</span></div>
+    </div>
+    <div class="stage-progress">
+      <div class="sp done">1. Coding questions</div>
+      <div class="sp current">2. Video interview</div>
+    </div>
+    <p>Answer a few short questions on camera. Your video is recorded for human reviewers only and is never analysed by AI — your spoken answers are transcribed and assessed against a structured rubric for communication, structure and technical clarity.</p>
+    <div class="vid-q">
+      <h4>Sample questions</h4>
+      <ol>
+        <li>Tell us about a project where you used AI or automation.</li>
+        <li>How do you keep an LLM-based system safe and on-task?</li>
+        <li>Walk us through how you'd debug a failing agentic workflow.</li>
+      </ol>
+    </div>
+    <div class="vid-stage">
+      <video id="vidPreview" autoplay muted playsinline></video>
+      <div class="vid-ph" id="vidPlaceholder"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="display:block;margin:0 auto 8px"><rect x="3" y="6" width="13" height="12" rx="2.5" stroke="#9fb0c4" stroke-width="1.8"/><path d="M16 10.5l5-3v9l-5-3z" stroke="#9fb0c4" stroke-width="1.8" stroke-linejoin="round"/></svg><span id="vidPhText">Camera off — start when ready, or skip with a simulated interview.</span></div>
+      <div class="vid-timer" id="vidTimer" style="display:none">00:00</div>
+    </div>
+    <div class="actions">
+      <button class="btn" id="vidStart" onclick="startVideo()">Start recording</button>
+      <button class="btn hidden" id="vidStop" onclick="stopVideo()">Stop &amp; submit</button>
+      <button class="btn ghost" id="vidSkip" onclick="simulateInterview()">Skip with simulated interview</button>
+    </div>
+    <div class="result-box hidden" id="vidResult"></div>
+  </div>
+
+  <!-- Completed -->
+  <div class="card hidden" id="completedScreen">
+    <h2>Submitted for human review</h2>
+    <p>Thanks — your coding answers and interview have both been recorded. Every outcome at Veer is confirmed by a trained human reviewer, alongside your Stage 1 score, before it reaches you; nothing here is decided by AI alone.</p>
+    <p class="muted">We'll be in touch by email with next steps.</p>
+    <div class="actions"><a href="index.html" class="btn">Return to Home</a></div>
+  </div>
+
+</div>
+
+<footer class="simple wrap">
+  <p>Stage 2 — Coding &amp; AI Interview — <a href="index.html">Veer</a> · Not legal advice · Built for the UK &amp; Ireland recruitment market</p>
+</footer>
+
+<script>
+/* ============================================================
+   Stage 2 — token-gated AI interview page
+   Reads ?token= and validates against localStorage 'veerStage2Invites'
+   written by ai-skill-test.html on a Stage-1 pass (24h window).
+   ============================================================ */
+function $(id){ return document.getElementById(id); }
+
+function showOnly(id) {
+  ['checkingScreen','invalidScreen','expiredScreen','usedScreen','codingScreen','interviewScreen','completedScreen'].forEach(function(s){
+    $(s).classList.toggle('hidden', s !== id);
+  });
+}
+
+function getInvites() {
+  try {
+    const store = JSON.parse(localStorage.getItem('veerStage2Invites') || '{"invites":[]}');
+    return store.invites || [];
+  } catch (e) { return []; }
+}
+
+function saveInvites(invites) {
+  try { localStorage.setItem('veerStage2Invites', JSON.stringify({ invites: invites })); } catch (e) {}
+}
+
+let currentInvite = null;
+let countdownInterval = null;
+
+function init() {
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get('token');
+
+  if (!token) { showOnly('invalidScreen'); return; }
+
+  const invites = getInvites();
+  const invite = invites.find(function(i){ return i.token === token; });
+
+  if (!invite) { showOnly('invalidScreen'); return; }
+
+  if (invite.used) { showOnly('usedScreen'); return; }
+
+  const expiresAt = new Date(invite.expiresAt);
+  if (new Date() > expiresAt) {
+    $('expiredDate').textContent = expiresAt.toLocaleString();
+    showOnly('expiredScreen');
+    return;
+  }
+
+  currentInvite = invite;
+  const name = 'Welcome back, ' + (invite.first || 'Candidate') + ' ' + (invite.last || '');
+  $('codingWelcomeMsg').textContent = name;
+  $('welcomeMsg').textContent = name;
+  showOnly('codingScreen');
+  startCountdown(expiresAt);
+}
+
+function startCountdown(expiresAt) {
+  const expiresLabel = expiresAt.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+  $('cdExpiresAtA').textContent = expiresLabel;
+  $('cdExpiresAt').textContent = expiresLabel;
+  function tick() {
+    const msLeft = expiresAt - new Date();
+    if (msLeft <= 0) {
+      clearInterval(countdownInterval);
+      $('expiredDate').textContent = expiresAt.toLocaleString();
+      showOnly('expiredScreen');
+      return;
+    }
+    const hrs = Math.floor(msLeft / 3600000);
+    const mins = Math.floor((msLeft % 3600000) / 60000);
+    $('cdHoursA').textContent = hrs;
+    $('cdMinutesA').textContent = mins;
+    $('cdHours').textContent = hrs;
+    $('cdMinutes').textContent = mins;
+  }
+  tick();
+  countdownInterval = setInterval(tick, 30000);
+}
+
+/* Coding questions (Stage 2, part 1) — captured for human review, not auto-graded */
+function submitCoding() {
+  if (!currentInvite) return;
+  const code1 = $('code1').value.trim();
+  const code2 = $('code2').value.trim();
+  if (!code1 || !code2) {
+    alert('Please answer both questions before continuing — you can write pseudocode if you prefer.');
+    return;
+  }
+  const invites = getInvites();
+  const idx = invites.findIndex(function(i){ return i.token === currentInvite.token; });
+  if (idx > -1) {
+    invites[idx].codingAnswers = [
+      { question: 'Top-k most frequent words', answer: code1 },
+      { question: 'Second-largest without full sort', answer: code2 }
+    ];
+    saveInvites(invites);
+  }
+  showOnly('interviewScreen');
+}
+
+function markInviteUsed() {
+  if (!currentInvite) return;
+  const invites = getInvites();
+  const idx = invites.findIndex(function(i){ return i.token === currentInvite.token; });
+  if (idx > -1) {
+    invites[idx].used = true;
+    invites[idx].completedAt = new Date().toISOString();
+    saveInvites(invites);
+  }
+}
+
+/* Camera / recording — same pattern as index.html's async video interview */
+let _vidStream = null;
+let _vidTimer = null;
+let _vidSecs = 0;
+
+function startVideo() {
+  const ph = $('vidPlaceholder');
+  const phText = $('vidPhText');
+  const prev = $('vidPreview');
+  const startBtn = $('vidStart');
+  const stopBtn = $('vidStop');
+  const skipBtn = $('vidSkip');
+  const timer = $('vidTimer');
+
+  phText.textContent = 'Requesting camera…';
+  if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+    navigator.mediaDevices.getUserMedia({ video: true, audio: false }).then(function (stream) {
+      _vidStream = stream;
+      prev.srcObject = stream;
+      prev.style.display = 'block';
+      ph.style.display = 'none';
+      startBtn.classList.add('hidden');
+      stopBtn.classList.remove('hidden');
+      skipBtn.classList.add('hidden');
+      _vidSecs = 0;
+      timer.style.display = 'block';
+      _vidTimer = setInterval(function () {
+        _vidSecs++;
+        const m = String(Math.floor(_vidSecs / 60)).padStart(2, '0');
+        const s = String(_vidSecs % 60).padStart(2, '0');
+        timer.textContent = m + ':' + s;
+      }, 1000);
+    }).catch(function () {
+      phText.textContent = "Camera unavailable in this prototype — use “Skip with simulated interview” to continue.";
+    });
+  } else {
+    phText.textContent = "Camera unavailable in this prototype — use “Skip with simulated interview” to continue.";
+  }
+}
+
+function stopVideo() {
+  if (_vidStream) { _vidStream.getTracks().forEach(function (t) { t.stop(); }); _vidStream = null; }
+  if (_vidTimer) { clearInterval(_vidTimer); _vidTimer = null; }
+  finishInterview();
+}
+
+function simulateInterview() {
+  finishInterview();
+}
+
+function finishInterview() {
+  if (countdownInterval) { clearInterval(countdownInterval); countdownInterval = null; }
+  markInviteUsed();
+  const r = $('vidResult');
+  r.classList.remove('hidden');
+  r.innerHTML = '<p><strong>Recording received.</strong> Your coding answers and interview have both been queued for human review.</p>' +
+    '<div class="demo-note">Demo mode: no video is actually uploaded or scored here. In production, video is stored for human reviewers only and is never analysed by AI — only the transcript is scored, and every result (coding + interview) is confirmed by a trained reviewer before it reaches you.</div>';
+  $('vidStart').classList.add('hidden');
+  $('vidStop').classList.add('hidden');
+  $('vidSkip').classList.add('hidden');
+  setTimeout(function () { showOnly('completedScreen'); }, 1400);
+}
+
+window.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+# Render Blueprint — Veer assessment platform
+# Database + interview videos live in Supabase (Postgres + Storage), so the
+# Render service itself is stateless — the free plan is fine.
+services:
+  - type: web
+    name: veer
+    runtime: node
+    plan: free
+    region: frankfurt
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    healthCheckPath: /
+    autoDeploy: true
+    envVars:
+      - key: DATABASE_URL
+        sync: false            # Supabase → Settings → Database → Session pooler URI
+      - key: SUPABASE_URL
+        value: https://nwdquveqyluepoqbuosg.supabase.co
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false            # Supabase → Settings → API → service_role (secret)
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: NODE_ENV
+        value: production
+      # Optional outbound email
+      - key: EMAIL_FROM
+        sync: false
+      - key: SMTP_HOST
+        sync: false
+      - key: SMTP_PORT
+        sync: false
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASS
+        sync: false

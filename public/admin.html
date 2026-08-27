@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Admin Panel — Veer</title>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAzMiAzMic+PHJlY3Qgd2lkdGg9JzMyJyBoZWlnaHQ9JzMyJyByeD0nNycgZmlsbD0nIzJiM2E0ZCcvPjxjaXJjbGUgY3g9JzE2JyBjeT0nMTYnIHI9JzknIGZpbGw9JyNGMjY4MEInLz48L3N2Zz4=" />
+<style>
+  :root{--slate:#2b3a4d;--slate2:#3c5468;--orange:#F2680B;--orange-d:#D9570A;--bad:#dc2626;--ok:#15803d;--warn:#b45309;--ink:#1f2a36;--muted:#5e6b78;--line:#ece7e1;--bg:#faf8f6;--card:#fff;--shadow:0 10px 30px rgba(43,58,77,.10)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5}
+  .wrap{max-width:1280px;margin:0 auto;padding:0 22px}
+  header.nav{background:rgba(255,255,255,.95);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:50}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:19px;color:var(--slate)}
+  .brand .dot{color:var(--orange)}
+  .btn{display:inline-flex;align-items:center;gap:8px;cursor:pointer;border:none;font-weight:700;border-radius:10px;padding:10px 18px;font-size:14px;background:var(--orange);color:#fff;transition:.18s}
+  .btn:hover{background:var(--orange-d)}
+  .btn.ghost{background:#fff;color:var(--slate);border:1px solid var(--line)}
+  .sec{padding:32px 0 60px}
+
+  /* LOGIN */
+  .login-card{max-width:400px;margin:60px auto;background:#fff;border:1px solid var(--line);border-radius:18px;padding:32px;box-shadow:var(--shadow)}
+  .login-card h1{font-size:22px;margin-bottom:6px;color:var(--slate)}
+  .login-card p{font-size:13.5px;color:var(--muted);margin-bottom:20px}
+  .login-card label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);display:block;margin-bottom:6px}
+  .login-card input{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:10px;font-size:14px;margin-bottom:16px;outline:none}
+  .login-card input:focus{border-color:var(--orange)}
+  .err{background:#fff5f5;border:1px solid #fecaca;color:#b91c1c;font-size:13px;padding:10px 12px;border-radius:8px;margin-bottom:14px;display:none}
+
+  .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:28px}
+  .stat-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:var(--shadow)}
+  .stat-card b{font-size:26px;display:block;color:var(--slate);line-height:1.1}
+  .stat-card span{font-size:11.5px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+  .stat-card.bad b{color:var(--bad)}
+  .stat-card.ok b{color:var(--ok)}
+
+  .toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;align-items:center}
+  .toolbar select,.toolbar input{padding:9px 12px;border:1px solid var(--line);border-radius:9px;font-size:13.5px;background:#fff}
+
+  .card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:var(--shadow)}
+  table{width:100%;border-collapse:collapse}
+  th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line);font-size:13px;vertical-align:middle}
+  th{font-weight:700;color:var(--muted);text-transform:uppercase;font-size:10.5px;letter-spacing:.5px;background:#faf8f6;position:sticky;top:0}
+  .card{overflow-x:auto;overflow-y:visible}
+  .tag{display:inline-block;padding:3px 9px;border-radius:999px;font-size:11px;font-weight:800;white-space:nowrap}
+  .tag.pass{background:rgba(21,128,61,.12);color:var(--ok)}
+  .tag.fail{background:rgba(220,38,38,.1);color:var(--bad)}
+  .tag.pend{background:rgba(248,160,60,.18);color:var(--orange-d)}
+  .tag.cheat{background:#7f1d1d;color:#fff}
+  .linkbtn{background:none;border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-size:12px;font-weight:700;cursor:pointer;color:var(--slate)}
+  .linkbtn:hover{border-color:var(--orange);color:var(--orange)}
+  .muted{color:var(--muted)}
+
+  /* VIDEO MODAL */
+  .modal{display:none;position:fixed;inset:0;background:rgba(15,23,42,.9);z-index:9999;align-items:center;justify-content:center;padding:20px}
+  .modal.show{display:flex}
+  .modal-inner{background:#fff;border-radius:16px;max-width:760px;width:100%;padding:22px}
+  .modal-inner h3{font-size:17px;margin-bottom:4px;color:var(--slate)}
+  .modal-inner .meta{font-size:12.5px;color:var(--muted);margin-bottom:14px}
+  .modal-inner video{width:100%;border-radius:12px;background:#000;max-height:60vh}
+  .modal-close{float:right;cursor:pointer;font-size:20px;color:var(--muted);border:none;background:none}
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="wrap nav-in">
+    <div class="brand">Veer<span class="dot">.</span> &nbsp;Admin Panel</div>
+    <div id="navRight" style="display:none">
+      <span id="adminEmail" class="muted" style="margin-right:14px;font-weight:700"></span>
+      <button class="btn ghost" onclick="logout()">Sign out</button>
+    </div>
+  </div>
+</header>
+
+<!-- LOGIN -->
+<div id="loginView" class="wrap">
+  <div class="login-card">
+    <h1>Admin sign in</h1>
+    <p>Restricted area — assessment results, cheating flags and interview recordings.</p>
+    <div class="err" id="loginErr"></div>
+    <label>Email</label>
+    <input type="email" id="email" placeholder="admin@veer.ie" autocomplete="username" />
+    <label>Password</label>
+    <input type="password" id="password" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')login()" />
+    <button class="btn" style="width:100%;justify-content:center" onclick="login()">Sign in</button>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<main id="dashView" class="wrap sec" style="display:none">
+  <div class="stats-grid" id="statsGrid"></div>
+
+  <!-- PASSING CRITERIA -->
+  <div class="card" style="margin-bottom:26px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+      <h3 style="margin:0;font-size:16px;cursor:pointer;" onclick="toggleCriteria()">Passing criteria — each stage <span id="critToggle" class="muted" style="font-size:12px;font-weight:700;">Hide ▲</span></h3>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="btn" onclick="downloadAllDoc()">📄 Word report (all candidates)</button>
+        <button class="btn ghost" onclick="downloadReport()">⬇ HTML report</button>
+        <button class="btn ghost" onclick="downloadCsv()">⬇ CSV</button>
+      </div>
+    </div>
+    <div id="criteriaBody" style="margin-top:16px;">
+      <div id="criteriaGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;"></div>
+      <div id="criteriaNotes" style="margin-top:14px;font-size:12.5px;color:var(--muted);line-height:1.7;"></div>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <input type="text" id="search" placeholder="Search name or email…" oninput="render()" />
+    <select id="filter" onchange="render()">
+      <option value="all">All candidates</option>
+      <option value="PASSED_ALL">Passed all stages</option>
+      <option value="REJECTED_CHEATING">Cheating</option>
+      <option value="FAILED_STAGE1">Failed Stage 1</option>
+      <option value="FAILED_STAGE2">Failed Stage 2</option>
+      <option value="FAILED_STAGE3">Failed Stage 3</option>
+      <option value="IN_PROGRESS">In progress</option>
+      <option value="HAS_VIDEO">Has interview video</option>
+    </select>
+    <span class="muted" id="count"></span>
+  </div>
+
+  <div class="card" style="overflow-x:auto">
+    <table>
+      <thead>
+        <tr>
+          <th>Candidate</th><th>Email</th><th>ATS</th><th>Stage 1 (MCQ)</th>
+          <th>Stage 2 (Code)</th><th>Stage 3 (Interview)</th><th>Total</th>
+          <th>Verdict</th><th>Cheating</th><th>Video</th><th>Report</th>
+        </tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </div>
+</main>
+
+<div class="modal" id="detailModal">
+  <div class="modal-inner" style="max-width:900px;max-height:88vh;overflow-y:auto;">
+    <button class="modal-close" onclick="document.getElementById('detailModal').classList.remove('show')">✕</button>
+    <div id="dmBody">Loading…</div>
+  </div>
+</div>
+
+<div class="modal" id="videoModal">
+  <div class="modal-inner">
+    <button class="modal-close" onclick="closeVideo()">✕</button>
+    <h3 id="vmName">Interview recording</h3>
+    <div class="meta" id="vmMeta"></div>
+    <video id="vmVideo" controls playsinline></video>
+    <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;">
+      <a id="vmDownload" class="btn" href="#" download style="text-decoration:none;">⬇ Download video (.webm)</a>
+      <a id="vmOpen" class="btn ghost" href="#" target="_blank" rel="noopener" style="text-decoration:none;">↗ Open in new tab</a>
+    </div>
+    <p style="font-size:11.5px;color:var(--muted);margin-top:8px;">If the download opens in the browser instead of saving, right-click the video → “Save video as…”.</p>
+  </div>
+</div>
+
+<script>
+let DATA = [];
+let CRITERIA = null;
+let STATS = null;
+let ADMIN_EMAIL = '';
+
+function fmtDur(s){ if(s==null) return '—'; const m=Math.floor(s/60), ss=s%60; return m+'m '+String(ss).padStart(2,'0')+'s'; }
+function fmtBytes(b){ if(!b) return ''; return (b/1048576).toFixed(1)+' MB'; }
+
+async function checkAuth(){
+  try{
+    const res = await fetch('/api/admin/dashboard');
+    if(res.status===200){
+      const d = await res.json();
+      if(d.ok){ showDash(d); return; }
+    }
+  }catch(e){}
+  document.getElementById('loginView').style.display='block';
+  document.getElementById('dashView').style.display='none';
+  document.getElementById('navRight').style.display='none';
+}
+
+async function login(){
+  const err = document.getElementById('loginErr');
+  err.style.display='none';
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  try{
+    const res = await fetch('/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password})});
+    const d = await res.json();
+    if(!res.ok || !d.ok){ err.textContent = d.error || 'Sign in failed'; err.style.display='block'; return; }
+    if(d.user.role !== 'admin'){ err.textContent='This account is not an admin.'; err.style.display='block'; await fetch('/api/auth/logout',{method:'POST'}); return; }
+    checkAuth();
+  }catch(e){ err.textContent='Network error'; err.style.display='block'; }
+}
+
+async function logout(){ await fetch('/api/auth/logout',{method:'POST'}); location.reload(); }
+
+function showDash(d){
+  document.getElementById('loginView').style.display='none';
+  document.getElementById('dashView').style.display='block';
+  document.getElementById('navRight').style.display='block';
+  document.getElementById('adminEmail').textContent = d.admin.email;
+  DATA = d.candidates;
+  CRITERIA = d.criteria;
+  STATS = d.stats;
+  ADMIN_EMAIL = d.admin.email;
+
+  const s = d.stats;
+  document.getElementById('statsGrid').innerHTML = `
+    <div class="stat-card"><b>${s.totalCandidates}</b><span>Total candidates</span></div>
+    <div class="stat-card ok"><b>${s.passedAll}</b><span>Passed all stages</span></div>
+    <div class="stat-card bad"><b>${s.cheating}</b><span>Cheating flagged</span></div>
+    <div class="stat-card"><b>${s.failedStage1}</b><span>Failed Stage 1</span></div>
+    <div class="stat-card"><b>${s.failedStage2}</b><span>Failed Stage 2</span></div>
+    <div class="stat-card"><b>${s.failedStage3}</b><span>Failed Stage 3</span></div>
+    <div class="stat-card"><b>${s.inProgress}</b><span>In progress</span></div>
+    <div class="stat-card"><b>${s.recordings}</b><span>Interview videos</span></div>`;
+
+  renderCriteria(d.criteria);
+  render();
+}
+
+function renderCriteria(c){
+  if(!c){ return; }
+  const row = (label, val) => val ? `<div style="font-size:11.5px;margin-top:5px;"><b style="color:var(--slate);">${label}:</b> <span style="color:var(--ink);">${esc(val)}</span></div>` : '';
+  const card = (st, accent) => `
+    <div style="border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:var(--bg);">
+      <div style="font-size:13px;font-weight:800;color:var(--slate);margin-bottom:6px;">${esc(st.name)}</div>
+      <div style="display:inline-block;background:${accent};color:#fff;font-weight:800;font-size:12px;padding:3px 10px;border-radius:999px;margin-bottom:4px;">PASS: ${esc(st.pass)}</div>
+      ${row('Marks to pass', st.passMarks)}
+      ${row('Total', st.totalItems)}
+      ${row('Time', st.time)}
+      ${row('Scoring', st.scoring)}
+      <div style="font-size:11px;color:var(--bad);margin-top:8px;border-top:1px dashed var(--line);padding-top:6px;font-weight:600;">${esc(st.gate)}</div>
+    </div>`;
+  document.getElementById('criteriaGrid').innerHTML =
+    card(c.stage1, '#F2680B') + card(c.stage2, '#F2680B') + card(c.stage3, '#15803d');
+  document.getElementById('criteriaNotes').innerHTML =
+    `<b>Final verdict:</b> ${esc(c.finalVerdict)}<br><b>Composite score:</b> ${esc(c.compositeScore||'')}<br><b>Anti-cheating:</b> ${esc(c.antiCheating)}`;
+}
+
+function toggleCriteria(){
+  const b = document.getElementById('criteriaBody');
+  const t = document.getElementById('critToggle');
+  const hidden = b.style.display === 'none';
+  b.style.display = hidden ? 'block' : 'none';
+  t.textContent = hidden ? 'Hide ▲' : 'Show ▼';
+}
+
+function stageTag(passed, extra){
+  if(passed===true) return '<span class="tag pass">PASS'+(extra?' '+extra:'')+'</span>';
+  if(passed===false) return '<span class="tag fail">FAIL'+(extra?' '+extra:'')+'</span>';
+  return '<span class="tag pend">—</span>';
+}
+
+function render(){
+  const q = document.getElementById('search').value.toLowerCase();
+  const f = document.getElementById('filter').value;
+  const rows = DATA.filter(r=>{
+    if(q && !(r.name.toLowerCase().includes(q) || r.email.toLowerCase().includes(q))) return false;
+    if(f==='all') return true;
+    if(f==='HAS_VIDEO') return !!r.recording;
+    return r.verdict===f;
+  });
+  document.getElementById('count').textContent = rows.length+' of '+DATA.length+' shown';
+  document.getElementById('rows').innerHTML = rows.map(r=>{
+    const vTag = r.cheatingFlag ? '<span class="tag cheat">CHEATING</span>'
+      : r.passed ? '<span class="tag pass">'+r.verdictLabel+'</span>'
+      : r.verdict==='IN_PROGRESS' ? '<span class="tag pend">'+r.verdictLabel+'</span>'
+      : '<span class="tag fail">'+r.verdictLabel+'</span>';
+    const video = r.recording
+      ? `<button class="linkbtn" onclick='playVideo(${JSON.stringify(r).replace(/'/g,"&#39;")})'>▶ ${fmtDur(r.recording.durationSeconds)}</button>` +
+        ` <a class="linkbtn" href="${r.recording.url}/?dl=1" download title="Download .webm">⬇</a>`
+      : '<span class="muted">none</span>';
+    return `<tr>
+      <td><b>${esc(r.name)}</b><br><span class="muted">${esc(r.targetRole||'')}</span></td>
+      <td>${esc(r.email)}</td>
+      <td>${r.atsScore!=null?r.atsScore+'%':'—'}</td>
+      <td>${r.stage1Percentage!=null?r.stage1Percentage+'% ':''}${stageTag(r.stage1Passed)}</td>
+      <td>${r.stage2Score!=null?r.stage2Score+'% ':''}${stageTag(r.stage2Passed)}</td>
+      <td>${fmtDur(r.stage3Seconds)} ${stageTag(r.stage3Passed)}</td>
+      <td><b>${r.totalScore!=null?r.totalScore:'—'}</b></td>
+      <td>${vTag}</td>
+      <td>${r.cheatingFlag?'<span class="muted" title="'+esc(r.cheatingReason||'')+'">'+esc((r.cheatingReason||'').slice(0,50))+'…</span>':'—'}</td>
+      <td>${video}</td>
+      <td>
+        <button class="linkbtn" onclick='openDetail("${r.candidateId}")' title="View all answers, code, interview and video">📋 View</button>
+        <button class="linkbtn" onclick='downloadCandidateDoc(${JSON.stringify(r).replace(/'/g,"&#39;")})' title="Download this candidate's detailed Word report">📄 Word</button>
+      </td>
+    </tr>`;
+  }).join('') || '<tr><td colspan="11" style="text-align:center;padding:30px" class="muted">No candidates match.</td></tr>';
+}
+
+function playVideo(r){
+  document.getElementById('vmName').textContent = r.name + ' — Stage 3 interview';
+  document.getElementById('vmMeta').textContent =
+    `${r.email} · duration ${fmtDur(r.recording.durationSeconds)} · ${fmtBytes(r.recording.sizeBytes)} · captured ${r.recording.reason} · ${r.recording.createdAt}`;
+  const v = document.getElementById('vmVideo');
+  v.src = r.recording.url;
+  document.getElementById('vmDownload').href = r.recording.url + '/?dl=1';
+  document.getElementById('vmOpen').href = r.recording.url;
+  document.getElementById('videoModal').classList.add('show');
+}
+function closeVideo(){
+  const v=document.getElementById('vmVideo'); v.pause(); v.src='';
+  document.getElementById('videoModal').classList.remove('show');
+}
+
+function esc(v){ return String(v==null?'':v).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])); }
+
+async function openDetail(id){
+  const m = document.getElementById('detailModal');
+  const b = document.getElementById('dmBody');
+  b.innerHTML = 'Loading…';
+  m.classList.add('show');
+  let d;
+  try { d = await (await fetch('/api/admin/candidate/'+id)).json(); }
+  catch(e){ b.innerHTML = '<p style="color:var(--bad)">Failed to load.</p>'; return; }
+  if(!d.ok){ b.innerHTML = '<p style="color:var(--bad)">'+esc(d.error||'Error')+'</p>'; return; }
+
+  const c=d.candidate, cv=d.cv, s1=d.stage1, s2=d.stage2, s3=d.stage3;
+  const optText=(opts,idlist)=> (idlist||[]).map(id=>{
+    const o=(opts||[]).find(x=>x.id===id); return o?(id+': '+o.text):id;
+  }).join(' | ') || '—';
+
+  let mcqHtml = '';
+  if(s1.questions && s1.questions.length){
+    mcqHtml = s1.questions.map(q=>`
+      <div style="border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin-bottom:6px;background:${q.isCorrect?'#f6fff8':'#fff5f5'}">
+        <div style="font-size:12px;font-weight:700">Q${q.n} <span class="muted">(${esc(q.category)})</span> ${q.isCorrect?'✅':'❌'}</div>
+        <div style="font-size:12.5px;margin:3px 0">${esc(q.question)}</div>
+        <div style="font-size:11.5px"><b>Answered:</b> ${esc(optText(q.options,q.givenIds))}</div>
+        <div style="font-size:11.5px;color:var(--ok)"><b>Correct:</b> ${esc(optText(q.options,q.correctIds))}</div>
+      </div>`).join('');
+  } else mcqHtml = '<p class="muted">No MCQ attempt recorded.</p>';
+
+  const codeHtml = s2.submissions && Object.keys(s2.submissions).length
+    ? Object.entries(s2.submissions).map(([k,v])=>`<p style="font-size:12px;font-weight:700;margin:8px 0 3px">${esc(k)}</p><pre style="background:#1e293b;color:#f8fafc;padding:10px;border-radius:8px;font-size:12px;overflow-x:auto;white-space:pre-wrap">${esc(v)}</pre>`).join('')
+    : '<p class="muted">No code submitted.</p>';
+
+  const intHtml = s3.responses && Object.keys(s3.responses).length
+    ? Object.entries(s3.responses).map(([k,v])=>`<p style="font-size:12px;font-weight:700;margin:8px 0 3px">${esc(k)}</p><p style="background:var(--bg);border:1px solid var(--line);padding:10px;border-radius:8px;font-size:12.5px">${esc(v)}</p>`).join('')
+    : '<p class="muted">No interview answers recorded.</p>';
+
+  const vid = s3.recording
+    ? `<video src="${s3.recording.url}" controls playsinline style="width:100%;border-radius:10px;background:#000;max-height:52vh"></video>
+       <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap">
+         <a class="btn" href="${s3.recording.downloadUrl}" download style="text-decoration:none">⬇ Download video</a>
+         <a class="btn ghost" href="${s3.recording.url}" target="_blank" rel="noopener" style="text-decoration:none">↗ Open</a>
+       </div>
+       <p class="muted" style="font-size:11.5px;margin-top:6px">${fmtDur(s3.recording.durationSeconds)} · ${fmtBytes(s3.recording.sizeBytes)} · ${esc(s3.recording.reason)} · ${esc(s3.recording.createdAt)}</p>`
+    : '<p class="muted">No interview video recorded.</p>';
+
+  b.innerHTML = `
+    <h2 style="margin:0 0 2px">${esc(c.name)}</h2>
+    <div class="muted" style="font-size:12.5px;margin-bottom:14px">${esc(c.email)} · ${esc(c.targetRole||'')} · ${esc(c.location||'')} · registered ${esc(c.registeredAt)}</div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:16px">
+      <div class="stat-card"><b>${cv.atsScore!=null?cv.atsScore+'%':'—'}</b><span>CV / ATS score</span></div>
+      <div class="stat-card"><b>${s1.percentage!=null?s1.percentage+'%':'—'}</b><span>Stage 1 MCQ ${s1.correct!=null?'('+s1.correct+'/'+(s1.total||35)+')':''}</span></div>
+      <div class="stat-card"><b>${s2.score!=null?s2.score+'%':'—'}</b><span>Stage 2 code</span></div>
+      <div class="stat-card"><b>${s3.seconds!=null?fmtDur(s3.seconds):'—'}</b><span>Stage 3 interview</span></div>
+      <div class="stat-card"><b>${d.totalScore!=null?d.totalScore:'—'}</b><span>Total · ${esc(d.verdict||'—')}</span></div>
+    </div>
+
+    <h3 style="color:var(--orange);border-bottom:1px solid var(--line);padding-bottom:4px">CV — parsed text</h3>
+    <pre style="background:var(--bg);border:1px solid var(--line);padding:10px;border-radius:8px;font-size:11.5px;max-height:180px;overflow:auto;white-space:pre-wrap">${esc(cv.parsedText||'No CV text stored.')}</pre>
+
+    <h3 style="color:var(--orange);border-bottom:1px solid var(--line);padding-bottom:4px;margin-top:18px">Stage 1 — MCQ answers (${s1.questions?s1.questions.length:0})</h3>
+    ${mcqHtml}
+
+    <h3 style="color:var(--orange);border-bottom:1px solid var(--line);padding-bottom:4px;margin-top:18px">Stage 2 — code submitted</h3>
+    ${codeHtml}
+
+    <h3 style="color:var(--orange);border-bottom:1px solid var(--line);padding-bottom:4px;margin-top:18px">Stage 3 — interview answers</h3>
+    ${intHtml}
+
+    <h3 style="color:var(--orange);border-bottom:1px solid var(--line);padding-bottom:4px;margin-top:18px">Stage 3 — interview video</h3>
+    ${vid}`;
+}
+
+// ─────────────────────────── DOWNLOADS ───────────────────────────
+function saveBlob(filename, blob){
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = filename;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 4000);
+}
+function stamp(){ return new Date().toISOString().slice(0,19).replace(/[:T]/g,'-'); }
+
+// ─────────────────────── WORD (.doc) REPORTS ───────────────────────
+function s1Marks(p){ return p==null ? '—' : Math.round(p/100*35)+' / 35 correct'; }
+
+function remarksFor(r){
+  const out = [];
+  if (r.atsScore!=null) out.push('CV / ATS keyword match: '+r.atsScore+'%.');
+  if (r.stage1Percentage!=null){
+    out.push(r.stage1Passed
+      ? 'Stage 1 (MCQ): PASSED — '+r.stage1Percentage+'% ('+s1Marks(r.stage1Percentage)+'). Meets the 80% (28 / 35) requirement.'
+      : 'Stage 1 (MCQ): FAILED — '+r.stage1Percentage+'% ('+s1Marks(r.stage1Percentage)+'). Below the 80% (28 / 35) requirement. The assessment ends here — candidate cannot proceed.');
+  } else out.push('Stage 1 (MCQ): not attempted.');
+  if (r.stage2Score!=null){
+    out.push(r.stage2Passed
+      ? 'Stage 2 (Coding): PASSED — '+r.stage2Score+' / 100. Meets the 70 / 100 requirement.'
+      : 'Stage 2 (Coding): FAILED — '+r.stage2Score+' / 100. Below the 70 / 100 requirement. Candidate cannot proceed to Stage 3.');
+  } else if (r.stage1Passed) out.push('Stage 2 (Coding): not attempted yet.');
+  if (r.stage3Seconds!=null){
+    out.push('Stage 3 (Interview): COMPLETED — duration '+fmtDur(r.stage3Seconds)+
+      (r.stage3Seconds>=900 ? ' (reached the 15-minute cap; auto-submitted).' : ' (submitted early; all answers saved).')+
+      (r.recording ? ' Camera + microphone recording captured for HR review.' : ' No video recording captured.'));
+  } else if (r.stage2Passed) out.push('Stage 3 (Interview): not attempted yet.');
+  if (r.cheatingFlag) out.push('SECURITY: '+(r.cheatingReason||'flagged for a security violation')+'.');
+  out.push('Overall verdict: '+r.verdictLabel+(r.totalScore!=null ? ' — composite Veer score '+r.totalScore+' / 100.' : '.'));
+  return out;
+}
+
+function criteriaTableHtml(){
+  const c = CRITERIA; if(!c) return '';
+  const r = (st)=>`<tr><td><b>${esc(st.name)}</b></td><td>${esc(st.pass)}</td><td>${esc(st.passMarks||'—')}</td><td>${esc(st.time||'—')}</td><td>${esc(st.scoring||'—')}</td><td>${esc(st.gate||'—')}</td></tr>`;
+  return `<table border="1" cellspacing="0" cellpadding="5" style="border-collapse:collapse;width:100%;font-size:10pt">
+    <tr style="background:#eee"><th>Stage</th><th>Pass mark</th><th>Marks to pass</th><th>Time</th><th>Scoring</th><th>Gate</th></tr>
+    ${r(c.stage1)}${r(c.stage2)}${r(c.stage3)}
+    </table>
+    <p style="font-size:9.5pt"><b>Final verdict:</b> ${esc(c.finalVerdict||'')}<br>
+    <b>Composite score:</b> ${esc(c.compositeScore||'')}<br>
+    <b>Anti-cheating:</b> ${esc(c.antiCheating||'')}</p>`;
+}
+
+function candidateSectionHtml(r){
+  const marks = `<table border="1" cellspacing="0" cellpadding="5" style="border-collapse:collapse;width:100%;font-size:10pt">
+    <tr style="background:#eee"><th>Section</th><th>Result</th><th>Marks obtained</th><th>Passing mark</th><th>Status</th></tr>
+    <tr><td>CV / ATS match</td><td>${r.atsScore!=null?r.atsScore+'%':'—'}</td><td>${r.atsScore!=null?r.atsScore+' / 100':'—'}</td><td>informational</td><td>—</td></tr>
+    <tr><td>Stage 1 — AI Skills MCQ</td><td>${r.stage1Percentage!=null?r.stage1Percentage+'%':'—'}</td><td>${s1Marks(r.stage1Percentage)}</td><td>80% (28 / 35)</td><td>${r.stage1Passed===true?'PASS':r.stage1Passed===false?'FAIL':'—'}</td></tr>
+    <tr><td>Stage 2 — Coding Challenge</td><td>${r.stage2Score!=null?r.stage2Score+'%':'—'}</td><td>${r.stage2Score!=null?r.stage2Score+' / 100':'—'}</td><td>70 / 100</td><td>${r.stage2Passed===true?'PASS':r.stage2Passed===false?'FAIL':'—'}</td></tr>
+    <tr><td>Stage 3 — AI Video Interview</td><td>${r.stage3Seconds!=null?fmtDur(r.stage3Seconds):'—'}</td><td>${r.stage3Seconds!=null?'completed':'—'}</td><td>completion (15-min cap)</td><td>${r.stage3Passed===true?'DONE':(r.stage3Seconds!=null?'DONE':'—')}</td></tr>
+    <tr style="background:#f4f4f4"><td><b>TOTAL (composite Veer score)</b></td><td colspan="2"><b>${r.totalScore!=null?r.totalScore+' / 100':'—'}</b></td><td>—</td><td><b>${esc(r.verdictLabel)}</b></td></tr>
+    </table>`;
+  const remarks = '<ul style="font-size:10pt">'+remarksFor(r).map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>';
+  const info = `<table cellpadding="3" style="font-size:10pt">
+    <tr><td><b>Email</b></td><td>${esc(r.email)}</td></tr>
+    <tr><td><b>Target role</b></td><td>${esc(r.targetRole||'—')}</td></tr>
+    <tr><td><b>Location</b></td><td>${esc(r.location||'—')}</td></tr>
+    <tr><td><b>Registered</b></td><td>${esc(r.registeredAt||'—')}</td></tr>
+    <tr><td><b>Application status</b></td><td>${esc(r.applicationStatus||'—')}</td></tr>
+    <tr><td><b>Interview video</b></td><td>${r.recording?(esc(location.origin+r.recording.url+'/?dl=1')+'  ('+fmtDur(r.recording.durationSeconds)+', '+fmtBytes(r.recording.sizeBytes)+')'):'none'}</td></tr>
+    </table>`;
+  let answers = '';
+  if (r.stage2Submissions && Object.keys(r.stage2Submissions).length) {
+    answers += '<h3 style="color:#F2680B">Stage 2 — code submitted</h3>' +
+      Object.entries(r.stage2Submissions).map(([k, v]) =>
+        `<p style="font-size:10pt;margin:6px 0 2px"><b>${esc(k)}</b></p><pre style="font-size:9pt;background:#f4f4f4;border:1px solid #ddd;padding:8px;white-space:pre-wrap">${esc(v)}</pre>`).join('');
+  }
+  if (r.stage3Responses && Object.keys(r.stage3Responses).length) {
+    answers += '<h3 style="color:#F2680B">Stage 3 — interview answers</h3>' +
+      Object.entries(r.stage3Responses).map(([k, v]) =>
+        `<p style="font-size:10pt;margin:6px 0 2px"><b>${esc(k)}</b></p><p style="font-size:10pt;background:#f4f4f4;border:1px solid #ddd;padding:8px">${esc(v)}</p>`).join('');
+  }
+  return `<h2 style="color:#2b3a4d">${esc(r.name)}</h2>${info}
+    <h3 style="color:#F2680B">Marks &amp; passing</h3>${marks}
+    <h3 style="color:#F2680B">Remarks</h3>${remarks}
+    ${answers}`;
+}
+
+function wordDoc(title, bodyHtml){
+  return `<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+  <head><meta charset='utf-8'><title>${esc(title)}</title>
+  <!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom></w:WordDocument></xml><![endif]-->
+  <style>
+    body{font-family:'Calibri',Arial,sans-serif;font-size:11pt;color:#1f2a36}
+    h1{color:#2b3a4d;font-size:20pt;margin-bottom:0}
+    h2{font-size:15pt;margin-top:24pt;border-bottom:1px solid #ccc;padding-bottom:3pt}
+    h3{font-size:12pt;margin-bottom:4pt}
+    table{margin:6pt 0}
+    .sub{color:#666;font-size:9.5pt}
+  </style></head><body>
+  <h1>Veer — ${esc(title)}</h1>
+  <p class="sub">Generated ${esc(new Date().toString())} &nbsp;·&nbsp; by ${esc(ADMIN_EMAIL)}</p>
+  ${bodyHtml}
+  </body></html>`;
+}
+
+function saveDoc(filename, html){
+  saveBlob(filename, new Blob(['﻿'+html], {type:'application/msword'}));
+}
+
+function downloadCandidateDoc(r){
+  const safe = (r.name||'candidate').replace(/[^a-zA-Z0-9]+/g,'_');
+  saveDoc('veer-report-'+safe+'-'+stamp()+'.doc',
+    wordDoc('Candidate Assessment Report', candidateSectionHtml(r)));
+}
+
+function downloadAllDoc(){
+  const s = STATS||{};
+  const summary = `<h2>Summary</h2>
+    <table border="1" cellspacing="0" cellpadding="5" style="border-collapse:collapse;font-size:10pt">
+      <tr><td>Total candidates</td><td><b>${s.totalCandidates||0}</b></td></tr>
+      <tr><td>Passed all stages</td><td><b>${s.passedAll||0}</b></td></tr>
+      <tr><td>Failed Stage 1</td><td>${s.failedStage1||0}</td></tr>
+      <tr><td>Failed Stage 2</td><td>${s.failedStage2||0}</td></tr>
+      <tr><td>Failed Stage 3</td><td>${s.failedStage3||0}</td></tr>
+      <tr><td>In progress</td><td>${s.inProgress||0}</td></tr>
+      <tr><td>Interview videos recorded</td><td>${s.recordings||0}</td></tr>
+    </table>
+    <h2>Passing criteria — each stage</h2>${criteriaTableHtml()}`;
+  const perCand = DATA.map(r=>candidateSectionHtml(r)+'<br style="page-break-after:always">').join('');
+  saveDoc('veer-assessment-report-'+stamp()+'.doc',
+    wordDoc('Full Assessment Report', summary + '<h1 style="page-break-before:always">Candidates ('+DATA.length+')</h1>' + perCand));
+}
+
+function downloadCsv(){
+  const cols = ['Name','Email','Target role','Registered','Application status',
+    'ATS %','Stage 1 %','Stage 1 pass','Stage 2 %','Stage 2 pass',
+    'Stage 3 duration (s)','Stage 3 pass','Total score','Verdict','Cheating flag','Cheating reason','Video URL','Video duration (s)'];
+  const esc = v => { v = (v==null?'':String(v)); return /[",\n]/.test(v) ? '"'+v.replace(/"/g,'""')+'"' : v; };
+  const lines = [cols.join(',')];
+  DATA.forEach(r=>{
+    lines.push([
+      r.name, r.email, r.targetRole, r.registeredAt, r.applicationStatus,
+      r.atsScore, r.stage1Percentage, r.stage1Passed, r.stage2Score, r.stage2Passed,
+      r.stage3Seconds, r.stage3Passed, r.totalScore, r.verdictLabel, r.cheatingFlag, r.cheatingReason,
+      r.recording ? (location.origin + r.recording.url + '/?dl=1') : '', r.recording ? r.recording.durationSeconds : ''
+    ].map(esc).join(','));
+  });
+  saveBlob('veer-candidates-'+stamp()+'.csv', new Blob([lines.join('\n')], {type:'text/csv'}));
+}
+
+function downloadReport(){
+  const c = CRITERIA || {}, s = STATS || {};
+  const now = new Date().toString();
+  const critCard = (st) => !st ? '' : `
+    <div class="crit">
+      <h3>${esc(st.name)}</h3>
+      <p class="pass">Pass mark: ${esc(st.pass)}</p>
+      <table>
+        <tr><td>Marks to pass</td><td>${esc(st.passMarks||'—')}</td></tr>
+        <tr><td>Total items</td><td>${esc(st.totalItems||'—')}</td></tr>
+        <tr><td>Time limit</td><td>${esc(st.time||'—')}</td></tr>
+        <tr><td>How it is scored</td><td>${esc(st.scoring||'—')}</td></tr>
+        <tr><td>Gate</td><td>${esc(st.gate||'—')}</td></tr>
+      </table>
+    </div>`;
+  const candRows = DATA.map(r=>`
+    <tr>
+      <td>${esc(r.name)}<br><small>${esc(r.email)}</small></td>
+      <td>${r.atsScore!=null?r.atsScore+'%':'—'}</td>
+      <td>${r.stage1Percentage!=null?r.stage1Percentage+'%':'—'} ${r.stage1Passed===true?'✅':r.stage1Passed===false?'❌':''}</td>
+      <td>${r.stage2Score!=null?r.stage2Score+'%':'—'} ${r.stage2Passed===true?'✅':r.stage2Passed===false?'❌':''}</td>
+      <td>${r.stage3Seconds!=null?fmtDur(r.stage3Seconds):'—'} ${r.stage3Passed===true?'✅':''}</td>
+      <td><b>${r.totalScore!=null?r.totalScore:'—'}</b></td>
+      <td>${esc(r.verdictLabel)}</td>
+      <td>${r.cheatingFlag?('⚠ '+esc(r.cheatingReason||'yes')):'—'}</td>
+      <td>${r.recording?('<a href="'+location.origin+r.recording.url+'/?dl=1">download ('+fmtDur(r.recording.durationSeconds)+')</a>'):'—'}</td>
+    </tr>`).join('');
+  const html = `<!doctype html><html><head><meta charset="utf-8"><title>Veer Assessment Report — ${stamp()}</title>
+  <style>
+    body{font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:#1f2a36;max-width:1000px;margin:24px auto;padding:0 20px;line-height:1.5}
+    h1{color:#2b3a4d;margin-bottom:2px} .sub{color:#5e6b78;font-size:13px;margin-bottom:24px}
+    h2{color:#F2680B;border-bottom:2px solid #ece7e1;padding-bottom:6px;margin-top:34px}
+    .stats{display:flex;gap:20px;flex-wrap:wrap;margin:14px 0}
+    .stats div{background:#faf8f6;border:1px solid #ece7e1;border-radius:10px;padding:10px 16px;font-size:13px}
+    .stats b{display:block;font-size:22px;color:#2b3a4d}
+    .crit{border:1px solid #ece7e1;border-radius:10px;padding:14px 18px;margin:12px 0;background:#faf8f6}
+    .crit h3{margin:0 0 4px;color:#2b3a4d} .crit .pass{font-weight:800;color:#15803d;margin:0 0 8px}
+    table{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}
+    td,th{border:1px solid #ece7e1;padding:7px 9px;text-align:left;vertical-align:top}
+    th{background:#faf8f6} small{color:#5e6b78} .notes{background:#fff8f3;border:1px solid #f3dcc4;border-radius:10px;padding:12px 16px;font-size:13px;margin-top:14px}
+    @media print{body{margin:0}}
+  </style></head><body>
+  <h1>Veer — Assessment Report</h1>
+  <div class="sub">Generated ${esc(now)} · by ${esc(ADMIN_EMAIL)}</div>
+
+  <h2>Summary</h2>
+  <div class="stats">
+    <div><b>${s.totalCandidates||0}</b>Total candidates</div>
+    <div><b>${s.passedAll||0}</b>Passed all stages</div>
+    <div><b>${s.failedStage1||0}</b>Failed Stage 1</div>
+    <div><b>${s.failedStage2||0}</b>Failed Stage 2</div>
+    <div><b>${s.failedStage3||0}</b>Failed Stage 3</div>
+    <div><b>${s.inProgress||0}</b>In progress</div>
+    <div><b>${s.recordings||0}</b>Interview videos</div>
+  </div>
+
+  <h2>Passing criteria — each stage</h2>
+  ${critCard(c.stage1)}${critCard(c.stage2)}${critCard(c.stage3)}
+  <div class="notes">
+    <b>Final verdict:</b> ${esc(c.finalVerdict||'')}<br>
+    <b>Composite score:</b> ${esc(c.compositeScore||'')}<br>
+    <b>Anti-cheating:</b> ${esc(c.antiCheating||'')}
+  </div>
+
+  <h2>Candidates (${DATA.length})</h2>
+  <table>
+    <tr><th>Candidate</th><th>ATS</th><th>Stage 1</th><th>Stage 2</th><th>Stage 3</th><th>Total</th><th>Verdict</th><th>Cheating</th><th>Video</th></tr>
+    ${candRows}
+  </table>
+  <p style="color:#5e6b78;font-size:12px;margin-top:20px">Video links require an active admin session on ${esc(location.origin)}. Open this report in the same browser you are signed in to.</p>
+  </body></html>`;
+  saveBlob('veer-assessment-report-'+stamp()+'.html', new Blob([html], {type:'text/html'}));
+}
+
+checkAuth();
+</script>
+</body>
+</html>

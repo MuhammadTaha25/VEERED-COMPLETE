@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Stage 2 Coding Challenge — Veer</title>
+<meta name="description" content="Stage 2 Coding Challenge — 2 practical engineering problems. Test your Python, RAG, and LLM engineering skills." />
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAzMiAzMic+PHJlY3Qgd2lkdGg9JzMyJyBoZWlnaHQ9JzMyJyByeD0nNycgZmlsbD0nIzJiM2E0ZCcvPjxjaXJjbGUgY3g9JzE2JyBjeT0nMTYnIHI9JzknIGZpbGw9JyNGMjY4MEInLz48L3N2Zz4=" />
+<style>
+  :root{
+    --slate:#2b3a4d; --slate2:#3c5468;
+    --orange:#F2680B; --orange-d:#D9570A; --amber:#F8A03C; --orange-l:#FFF1E6;
+    --bad:#dc2626; --ok:#15803d; --warn:#b45309;
+    --ink:#1f2a36; --muted:#5e6b78; --line:#ece7e1; --bg:#faf8f6; --card:#ffffff;
+    --shadow:0 10px 30px rgba(43,58,77,.10);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.55;-webkit-font-smoothing:antialiased}
+  body{min-height:100vh}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 22px}
+
+  /* NAV */
+  header.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:66px}
+  .brand{display:flex;align-items:center;gap:11px;font-weight:800;font-size:20px;letter-spacing:-.3px;color:var(--slate);text-decoration:none}
+  .brand img{height:34px;width:34px;border-radius:8px;background:#fff;padding:2px;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+  .brand .dot{color:var(--orange)}
+
+  .btn{display:inline-flex;align-items:center;gap:8px;cursor:pointer;border:none;font-weight:700;border-radius:11px;padding:12px 22px;font-size:15px;transition:.18s;background:var(--orange);color:#fff;text-decoration:none}
+  .btn:hover{background:var(--orange-d);transform:translateY(-1px)}
+  .btn.ghost{background:#fff;color:var(--slate);border:1px solid var(--line)}
+  .btn.ghost:hover{border-color:var(--orange);color:var(--orange)}
+  .btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+
+  /* HERO */
+  .hero{background:linear-gradient(135deg,var(--slate) 0%,var(--slate2) 55%,#22303f 100%);color:#fff;position:relative;overflow:hidden;padding:42px 0 38px}
+  .hero-in{position:relative;z-index:2;text-align:center;display:flex;flex-direction:column;align-items:center}
+  .hero h1{font-size:30px;line-height:1.1;letter-spacing:-1px;font-weight:800;margin-bottom:8px;color:var(--orange)}
+  .hero p.lead{font-size:15px;color:#c9d0da;max-width:620px;margin:0 auto 16px;line-height:1.45}
+  .badge{display:inline-block;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;background:rgba(242,104,11,.2);color:#ffc9a4;border:1px solid rgba(242,104,11,.35);margin-bottom:12px}
+
+  /* CONTENT */
+  .main-sec{padding:36px 0 60px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:28px;box-shadow:var(--shadow);margin-bottom:24px}
+  .card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;border-bottom:1px solid var(--line);padding-bottom:12px}
+  .card-head h2{font-size:20px;font-weight:800;color:var(--slate);letter-spacing:-.4px}
+  .card-head .tag{font-size:11px;font-weight:800;padding:4px 10px;border-radius:999px;background:var(--orange-l);color:var(--orange-d);border:1px solid #f3dcc4}
+
+  .desc{font-size:14.5px;color:var(--ink);margin-bottom:16px;line-height:1.6}
+  .code-label{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:6px;display:block}
+  textarea.code-box{width:100%;min-height:180px;font-family:"Fira Code",Consolas,Monaco,"Courier New",monospace;font-size:13.5px;line-height:1.5;padding:14px;background:#1e293b;color:#f8fafc;border:1px solid var(--line);border-radius:12px;resize:vertical;outline:none}
+  textarea.code-box:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(242,104,11,.2)}
+
+  /* RESULTS */
+  .results{display:none;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:36px 28px;box-shadow:var(--shadow);text-align:center;max-width:680px;margin:0 auto}
+  .results.show{display:block}
+  .results .icon{width:80px;height:80px;border-radius:50%;background:rgba(21,128,61,.12);color:var(--ok);display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 16px}
+  .results h2{font-size:26px;font-weight:800;color:var(--slate);margin-bottom:8px}
+  .results p{color:var(--muted);font-size:15px;margin-bottom:24px}
+
+  footer.simple{padding:24px 0;border-top:1px solid var(--line);margin-top:40px;color:var(--muted);font-size:12.5px;text-align:center}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a href="index.html" class="brand"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAzMiAzMic+PHJlY3Qgd2lkdGg9JzMyJyBoZWlnaHQ9JzMyJyByeD0nNycgZmlsbD0nIzJiM2E0ZCcvPjxjaXJjbGUgY3g9JzE2JyBjeT0nMTYnIHI9JzknIGZpbGw9JyNGMjY4MEInLz48L3N2Zz4=" alt="Veer" /> Veer<span class="dot">.</span></a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-in wrap">
+    <span class="badge">STAGE 2 OF 3 · CODING CHALLENGE · 2 PROBLEMS</span>
+    <h1>Stage 2: Technical Coding Challenge</h1>
+    <p class="lead">Demonstrate your practical AI/ML engineering skills. Solve these 2 coding problems in Python below.</p>
+  </div>
+</section>
+
+<div id="s2Timer" style="position:sticky;top:66px;z-index:40;background:#2b3a4d;color:#fff;text-align:center;padding:8px 12px;font-weight:800;letter-spacing:.3px;font-variant-numeric:tabular-nums;">
+  ⏱ Time remaining: <span id="s2TimerVal">40:00</span> · Stage 2 auto-submits at 00:00
+</div>
+
+<main class="main-sec wrap" id="stage2Main">
+  <!-- PROBLEM 1 -->
+  <div class="card">
+    <div class="card-head">
+      <h2>Problem 1: Explainable RAG Keyword & Vector Scorer</h2>
+      <span class="tag">Python · RAG / Matching</span>
+    </div>
+    <p class="desc">Write a Python function <code>score_candidate_rag(cv_text, jd_keywords)</code> that compares candidate CV text against job description keywords and returns a dictionary with matched keywords, missing keywords, and match score percentage.</p>
+    <label class="code-label">Python Solution:</label>
+    <textarea class="code-box" id="code1" spellcheck="false">def score_candidate_rag(cv_text, jd_keywords):
+    """
+    Evaluates candidate CV text against required JD keywords.
+    Returns: dict with score (0-100), matched list, missing list, and pass (>=80).
+    """
+    if not cv_text or not jd_keywords:
+        return {"score": 0, "matched": [], "missing": jd_keywords, "passed": False}
+
+    cv_lower = cv_text.toLowerCase() if hasattr(cv_text, 'toLowerCase') else str(cv_text).lower()
+    matched = [kw for kw in jd_keywords if kw.lower() in cv_lower]
+    missing = [kw for kw in jd_keywords if kw.lower() not in cv_lower]
+    score = round((len(matched) / len(jd_keywords)) * 100)
+
+    return {
+        "score": score,
+        "matched": matched,
+        "missing": missing,
+        "passed": score >= 80
+    }
+</textarea>
+  </div>
+
+  <!-- PROBLEM 2 -->
+  <div class="card">
+    <div class="card-head">
+      <h2>Problem 2: Async Rate Limiter for LLM API Calls</h2>
+      <span class="tag">Python · Async / MLOps</span>
+    </div>
+    <p class="desc">Implement an async rate-limiter wrapper for an LLM API endpoint in Python to guarantee no more than 5 requests per second are issued.</p>
+    <label class="code-label">Python Solution:</label>
+    <textarea class="code-box" id="code2" spellcheck="false">import asyncio
+import time
+
+class LLMRateLimiter:
+    def __init__(self, max_calls=5, period=1.0):
+        self.max_calls = max_calls
+        self.period = period
+        self.timestamps = []
+
+    async def acquire(self):
+        now = time.time()
+        # Remove timestamps older than period
+        self.timestamps = [t for t in self.timestamps if now - t < self.period]
+        if len(self.timestamps) >= self.max_calls:
+            sleep_time = self.period - (now - self.timestamps[0])
+            await asyncio.sleep(sleep_time)
+        self.timestamps.append(time.time())
+
+async def rate_limited_llm_call(prompt, rate_limiter):
+    await rate_limiter.acquire()
+    # Simulated LLM API call
+    return f"Response for: {prompt}"
+</textarea>
+  </div>
+
+  <div style="text-align:center;margin-top:20px;">
+    <button type="button" class="btn" id="subBtn" onclick="submitStage2()">Submit Stage 2 Solutions →</button>
+  </div>
+</main>
+
+<!-- RESULTS SCREEN -->
+<div class="wrap" style="padding:40px 0 60px;">
+  <div class="results" id="resultsScreen">
+    <div class="icon">✓</div>
+    <h2>Stage 2 Coding Challenge Completed!</h2>
+    <p>Your code submissions have been recorded and linked to your Veer Scorecard. You have successfully cleared Stage 2.</p>
+    <div style="background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:18px;margin:20px 0;text-align:left;">
+      <strong style="color:var(--slate);">Next Step: Stage 3 (AI Video Interview)</strong><br/>
+      <span style="font-size:13.5px;color:var(--muted);">Your Stage 3 interview link has been generated. Click below to continue to the AI Video Interview stage.</span>
+    </div>
+    <a href="stage3.html" id="stage3Link" class="btn" style="background:#15803d;">Proceed to Stage 3 AI Video Interview →</a>
+  </div>
+</div>
+
+<!-- Anti-Cheating Security Warning Modal -->
+<div id="securityModal" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,.92);backdrop-filter:blur(8px);z-index:9999;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#fff;border:2px solid #dc2626;border-radius:20px;max-width:520px;width:100%;padding:32px;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,.3);">
+    <div style="width:70px;height:70px;border-radius:50%;background:rgba(220,38,38,.12);color:#dc2626;display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 16px;font-weight:800;">⚠️</div>
+    <h2 style="font-size:22px;color:#2b3a4d;margin-bottom:8px;font-weight:800;">SECURITY WARNING DETECTED</h2>
+    <p style="color:#dc2626;font-weight:700;font-size:15px;margin-bottom:12px;" id="secWarnCount">Window or Tab Switch Warning (Attempt 1 / 3)</p>
+    <p style="font-size:14px;color:#5e6b78;line-height:1.55;margin-bottom:24px;">Switching windows or tabs is strictly prohibited during Stage 2. Exceeding 3 window switches will automatically terminate and lock your coding test.</p>
+    <button type="button" class="btn" style="background:#dc2626;padding:12px 28px;font-size:15px;" onclick="closeSecurityModal()">I Understand &amp; Resume Test →</button>
+  </div>
+</div>
+
+<footer class="simple">
+  <p>© 2026 Veer — Recruitment Intelligence Platform</p>
+</footer>
+
+<script>
+let windowSwitchCount = 0;
+let examActive = true;
+
+// Per-stage 40-minute timer
+let s2Seconds = 40 * 60;
+const s2Interval = setInterval(function(){
+  s2Seconds--;
+  if (s2Seconds <= 0){
+    clearInterval(s2Interval);
+    document.getElementById('s2TimerVal').textContent = '00:00';
+    if (examActive) submitStage2(true);
+    return;
+  }
+  var m = String(Math.floor(s2Seconds/60)).padStart(2,'0');
+  var s = String(s2Seconds%60).padStart(2,'0');
+  var el = document.getElementById('s2TimerVal');
+  if (el) el.textContent = m + ':' + s;
+}, 1000);
+
+// Anti-cheating monitoring is DISABLED. Switching tabs/windows no longer
+// terminates or rejects the coding test.
+
+async function handleFocusLoss() {
+  return; // disabled — no-op
+  // eslint-disable-next-line no-unreachable
+  if (!examActive) return;
+  examActive = false;
+
+  const params = new URLSearchParams(window.location.search);
+  const cand = JSON.parse(sessionStorage.getItem('veerCandidate') || 'null');
+  const candidateId = params.get('candidateId') || (cand ? cand.id : null);
+
+  try {
+    await fetch('/api/candidates/reject-cheating', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        candidateId: candidateId,
+        stage: 'Step 3 (Coding Test)',
+        reason: 'Window focus lost during coding test — candidate switched browser/tab or brought another window in front.'
+      })
+    });
+  } catch(e){}
+
+  document.getElementById('stage2Main').style.display = 'none';
+  document.getElementById('resultsScreen').classList.add('show');
+  document.getElementById('resultsScreen').innerHTML =
+    '<div style="font-size:42px;margin-bottom:12px;">🚫</div>' +
+    '<h2 style="color:var(--bad);">Coding Test Terminated &amp; Application Rejected</h2>' +
+    '<p style="color:var(--muted);">Our anti-cheating system detected a <strong>window focus loss event</strong> (switching tabs or opening another application like Microsoft Edge). Per our strict security rules, your assessment has been terminated and your CV has been <strong>MARKED AS REJECTED</strong>.</p>' +
+    '<div style="margin-top:20px;"><a href="index.html" class="btn ghost">Return to Home</a></div>';
+
+  alert('🚫 ASSESSMENT CANCELLED: Window focus loss detected during Coding Test! Your assessment has been terminated and your CV has been marked as REJECTED.');
+}
+async function submitStage2(auto) {
+  if (!examActive && !auto) return;
+  examActive = false;
+  try { clearInterval(s2Interval); } catch(e){}
+  const code1 = document.getElementById('code1').value;
+  const code2 = document.getElementById('code2').value;
+
+  if (!auto && (!code1.trim() || !code2.trim())) {
+    examActive = true;
+    alert('Please complete both coding problems before submitting.');
+    return;
+  }
+
+  const btn = document.getElementById('subBtn');
+  btn.disabled = true;
+  btn.textContent = 'Submitting solutions…';
+
+  const params = new URLSearchParams(window.location.search);
+  const cand = JSON.parse(sessionStorage.getItem('veerCandidate') || 'null');
+  const candidateId = params.get('candidateId') || (cand ? cand.id : null);
+  const s3Url = 'stage3.html' + (candidateId ? '?candidateId=' + candidateId : '');
+  const linkEl = document.getElementById('stage3Link');
+  if (linkEl) linkEl.href = s3Url;
+
+  try {
+    const res = await fetch('/api/stage2/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        candidateId: candidateId || 'candidate-guest',
+        codeSubmissions: {
+          code_q1: code1,
+          code_q2: code2
+        }
+      })
+    });
+    const data = await res.json();
+    if (res.ok && data.ok) {
+      document.getElementById('stage2Main').style.display = 'none';
+      const rs = document.getElementById('resultsScreen');
+      rs.classList.add('show');
+      if (data.passed === false) {
+        rs.innerHTML =
+          '<div style="font-size:42px;margin-bottom:12px;">✗</div>' +
+          '<h2 style="color:var(--bad);">Stage 2 not cleared</h2>' +
+          '<p style="color:var(--muted);">Your coding submission scored ' + (data.stage2Score ?? 0) + '% — below the 70% pass mark. ' +
+          'You cannot proceed to Stage 3.</p>' +
+          '<div style="margin-top:20px;"><a href="index.html" class="btn ghost">Return to Home</a></div>';
+      }
+      return;
+    }
+  } catch (err) {
+    console.error('Stage 2 submit error:', err);
+  }
+
+  // Fallback success view if offline
+  document.getElementById('stage2Main').style.display = 'none';
+  document.getElementById('resultsScreen').classList.add('show');
+}
+</script>
+</body>
+</html>

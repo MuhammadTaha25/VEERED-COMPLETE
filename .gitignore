@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+
+# Next.js
+.next/
+out/
+
+# Environment
+.env
+.env.local
+.env*.local
+
+# Database (local SQLite)
+lib/db/data/
+
+# Uploaded files
+uploads/
+
+# Legacy backend-stub data
+stub-uploads/
+stub-data/
+
+# OS
+Thumbs.db
+.DS_Store
+
+# IDE
+.vscode/
+.idea/

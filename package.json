@@ -1,0 +1,30 @@
+{
+  "name": "veer",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev -p 3000",
+    "build": "next build",
+    "start": "next start -p $PORT",
+    "seed": "node lib/db/seed.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.0",
+    "bcryptjs": "^3.0.2",
+    "iron-session": "^8.0.4",
+    "mammoth": "^1.12.0",
+    "multer": "^2.0.1",
+    "next": "^15.3.0",
+    "nodemailer": "^9.0.3",
+    "pdf-parse": "^2.4.5",
+    "postgres": "^3.4.5",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "sql.js": "^1.12.0",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}

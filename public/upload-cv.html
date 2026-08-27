@@ -1,0 +1,920 @@
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Upload your CV — Veer</title>
+<meta name="description" content="Upload your CV and get an instant AI match score against the role — step 2 of Veer's transparent application flow." />
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAzMiAzMic+PHJlY3Qgd2lkdGg9JzMyJyBoZWlnaHQ9JzMyJyByeD0nNycgZmlsbD0nIzJiM2E0ZCcvPjxjaXJjbGUgY3g9JzE2JyBjeT0nMTYnIHI9JzknIGZpbGw9JyNGMjY4MEInLz48L3N2Zz4=" />
+<style>
+  :root{
+    --slate:#2b3a4d; --slate2:#3c5468;
+    --orange:#F2680B; --orange-d:#D9570A; --amber:#F8A03C; --orange-l:#FFF1E6;
+    --bad:#dc2626;
+    --ink:#1f2a36; --muted:#5e6b78;
+    --line:#ece7e1; --bg:#faf8f6; --card:#ffffff;
+    --ok:#15803d; --warn:#b45309;
+    --shadow:0 10px 30px rgba(43,58,77,.10);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);background:var(--bg);line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1140px;margin:0 auto;padding:0 22px}
+  /* NAV */
+  header.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:66px}
+  .brand{display:flex;align-items:center;gap:11px;font-weight:800;font-size:20px;letter-spacing:-.3px}
+  .brand img{height:34px;width:34px;border-radius:8px;background:#fff;padding:2px;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+  .brand .dot{color:var(--orange)}
+  .nav-links{display:flex;gap:26px;align-items:center}
+  .nav-links a{color:var(--muted);font-weight:600;font-size:14.5px;padding:9px 2px;display:inline-flex;align-items:center}
+  .nav-links a:hover{color:var(--ink)}
+  .btn{display:inline-flex;align-items:center;gap:8px;cursor:pointer;border:none;font-weight:700;
+    border-radius:11px;padding:11px 18px;font-size:14.5px;transition:.18s;background:var(--orange);color:#fff}
+  .btn:hover{background:var(--orange-d);transform:translateY(-1px)}
+  .btn.ghost{background:#fff;color:var(--slate);border:1px solid var(--line)}
+  .btn.ghost:hover{border-color:var(--orange);color:var(--orange)}
+  .btn.slate{background:var(--slate);color:#fff}
+  .btn.slate:hover{background:var(--slate2)}
+  .btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+  .btn:focus-visible,.chip:focus-visible,.drop:focus-visible,.nav-toggle:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+  /* FLOW */
+  .flow-sec{padding:52px 0 70px}
+  .sec-head{text-align:center;margin-bottom:28px}
+  .sec-head .eyebrow{color:var(--orange);font-weight:800;letter-spacing:1.2px;text-transform:uppercase;font-size:12.5px}
+  .sec-head h2{font-size:32px;margin:8px 0 6px;letter-spacing:-.6px}
+  .sec-head p{color:var(--muted);max-width:640px;margin:0 auto;font-size:15.5px}
+  .stepper{display:flex;align-items:center;justify-content:center;gap:0;margin:0 auto 32px;max-width:760px}
+  .step{display:flex;align-items:center;gap:12px;flex:1}
+  .step .num{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;background:#fff;border:2px solid var(--line);color:var(--muted);transition:.2s}
+  .step.active .num{background:var(--orange);border-color:var(--orange);color:#fff;box-shadow:0 0 0 5px rgba(242,104,11,.18)}
+  .step.done .num{background:var(--slate);border-color:var(--slate);color:#fff}
+  .step .lbl{font-size:13.5px;font-weight:700;color:var(--muted)}
+  .step.active .lbl,.step.done .lbl{color:var(--ink)}
+  .step .bar{flex:1;height:3px;background:var(--line);border-radius:3px;margin:0 6px}
+  .step.done .bar{background:var(--orange)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:30px;max-width:960px;margin:0 auto}
+  .card h3{margin:0 0 4px;font-size:22px;letter-spacing:-.4px}
+  .card .sub{color:var(--muted);margin:0 0 22px;font-size:14.5px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  label.fld{display:block;font-weight:700;font-size:13.5px;margin:0 0 7px;color:var(--slate)}
+  .drop{border:2px dashed var(--line);border-radius:14px;padding:22px;text-align:center;cursor:pointer;transition:.18s;background:#fffdfb}
+  .drop:hover{border-color:var(--orange);background:var(--orange-l)}
+  .drop p{margin:8px 0 0;font-size:14px;color:var(--muted)}
+  .drop b{color:var(--slate)}
+  textarea,input[type=text]{width:100%;border:1px solid var(--line);border-radius:11px;padding:12px 13px;font:inherit;font-size:14px;color:var(--ink);background:#fff;resize:vertical}
+  textarea:focus,input:focus{outline:none;border-color:var(--orange);box-shadow:0 0 0 3px rgba(242,104,11,.15)}
+  textarea{min-height:170px;line-height:1.5}
+  .hint{font-size:12.5px;color:var(--muted);margin-top:7px}
+  .samples{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  .chip{background:var(--orange-l);border:1px solid #f3dcc4;color:var(--orange-d);border-radius:999px;padding:9px 14px;min-height:36px;display:inline-flex;align-items:center;font-size:12.5px;font-weight:700;cursor:pointer}
+  .chip:hover{background:#fde3cc}
+  .actions{display:flex;gap:12px;justify-content:center;margin-top:24px;flex-wrap:wrap}
+  /* RESULT (ATS) */
+  .result{display:none;margin-top:26px;border-top:1px solid var(--line);padding-top:24px}
+  .score-wrap{display:flex;gap:26px;align-items:center;flex-wrap:wrap}
+  .ring.sm{--p:0;width:130px;height:130px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;background:conic-gradient(var(--orange) calc(var(--p)*1%),#efeae4 0);position:relative}
+  .ring.sm:after{content:"";position:absolute;inset:13px;background:#fff;border-radius:50%}
+  .ring.sm .val{position:relative;z-index:2;text-align:center}
+  .ring.sm .val b{font-size:34px;font-weight:800;display:block;line-height:1;color:var(--ink)}
+  .ring.sm .val span{font-size:12px;color:var(--muted);font-weight:700}
+  .verdict{flex:1;min-width:0}
+  .verdict .tag{display:inline-block;font-weight:800;font-size:12.5px;letter-spacing:.4px;padding:5px 11px;border-radius:999px;margin-bottom:8px}
+  .tag.pass{background:rgba(21,128,61,.12);color:var(--ok)}
+  .tag.fail{background:rgba(220,38,38,.1);color:var(--bad)}
+  .kw{margin-top:18px}
+  .kw h4{font-size:13px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin:0 0 9px}
+  .kw ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+  .kw li{font-size:12.5px;font-weight:600;padding:6px 11px;border-radius:9px}
+  .kw li.ok{background:rgba(242,104,11,.12);color:var(--orange-d);border:1px solid rgba(242,104,11,.25)}
+  .kw li.miss{background:rgba(220,38,38,.08);color:#b91c1c;border:1px solid rgba(220,38,38,.22);text-decoration:line-through;opacity:.85}
+  .demo-note{background:#fff7ed;border:1px solid #fed7aa;color:#9a3b0a;padding:11px 14px;border-radius:11px;font-size:13.5px;margin-top:16px;display:none}
+  /* UPLOAD HERO */
+  .up-hero{display:flex;gap:22px;align-items:center;background:linear-gradient(135deg,var(--orange-l),#fff);border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:22px}
+  .up-hero .illu{width:128px;height:128px;flex:none}
+  .up-hero h3{margin:0 0 6px;font-size:20px}
+  .up-hero p{margin:0;color:var(--muted);font-size:14px}
+  .up-hero .pill{margin-top:10px}
+  .pill{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);padding:7px 14px;border-radius:999px;font-size:13px;font-weight:600;letter-spacing:.2px;color:var(--orange-d);background:var(--orange-l);border-color:#f3dcc4}
+  .pill .live{width:8px;height:8px;border-radius:50%;background:var(--orange);box-shadow:0 0 0 4px rgba(242,104,11,.20)}
+  /* ATS EXPLAINABILITY */
+  .match-why{margin-top:14px;font-size:13.5px;color:var(--muted);background:#f6f8fc;border:1px solid var(--line);border-left:4px solid var(--orange);border-radius:10px;padding:12px 14px}
+  .match-why b{color:var(--slate)}
+  /* CV DETAILS EXTRACTION */
+  .extract-cta{display:flex;justify-content:center;margin:18px 0 6px}
+  .cvdetails{display:none;margin-top:26px;border-top:1px solid var(--line);padding-top:24px}
+  .cvdetails.show{display:block}
+  .cvd-sec{margin-bottom:26px}
+  .cvd-sec h4{font-size:15px;margin:0 0 4px;color:var(--slate)}
+  .cvd-sec .cvd-sub{font-size:12.5px;color:var(--muted);margin:0 0 14px}
+  .cvd-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .cvd-field{display:flex;flex-direction:column;gap:5px}
+  .cvd-field label{font-size:12.5px;font-weight:700;color:var(--slate)}
+  .cvd-field input,.cvd-field select{border:1px solid var(--line);border-radius:9px;padding:9px 11px;font:inherit;font-size:13.5px;background:#fff;color:var(--ink);width:100%}
+  .cvd-field input:focus,.cvd-field select:focus{outline:none;border-color:var(--orange);box-shadow:0 0 0 3px rgba(242,104,11,.15)}
+  .entry-card{background:#f9f7f4;border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:12px;position:relative}
+  .entry-card .entry-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .entry-card .entry-grid.dates{grid-template-columns:1fr 1fr auto;align-items:end}
+  .entry-remove{position:absolute;top:12px;right:12px;background:none;border:none;color:var(--muted);cursor:pointer;font-size:18px;line-height:1;padding:4px 7px;border-radius:6px}
+  .entry-remove:hover{color:var(--bad);background:rgba(220,38,38,.08)}
+  .entry-current{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--slate2);white-space:nowrap;padding-bottom:9px}
+  .add-row-btn{background:none;border:1.5px dashed var(--line);color:var(--orange-d);font-weight:700;font-size:13px;padding:10px;border-radius:11px;cursor:pointer;width:100%;text-align:center}
+  .add-row-btn:hover{border-color:var(--orange);background:var(--orange-l)}
+  .add-row-btn:disabled{opacity:.4;cursor:not-allowed}
+  .tag-input-wrap{display:flex;flex-wrap:wrap;gap:8px;align-items:center;border:1px solid var(--line);border-radius:11px;padding:10px 12px;background:#fff}
+  .tag-input-wrap:focus-within{border-color:var(--orange);box-shadow:0 0 0 3px rgba(242,104,11,.15)}
+  .skill-tag{display:inline-flex;align-items:center;gap:6px;background:var(--orange-l);color:var(--orange-d);border:1px solid #f3dcc4;border-radius:999px;padding:5px 6px 5px 12px;font-size:12.5px;font-weight:700}
+  .skill-tag button{background:none;border:none;color:var(--orange-d);cursor:pointer;font-size:14px;line-height:1;padding:2px 5px;border-radius:50%}
+  .skill-tag button:hover{background:rgba(242,104,11,.18)}
+  .tag-input-wrap input{border:none;outline:none;flex:1;min-width:140px;font:inherit;font-size:13.5px;padding:5px 2px}
+  .cert-row{display:flex;gap:8px;margin-bottom:8px;align-items:center}
+  .cert-row input{flex:1;border:1px solid var(--line);border-radius:9px;padding:9px 11px;font:inherit;font-size:13.5px}
+  .cert-row input:focus{outline:none;border-color:var(--orange);box-shadow:0 0 0 3px rgba(242,104,11,.15)}
+  .cert-row .entry-remove{position:static}
+  .cvd-optional{font-weight:600;color:var(--muted);text-transform:none;letter-spacing:0;font-size:12.5px}
+  .file-attached{display:none;align-items:center;gap:10px;background:#f6f8fc;border:1px solid var(--line);border-radius:11px;padding:10px 14px;margin-top:10px}
+  .file-attached .fa-ic{flex:none;color:var(--orange)}
+  .file-attached .fa-name{font-weight:700;font-size:13.5px;color:var(--slate);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .file-attached .fa-size{font-size:12px;color:var(--muted);flex:none}
+  .file-attached .fa-remove{background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;line-height:1;padding:4px 6px;border-radius:6px;flex:none}
+  .file-attached .fa-remove:hover{color:var(--bad);background:rgba(220,38,38,.08)}
+  #projectFileList .file-attached{display:flex;margin-top:0;margin-bottom:8px}
+  .cvd-htitle{display:flex;align-items:center;gap:10px;font-size:16px;margin:0 0 4px;color:var(--slate);font-weight:800}
+  .cvd-htitle .h-ic{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:9px;background:var(--orange-l);color:var(--orange-d);flex:none}
+  .cvd-htitle .h-ic svg{width:16px;height:16px}
+  .cvd-error{display:none;color:var(--bad);font-size:12.5px;margin-top:8px;font-weight:600}
+  @media(max-width:680px){ .cvd-grid,.entry-card .entry-grid{grid-template-columns:1fr} .entry-card .entry-grid.dates{grid-template-columns:1fr 1fr} }
+  footer{background:var(--slate);color:#aeb9d4;padding:34px 0;font-size:13.5px;margin-top:50px}
+  .foot-in{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;align-items:center}
+  .foot-in .brand{color:#fff;font-size:17px}
+  .foot-in .brand img{background:#fff}
+  .hidden{display:none!important}
+  /* Mobile nav */
+  .nav-toggle{display:none;background:none;border:none;cursor:pointer;padding:10px}
+  .nav-toggle span{display:block;width:22px;height:2px;background:var(--slate);margin:4px 0;transition:.3s}
+  @media(max-width:880px){
+    .nav-toggle{display:block;order:2}
+    .brand{order:1}
+    .nav-in{display:flex;justify-content:space-between;align-items:center}
+    .nav-links{display:none;position:absolute;top:66px;left:0;width:100%;background:#fff;flex-direction:column;gap:0!important;padding:10px 0;border-bottom:1px solid var(--line);box-shadow:0 10px 15px rgba(0,0,0,.05);z-index:100}
+    .nav-links.active{display:flex}
+    .nav-links a{width:100%;padding:15px 22px;border-bottom:1px solid var(--bg)}
+    .nav-links .btn{margin:15px 22px;display:flex;justify-content:center}
+    .grid2{grid-template-columns:1fr}
+    .stepper .lbl{display:none}
+  }
+  @media(max-width:560px){
+    .card{padding:20px}
+    .up-hero{flex-direction:column;text-align:center;gap:14px}
+    .up-hero .illu{width:96px;height:96px}
+    .score-wrap{flex-direction:column;align-items:flex-start}
+    .verdict{min-width:0}
+  }
+</style>
+</head><body>
+  <header class="nav">
+    <div class="wrap nav-in">
+      <button class="nav-toggle" onclick="toggleMenu()" aria-label="Toggle Navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <div class="brand"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAzMiAzMic+PHJlY3Qgd2lkdGg9JzMyJyBoZWlnaHQ9JzMyJyByeD0nNycgZmlsbD0nIzJiM2E0ZCcvPjxjaXJjbGUgY3g9JzE2JyBjeT0nMTYnIHI9JzknIGZpbGw9JyNGMjY4MEInLz48L3N2Zz4=" alt="Veer" style="height:46px;width:46px;border-radius:14px;background:rgba(242,104,11,.10);border:1px solid rgba(242,104,11,.22);padding:7px;box-shadow:0 4px 14px rgba(43,58,77,.18)" />
+    </div>
+    <nav class="nav-links">
+      <a href="index.html#how">How it works</a>
+      <a href="index.html#employers">For employers</a>
+      <a href="index.html#why">Why Veer</a>
+    </nav>
+    <a class="btn slate" href="index.html">&larr; Back to home page</a>
+  </div>
+</header>
+
+<!-- ============ UPLOAD CV ============ -->
+<section class="flow-sec" id="flow">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Candidate application &middot; Step 2 of 4</div>
+      <h2>Upload your CV</h2>
+      <p>Let our AI match your CV to the role. You need 80+ to advance to the skills quiz.</p>
+    </div>
+
+    <div class="stepper">
+      <div class="step done" data-s="0"><div class="num">1</div><div class="lbl">Register</div><div class="bar"></div></div>
+      <div class="step active" data-s="1"><div class="num">2</div><div class="lbl">Upload CV</div><div class="bar"></div></div>
+      <div class="step" data-s="2"><div class="num">3</div><div class="lbl">Skills quiz</div><div class="bar"></div></div>
+      <div class="step" data-s="3"><div class="num">4</div><div class="lbl">AI interview</div><div class="bar"></div></div>
+    </div>
+
+    <div class="card">
+      <h3>Upload your CV &amp; run the AI match<span id="hiName"></span></h3>
+      <p class="sub">Paste your CV (or upload a file) and see an illustrative keyword match against the role. You need 80+ to advance in this demo — see the note below for how production scoring actually works.</p>
+
+      <div class="up-hero">
+        <svg class="illu" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="14" y="20" width="92" height="80" rx="10" fill="#FFF1E6" stroke="#F2680B" stroke-width="3"/>
+          <path d="M40 54l12 12 26-30" stroke="#F2680B" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="34" y="74" width="52" height="8" rx="4" fill="#F8A03C"/>
+          <circle cx="94" cy="28" r="13" fill="#F2680B"/>
+          <text x="94" y="33" font-size="13" text-anchor="middle" fill="#fff" font-family="sans-serif" font-weight="700">AI</text>
+        </svg>
+        <div>
+          <h3 style="margin:0 0 6px">Let the AI read your CV</h3>
+          <p>We score your experience against the role's core skills — transparently, with the keywords that triggered the match.</p>
+          <span class="pill"><span class="live"></span> AI scoring &middot; 80+ to pass</span>
+        </div>
+      </div>
+
+      <div class="cvd-sec">
+        <label class="cvd-htitle" for="cv"><span class="h-ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 3h7l4 4v14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 3v4h4" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 13l2 2 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Your CV</label>
+        <div class="drop" id="drop">
+          <div class="ic"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 3h7l4 4v14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z" stroke="#F2680B" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 3v4h4" stroke="#F2680B" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 13l2 2 4-4" stroke="#F2680B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <p><b>Click to upload</b> or drag &amp; drop your CV here<br><span style="font-size:12.5px;color:var(--muted)">PDF, DOC, DOCX, TXT supported · All parsed &amp; auto-filled · Max 5MB</span></p>
+        </div>
+        <input type="file" id="file" accept=".txt,.pdf,.doc,.docx" style="display:none" />
+        <p class="cvd-error" id="cvFileErr"></p>
+        <div class="file-attached" id="cvAttached"><svg class="fa-ic" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 3h7l4 4v14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><span class="fa-name"></span><span class="fa-size"></span><button type="button" class="fa-remove" aria-label="Remove CV file">&times;</button></div>
+        <textarea id="cv" placeholder="Paste your CV text here…"></textarea>
+        <div class="samples">
+          <span class="chip" onclick="loadSample('ai')">Load sample: AI Engineer CV</span>
+          <span class="chip" onclick="loadSample('weak')">Load sample: weak CV</span>
+        </div>
+      </div>
+
+      <div class="extract-cta" style="gap:10px;display:flex;flex-wrap:wrap;justify-content:center">
+        <button class="btn ghost" type="button" id="extractBtn" onclick="extractCVDetails()">✨ Auto-fill from CV &darr;</button>
+        <span id="extractStatus" style="display:none;align-items:center;gap:8px;font-size:13.5px;color:var(--orange);font-weight:700"><span class="ex-spin">⏳</span> <span id="extractStatusTxt">Parsing CV…</span></span>
+      </div>
+
+      <div class="cvdetails" id="cvDetails">
+        <div class="cvd-sec">
+          <h4>Personal information</h4>
+          <p class="cvd-sub">Pulled from your CV — check and correct anything the extractor missed.</p>
+          <div class="cvd-grid">
+            <div class="cvd-field"><label for="pFirst">First name</label><input id="pFirst" type="text" /></div>
+            <div class="cvd-field"><label for="pLast">Surname</label><input id="pLast" type="text" /></div>
+            <div class="cvd-field"><label for="pEmail">Email address</label><input id="pEmail" type="text" /></div>
+            <div class="cvd-field"><label for="pPhone">Phone number</label><input id="pPhone" type="text" placeholder="e.g. +44 7700 900000" /></div>
+            <div class="cvd-field"><label for="pCity">City</label><input id="pCity" type="text" /></div>
+            <div class="cvd-field"><label for="pCountry">Country</label><input id="pCountry" type="text" /></div>
+            <div class="cvd-field"><label for="pPostal">Postal / ZIP code</label><input id="pPostal" type="text" placeholder="Postcode (UK) / Eircode (IE)" /></div>
+            <div class="cvd-field"><label for="pLinkedin">LinkedIn URL <span style="color:var(--muted);font-weight:500">(optional)</span></label><input id="pLinkedin" type="text" placeholder="https://linkedin.com/in/..." /></div>
+          </div>
+          <div class="cvd-field" style="margin-top:12px">
+            <label for="pSummary">Professional summary <span style="color:var(--muted);font-weight:500">(auto-extracted)</span></label>
+            <textarea id="pSummary" rows="3" style="min-height:70px;font-size:13.5px" placeholder="A brief professional summary from your CV…"></textarea>
+          </div>
+        </div>
+
+        <div class="cvd-sec">
+          <h4>Work experience</h4>
+          <p class="cvd-sub">Most recent first &middot; up to 4 roles.</p>
+          <div id="expList"></div>
+          <button class="add-row-btn" type="button" id="addExpBtn" onclick="addExperience()">+ Add work experience</button>
+        </div>
+
+        <div class="cvd-sec">
+          <h4>Education</h4>
+          <p class="cvd-sub">Leaving Certificate / A-Level through to doctorate.</p>
+          <div id="eduList"></div>
+          <button class="add-row-btn" type="button" id="addEduBtn" onclick="addEducation()">+ Add education</button>
+        </div>
+
+        <div class="cvd-sec">
+          <h4>Core skills</h4>
+          <p class="cvd-sub">Click &times; to remove, or type a skill and press Enter to add.</p>
+          <div class="tag-input-wrap" id="skillTags">
+            <input type="text" id="skillInput" placeholder="Add a skill…" onkeydown="handleSkillInput(event)" />
+          </div>
+        </div>
+
+        <div class="cvd-sec" style="margin-bottom:8px">
+          <h4>Certifications</h4>
+          <p class="cvd-sub">Any professional certifications found on your CV — e.g. Microsoft, Adobe, AWS.</p>
+          <div id="certList"></div>
+          <button class="add-row-btn" type="button" onclick="addCertification()">+ Add certification</button>
+        </div>
+
+        <div class="demo-note" id="parseMethodNote" style="display:block">Extracting from your CV… every field is editable — please check and correct anything the parser missed.</div>
+      </div>
+
+      <div class="cvd-sec">
+        <h4 class="cvd-htitle"><span class="h-ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.2" stroke="currentColor" stroke-width="1.8"/><path d="M3.5 6.5l8.5 6 8.5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Cover letter <span class="cvd-optional">(optional)</span></h4>
+        <p class="cvd-sub">Want to highlight something your CV doesn't cover? Attach a cover letter — the recruiter will see it alongside your CV.</p>
+        <div class="drop" id="clDrop">
+          <div class="ic"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 3h7l4 4v14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z" stroke="#F2680B" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 3v4h4" stroke="#F2680B" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 9h6M9 13h6M9 17h3" stroke="#F2680B" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+          <p><b>Click to upload</b> or drag &amp; drop your cover letter here<br><span style="font-size:12.5px;color:var(--muted)">PDF, DOC, DOCX or TXT &middot; Max 5MB</span></p>
+        </div>
+        <input type="file" id="clFile" accept=".pdf,.doc,.docx,.txt" style="display:none" />
+        <p class="cvd-error" id="clFileErr"></p>
+        <div class="file-attached" id="clAttached"><svg class="fa-ic" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 3h7l4 4v14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><span class="fa-name"></span><span class="fa-size"></span><button type="button" class="fa-remove" aria-label="Remove cover letter">&times;</button></div>
+      </div>
+
+      <div class="cvd-sec" style="margin-bottom:20px">
+        <h4 class="cvd-htitle"><span class="h-ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 6l-6 6 6 6M15 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Project / task upload <span class="cvd-optional">(optional)</span></h4>
+        <p class="cvd-sub">Showcase a project (e.g. Python or HTML) or complete a task the employer has set for this role. You can attach multiple files.</p>
+        <div class="drop" id="projDrop">
+          <div class="ic"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 6l-6 6 6 6M15 6l6 6-6 6" stroke="#F2680B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <p><b>Click to upload</b> or drag &amp; drop project files here<br><span style="font-size:12.5px;color:var(--muted)">Any file type &middot; multiple files supported &middot; Max 10MB per file</span></p>
+        </div>
+        <input type="file" id="projFile" multiple style="display:none" />
+        <p class="cvd-error" id="projFileErr"></p>
+        <div id="projectFileList"></div>
+        <p class="cvd-sub" id="projectEmpty" style="margin:6px 0 0">No files attached yet.</p>
+      </div>
+
+      <div class="actions">
+        <button class="btn" type="button" id="submitBtn" onclick="submitProfile()">Submit &amp; continue to matching &rarr;</button>
+      </div>
+
+      <div class="hidden" id="matchSection">
+        <div class="cvd-sec" style="margin-top:26px;border-top:1px solid var(--line);padding-top:24px">
+          <label class="fld" for="jd">Job description (the role you're applying to)</label>
+          <textarea id="jd">AI Engineer — UK &amp; Ireland (Remote / Hybrid)
+We're hiring an AI Engineer to build LLM products with RAG and agentic workflows.
+Required: Python, PyTorch, LangChain, Prompt engineering, RAG, agentic systems, tool use, APIs, vector databases, embeddings, problem solving, logic, and remote collaboration.</textarea>
+          <div class="hint">Edit the JD to match the live role. The ATS gate is 80+ matched keywords.</div>
+        </div>
+
+        <div class="actions" style="justify-content:flex-start">
+          <button class="btn" onclick="runMatch()">Run AI Match</button>
+        </div>
+
+        <div class="result" id="result">
+          <div class="score-wrap">
+            <div class="ring sm" id="ring" style="--p:0"><div class="val"><b id="scoreVal">0</b><span>/100</span></div></div>
+            <div class="verdict">
+              <span class="tag" id="verdictTag"></span>
+              <div id="verdictText"></div>
+            </div>
+          </div>
+          <div class="kw">
+            <h4>Matched &amp; missing keywords</h4>
+            <ul id="kwList"></ul>
+          </div>
+          <div class="match-why" id="matchWhy"></div>
+          <div class="demo-note" id="demoNote">Demo mode: this is a simplified keyword-match illustration. In production, your CV is classified into a role domain and seniority band, then assessed against an expert-authored, deterministically-scored rubric — not a keyword count.</div>
+          <div class="actions" id="passActions" style="display:none">
+            <button class="btn" onclick="continueToQuiz()">Continue to skills quiz &rarr;</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap foot-in">
+    <div class="brand"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAzMiAzMic+PHJlY3Qgd2lkdGg9JzMyJyBoZWlnaHQ9JzMyJyByeD0nNycgZmlsbD0nIzJiM2E0ZCcvPjxjaXJjbGUgY3g9JzE2JyBjeT0nMTYnIHI9JzknIGZpbGw9JyNGMjY4MEInLz48L3N2Zz4=" alt="Veer" style="height:36px;width:36px;border-radius:10px;padding:5px" /> Veer<span style="color:var(--orange)">.</span>com</div>
+    <div>© 2026 Veer.ie — AI-powered recruitment for the UK &amp; Ireland. Prototype build.</div>
+    <div style="display:flex;gap:18px"><a href="privacy.html" style="color:#c9d0da">Privacy</a><a href="terms.html" style="color:#c9d0da">Terms</a></div>
+  </div>
+</footer>
+
+<script>
+/* ---------- Skill keyword bank (used by the ATS demo) — mirrors index.html ---------- */
+var SKILLS = [
+  'python', 'pytorch', 'langchain', 'prompt engineering', 'rag',
+  'agentic', 'agentic workflows', 'agentic systems', 'tool use', 'tool usage',
+  'api', 'apis', 'vector database', 'vector databases', 'embedding', 'embeddings',
+  'problem solving', 'logic', 'remote collaboration', 'machine learning',
+  'llm', 'llms', 'sql', 'docker', 'kubernetes', 'react', 'communication', 'data analysis'
+];
+
+const DEFAULT_JD = "AI Engineer — UK & Ireland (Remote / Hybrid)\nWe're hiring an AI Engineer to build LLM products with RAG and agentic workflows.\nRequired: Python, PyTorch, LangChain, Prompt engineering, RAG, agentic systems, tool use, APIs, vector databases, embeddings, problem solving, logic, and remote collaboration.";
+
+window.__ats = 0;
+
+function toggleMenu() {
+  document.querySelector('.nav-links').classList.toggle('active');
+}
+
+function loadSample(which) {
+  if (which === 'weak') {
+    document.getElementById('cv').value =
+      'Name: Sam Smith\n' +
+      'About: I am a hard-working person who enjoys learning new things. ' +
+      'I have worked in retail and customer service for several years and am ' +
+      'looking for a new challenge in technology.';
+    return;
+  }
+  // strong AI Engineer CV
+  document.getElementById('cv').value =
+    'Jane Doe — AI Engineer\n' +
+    'Skills: Python, PyTorch, LangChain, Prompt engineering, RAG, agentic workflows, ' +
+    'tool use, APIs, vector databases, embeddings, problem solving, logic, remote collaboration.\n' +
+    'Experience: Built LLM products with RAG and agentic systems.\n' +
+    'Education: MSc Artificial Intelligence, University of Edinburgh.';
+  document.getElementById('jd').value = DEFAULT_JD;
+}
+
+function renderMatchResult(score, matched, missing, totalRequired) {
+  window.__ats = score;
+  const ring = document.getElementById('ring');
+  if (ring) ring.style.setProperty('--p', score);
+  document.getElementById('scoreVal').textContent = score;
+
+  const tag = document.getElementById('verdictTag');
+  const pass = score >= 80;
+  tag.className = 'tag ' + (pass ? 'pass' : 'fail');
+  tag.textContent = pass ? 'PASS · cleared the 80+ gate' : 'BELOW GATE · needs 80+';
+
+  document.getElementById('verdictText').textContent = pass
+    ? 'You cleared the ATS gate. Continue to the skills quiz.'
+    : 'You are below the 80+ gate. Add more relevant skills or keywords and try again.';
+
+  const kw = document.getElementById('kwList');
+  kw.innerHTML = '';
+  (matched || []).slice(0, 12).forEach(function (k) {
+    const li = document.createElement('li');
+    li.className = 'ok';
+    li.innerHTML = '<span>✓</span> ' + k;
+    kw.appendChild(li);
+  });
+  (missing || []).slice(0, 12).forEach(function (k) {
+    const li = document.createElement('li');
+    li.className = 'miss';
+    li.innerHTML = '<span>✕</span> ' + k;
+    kw.appendChild(li);
+  });
+
+  document.getElementById('matchWhy').textContent = pass
+    ? 'Match driven by ' + (matched || []).length + ' of ' + totalRequired + ' role keywords found in your CV.'
+    : 'Only ' + (matched || []).length + ' of ' + totalRequired + ' role keywords were found. Strengthen the CV to pass.';
+
+  document.getElementById('result').classList.remove('hidden');
+  document.getElementById('result').style.display = 'block';
+  document.getElementById('demoNote').style.display = 'block';
+  document.getElementById('passActions').style.display = pass ? 'flex' : 'none';
+}
+
+// Fingerprint of the last parsed file — used to detect when a new file is selected
+window.__cvFileFingerprint = '';
+window.__parsedCvText = '';
+
+function getCvFileFingerprint(file) {
+  return file ? (file.name + '|' + file.size + '|' + file.lastModified) : '';
+}
+
+async function runMatch() {
+  const jdText = document.getElementById('jd').value || '';
+  const fileInput = document.getElementById('file');
+  const file = fileInput && fileInput.files && fileInput.files[0];
+
+  // Always send the file (backend always parses it fresh)
+  const formData = new FormData();
+  if (file) { formData.append('file', file); }
+  formData.append('jdText', jdText);
+  const cand = JSON.parse(sessionStorage.getItem('veerCandidate') || 'null');
+  if (cand && cand.id) { formData.append('candidateId', cand.id); }
+
+  // If no file, fall back to whatever is in the textarea
+  if (!file) {
+    const cvText = document.getElementById('cv').value || '';
+    formData.append('cvText', cvText);
+  }
+
+  try {
+    const res = await fetch('/api/candidates/cv', { method: 'POST', body: formData });
+    const data = await res.json();
+    if (res.ok && data.ok && data.ats) {
+      if (data.cvText && data.cvText.trim()) {
+        window.__parsedCvText = data.cvText;
+        window.__cvFileFingerprint = getCvFileFingerprint(file);
+        document.getElementById('cv').value = data.cvText;
+      }
+      renderMatchResult(data.ats.score, data.ats.matchedSkills, data.ats.missingSkills, data.ats.totalRequired);
+      return;
+    }
+    if (data.error) { console.warn('CV API error:', data.error); }
+  } catch (err) {
+    console.error('CV match API error:', err);
+  }
+
+  // Fallback: client-side scoring from textarea
+  const cvText = document.getElementById('cv').value || '';
+  const cv = cvText.toLowerCase();
+  const jd = jdText.toLowerCase();
+  const required = SKILLS.filter(function (s) { return jd.indexOf(s) !== -1; });
+  const matched = required.filter(function (s) { return cv.indexOf(s) !== -1; });
+  const missing = required.filter(function (s) { return cv.indexOf(s) === -1; });
+  const score = required.length ? Math.round((matched.length / required.length) * 100) : 0;
+  renderMatchResult(score, matched, missing, required.length);
+}
+
+/* ---------- CV details extraction (heuristic, client-side) ---------- */
+const EDU_LEVELS = ["Leaving Certificate / A-Level", "Bachelor's Degree", "Master's Degree", "Postgraduate Diploma", "Doctorate (PhD)"];
+const MAX_EXP = 4;
+const MAX_EDU = 5;
+let expCount = 0;
+let eduCount = 0;
+
+function escAttr(s) {
+  return (s || '').toString().replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+}
+
+function setExtractStatus(msg, visible) {
+  var s = document.getElementById('extractStatus');
+  var t = document.getElementById('extractStatusTxt');
+  if (s) s.style.display = visible ? 'inline-flex' : 'none';
+  if (t && msg) t.textContent = msg;
+}
+
+async function extractCVDetails() {
+  var fileInput = document.getElementById('file');
+  var file = fileInput && fileInput.files && fileInput.files[0];
+  var currentFingerprint = getCvFileFingerprint(file);
+  var btn = document.getElementById('extractBtn');
+
+  // Step 1: if file not yet parsed, parse it first via runMatch()
+  var needsReparse = file && (
+    !window.__parsedCvText ||
+    currentFingerprint !== window.__cvFileFingerprint
+  );
+
+  if (needsReparse) {
+    setExtractStatus('Uploading & reading CV…', true);
+    if (btn) { btn.disabled = true; btn.textContent = '⏳ Reading CV…'; }
+    window.__parsedCvText = '';
+    document.getElementById('cv').value = '';
+    await runMatch();
+    if (btn) { btn.disabled = false; btn.textContent = '✨ Auto-fill from CV ↓'; }
+  }
+
+  var text = (window.__parsedCvText || document.getElementById('cv').value || '').trim();
+  if (!text) {
+    setExtractStatus('', false);
+    alert('Could not read CV. Please upload a PDF, DOCX, or TXT file — or paste your CV text into the box.');
+    return;
+  }
+
+  if (!document.getElementById('cv').value.trim()) {
+    document.getElementById('cv').value = text;
+  }
+
+  // Step 2: Call /api/candidates/parse-cv for intelligent extraction
+  setExtractStatus('Extracting fields with AI…', true);
+  if (btn) { btn.disabled = true; }
+  var parsed = null;
+  try {
+    var res = await fetch('/api/candidates/parse-cv', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ cvText: text })
+    });
+    var data = await res.json();
+    if (data.ok && data.parsed) parsed = data.parsed;
+  } catch(e) {
+    console.warn('parse-cv API error, falling back:', e);
+  } finally {
+    if (btn) { btn.disabled = false; }
+    setExtractStatus('', false);
+  }
+
+  if (!parsed) {
+    alert('Extraction service unavailable. Please fill in the fields manually.');
+    document.getElementById('cvDetails').classList.add('show');
+    return;
+  }
+
+  // Step 3: Fill form fields
+  function setVal(id, val) {
+    var el = document.getElementById(id);
+    if (el && val) el.value = val;
+  }
+
+  setVal('pFirst',    parsed.firstName);
+  setVal('pLast',     parsed.lastName);
+  setVal('pEmail',    parsed.email);
+  setVal('pPhone',    parsed.phone);
+  setVal('pCity',     parsed.city);
+  setVal('pCountry',  parsed.country);
+  setVal('pPostal',   parsed.postal);
+  setVal('pLinkedin', parsed.linkedin);
+  setVal('pSummary',  parsed.summary);
+
+  // Experience
+  document.getElementById('expList').innerHTML = '';
+  expCount = 0;
+  var exps = parsed.experiences || [];
+  if (exps.length === 0) exps = [{}];
+  exps.slice(0, MAX_EXP).forEach(function(exp) {
+    addExperience({
+      title: exp.title || '',
+      employer: exp.employer || '',
+      start: exp.startDate || '',
+      end: exp.endDate || '',
+      current: !!exp.current
+    });
+  });
+
+  // Education
+  document.getElementById('eduList').innerHTML = '';
+  eduCount = 0;
+  var edus = parsed.education || [];
+  if (edus.length === 0) edus = [{}];
+  edus.slice(0, MAX_EDU).forEach(function(edu) {
+    addEducation({
+      level: typeof edu.level === 'number' ? edu.level : 1,
+      field: edu.field || '',
+      institution: edu.institution || '',
+      start: edu.startDate || '',
+      end: edu.endDate || '',
+      current: !!edu.current
+    });
+  });
+
+  // Skills
+  document.getElementById('skillTags').querySelectorAll('.skill-tag').forEach(function(t) { t.remove(); });
+  (parsed.skills || []).slice(0, 30).forEach(addSkillTag);
+
+  // Certifications
+  document.getElementById('certList').innerHTML = '';
+  (parsed.certifications || []).slice(0, 8).forEach(function(c) { addCertification(c); });
+
+  // Update parse method note
+  var noteEl = document.getElementById('parseMethodNote');
+  if (noteEl) {
+    if (parsed.method === 'gemini-ai') {
+      noteEl.innerHTML = '✨ <b>AI-powered extraction</b> (Gemini) — every field is editable. Please review for accuracy.';
+      noteEl.style.background = '#f0fdf4'; noteEl.style.borderColor = '#bbf7d0'; noteEl.style.color = '#166534';
+    } else {
+      noteEl.innerHTML = '🔍 <b>Smart heuristic extraction</b> — every field is editable. Check and correct anything the parser missed.';
+    }
+    noteEl.style.display = 'block';
+  }
+
+  document.getElementById('cvDetails').classList.add('show');
+  document.getElementById('cvDetails').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function addExperience(data) {
+  data = data || {};
+  if (expCount >= MAX_EXP) return;
+  expCount++;
+  const wrap = document.createElement('div');
+  wrap.className = 'entry-card';
+  wrap.innerHTML =
+    '<button type="button" class="entry-remove" onclick="removeEntry(this)" aria-label="Remove role">&times;</button>' +
+    '<div class="entry-grid">' +
+      '<div class="cvd-field"><label>Job title</label><input type="text" class="exp-title" value="' + escAttr(data.title) + '" /></div>' +
+      '<div class="cvd-field"><label>Employer</label><input type="text" class="exp-employer" value="' + escAttr(data.employer) + '" /></div>' +
+    '</div>' +
+    '<div class="entry-grid dates" style="margin-top:10px">' +
+      '<div class="cvd-field"><label>Start date</label><input type="text" class="exp-start" placeholder="e.g. 2019" value="' + escAttr(data.start) + '" /></div>' +
+      '<div class="cvd-field"><label>End date</label><input type="text" class="exp-end" placeholder="e.g. 2022" value="' + escAttr(data.end) + '"' + (data.current ? ' disabled' : '') + ' /></div>' +
+      '<label class="entry-current"><input type="checkbox" class="exp-current" onchange="toggleCurrent(this,\'.exp-end\')"' + (data.current ? ' checked' : '') + ' /> Current role</label>' +
+    '</div>';
+  document.getElementById('expList').appendChild(wrap);
+  document.getElementById('addExpBtn').disabled = expCount >= MAX_EXP;
+}
+
+function addEducation(data) {
+  data = data || {};
+  if (eduCount >= MAX_EDU) return;
+  eduCount++;
+  const wrap = document.createElement('div');
+  wrap.className = 'entry-card';
+  const levelIdx = typeof data.level === 'number' ? data.level : 1;
+  const options = EDU_LEVELS.map(function (l, i) {
+    return '<option value="' + i + '"' + (i === levelIdx ? ' selected' : '') + '>' + l + '</option>';
+  }).join('');
+  wrap.innerHTML =
+    '<button type="button" class="entry-remove" onclick="removeEntry(this)" aria-label="Remove qualification">&times;</button>' +
+    '<div class="entry-grid">' +
+      '<div class="cvd-field"><label>Qualification level</label><select class="edu-level">' + options + '</select></div>' +
+      '<div class="cvd-field"><label>Field of study</label><input type="text" class="edu-field" value="' + escAttr(data.field) + '" /></div>' +
+    '</div>' +
+    '<div class="entry-grid" style="margin-top:10px">' +
+      '<div class="cvd-field"><label>Institution</label><input type="text" class="edu-institution" value="' + escAttr(data.institution) + '" /></div>' +
+    '</div>' +
+    '<div class="entry-grid dates" style="margin-top:10px">' +
+      '<div class="cvd-field"><label>Start date</label><input type="text" class="edu-start" placeholder="e.g. 2016" value="' + escAttr(data.start) + '" /></div>' +
+      '<div class="cvd-field"><label>End date</label><input type="text" class="edu-end" placeholder="e.g. 2020" value="' + escAttr(data.end) + '"' + (data.current ? ' disabled' : '') + ' /></div>' +
+      '<label class="entry-current"><input type="checkbox" class="edu-current" onchange="toggleCurrent(this,\'.edu-end\')"' + (data.current ? ' checked' : '') + ' /> Currently studying</label>' +
+    '</div>';
+  document.getElementById('eduList').appendChild(wrap);
+  document.getElementById('addEduBtn').disabled = eduCount >= MAX_EDU;
+}
+
+function addCertification(value) {
+  const row = document.createElement('div');
+  row.className = 'cert-row';
+  row.innerHTML =
+    '<input type="text" class="cert-input" placeholder="e.g. Microsoft Certified: Azure AI Engineer Associate" value="' + escAttr(value) + '" />' +
+    '<button type="button" class="entry-remove" onclick="this.parentElement.remove()" aria-label="Remove certification">&times;</button>';
+  document.getElementById('certList').appendChild(row);
+}
+
+function removeEntry(btn) {
+  const card = btn.closest('.entry-card');
+  const list = card.parentElement;
+  card.remove();
+  if (list.id === 'expList') { expCount--; document.getElementById('addExpBtn').disabled = expCount >= MAX_EXP; }
+  if (list.id === 'eduList') { eduCount--; document.getElementById('addEduBtn').disabled = eduCount >= MAX_EDU; }
+}
+
+function toggleCurrent(cb, endSelector) {
+  const card = cb.closest('.entry-card');
+  const endInput = card.querySelector(endSelector);
+  endInput.disabled = cb.checked;
+  if (cb.checked) endInput.value = '';
+}
+
+function addSkillTag(value) {
+  value = (value || '').trim();
+  if (!value) return;
+  const existing = Array.from(document.querySelectorAll('#skillTags .skill-tag')).map(function (t) { return t.dataset.val.toLowerCase(); });
+  if (existing.indexOf(value.toLowerCase()) !== -1) return;
+  const tag = document.createElement('span');
+  tag.className = 'skill-tag';
+  tag.dataset.val = value;
+  const removeBtn = document.createElement('button');
+  removeBtn.type = 'button';
+  removeBtn.setAttribute('aria-label', 'Remove skill');
+  removeBtn.textContent = '×';
+  removeBtn.addEventListener('click', function () { tag.remove(); });
+  tag.append(value + ' ', removeBtn);
+  document.getElementById('skillTags').insertBefore(tag, document.getElementById('skillInput'));
+}
+
+function handleSkillInput(e) {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    addSkillTag(e.target.value);
+    e.target.value = '';
+  }
+}
+
+/* ---------- File attachments (CV / cover letter / project) ---------- */
+function formatSize(bytes) {
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1024 * 1024) return Math.round(bytes / 1024) + ' KB';
+  return (bytes / 1024 / 1024).toFixed(1) + ' MB';
+}
+
+function showAttachedFile(statusId, file, onRemove) {
+  const el = document.getElementById(statusId);
+  el.querySelector('.fa-name').textContent = file.name;
+  el.querySelector('.fa-size').textContent = formatSize(file.size);
+  el.style.display = 'flex';
+  el.querySelector('.fa-remove').onclick = onRemove;
+}
+
+function wireDropZone(dropId, inputId, onFiles) {
+  const drop = document.getElementById(dropId);
+  const input = document.getElementById(inputId);
+  drop.addEventListener('click', function () { input.click(); });
+  drop.addEventListener('dragover', function (e) { e.preventDefault(); drop.classList.add('drag'); });
+  drop.addEventListener('dragleave', function () { drop.classList.remove('drag'); });
+  drop.addEventListener('drop', function (e) {
+    e.preventDefault();
+    drop.classList.remove('drag');
+    if (e.dataTransfer.files && e.dataTransfer.files.length) onFiles(e.dataTransfer.files);
+  });
+  input.addEventListener('change', function () {
+    if (input.files && input.files.length) onFiles(input.files);
+  });
+}
+
+const ACCEPTED_DOC_EXT = ['.pdf', '.doc', '.docx', '.txt'];
+const MAX_DOC_SIZE = 5 * 1024 * 1024;
+const MAX_PROJECT_FILE_SIZE = 10 * 1024 * 1024;
+
+function extOf(name) {
+  const m = (name || '').match(/\.[^.]+$/);
+  return m ? m[0].toLowerCase() : '';
+}
+
+function validateDocFile(file, errElId) {
+  const errEl = document.getElementById(errElId);
+  if (ACCEPTED_DOC_EXT.indexOf(extOf(file.name)) === -1) {
+    errEl.textContent = 'Unsupported file type — please use PDF, DOC, DOCX or TXT.';
+    errEl.style.display = 'block';
+    return false;
+  }
+  if (file.size > MAX_DOC_SIZE) {
+    errEl.textContent = 'That file is over the 5MB limit — please compress it or attach a smaller version.';
+    errEl.style.display = 'block';
+    return false;
+  }
+  errEl.style.display = 'none';
+  return true;
+}
+
+function setupCvUpload() {
+  wireDropZone('drop', 'file', function (files) {
+    const f = files[0];
+    if (!validateDocFile(f, 'cvFileErr')) return;
+    // ALWAYS clear old CV text when a new file is chosen
+    document.getElementById('cv').value = '';
+    window.__parsedCvText = '';
+    showAttachedFile('cvAttached', f, function () {
+      document.getElementById('file').value = '';
+      document.getElementById('cvAttached').style.display = 'none';
+      document.getElementById('cv').value = '';
+      window.__parsedCvText = '';
+    });
+    if (/\.txt$/i.test(f.name)) {
+      const reader = new FileReader();
+      reader.onload = function (ev) { document.getElementById('cv').value = ev.target.result; };
+      reader.readAsText(f);
+    }
+  });
+}
+
+function setupCoverLetterUpload() {
+  wireDropZone('clDrop', 'clFile', function (files) {
+    const f = files[0];
+    if (!validateDocFile(f, 'clFileErr')) return;
+    showAttachedFile('clAttached', f, function () {
+      document.getElementById('clFile').value = '';
+      document.getElementById('clAttached').style.display = 'none';
+    });
+  });
+}
+
+let projectFiles = [];
+
+function setupProjectUpload() {
+  wireDropZone('projDrop', 'projFile', function (files) {
+    const errEl = document.getElementById('projFileErr');
+    const rejected = [];
+    Array.from(files).forEach(function (f) {
+      if (f.size > MAX_PROJECT_FILE_SIZE) { rejected.push(f.name); return; }
+      projectFiles.push(f);
+    });
+    document.getElementById('projFile').value = '';
+    if (rejected.length) {
+      errEl.textContent = 'Skipped (over the 10MB per-file limit): ' + rejected.join(', ');
+      errEl.style.display = 'block';
+    } else {
+      errEl.style.display = 'none';
+    }
+    renderProjectFiles();
+  });
+}
+
+function renderProjectFiles() {
+  const list = document.getElementById('projectFileList');
+  list.innerHTML = '';
+  projectFiles.forEach(function (f, i) {
+    const row = document.createElement('div');
+    row.className = 'file-attached';
+    row.innerHTML =
+      '<svg class="fa-ic" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 6l-6 6 6 6M15 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+      '<span class="fa-name">' + escAttr(f.name) + '</span>' +
+      '<span class="fa-size">' + formatSize(f.size) + '</span>' +
+      '<button type="button" class="fa-remove" onclick="removeProjectFile(' + i + ')" aria-label="Remove file">&times;</button>';
+    list.appendChild(row);
+  });
+  document.getElementById('projectEmpty').style.display = projectFiles.length ? 'none' : 'block';
+}
+
+function removeProjectFile(i) {
+  projectFiles.splice(i, 1);
+  renderProjectFiles();
+}
+
+/* ---------- Submit gate: confirms the profile, reveals the matching step ---------- */
+function submitProfile() {
+  const cvText = document.getElementById('cv').value || '';
+  if (!cvText.trim()) {
+    alert('Paste or upload your CV before submitting.');
+    return;
+  }
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.textContent = 'Profile submitted ✓';
+  const matchSection = document.getElementById('matchSection');
+  matchSection.classList.remove('hidden');
+  matchSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/* Hand off to the real Stage 1 assessment (veer-node-assessment server) */
+function continueToQuiz() {
+  sessionStorage.setItem('veerAts', String(window.__ats || 0));
+  window.location.href = '/ai-skill-test.html';
+}
+
+function boot() {
+  try {
+    const c = JSON.parse(sessionStorage.getItem('veerCandidate') || 'null');
+    if (c && c.first) {
+      document.getElementById('hiName').textContent = ' — ' + c.first;
+    }
+  } catch (e) {}
+  setupCvUpload();
+  setupCoverLetterUpload();
+  setupProjectUpload();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', boot);
+} else {
+  boot();
+}
+</script>
+</body>
+</html>

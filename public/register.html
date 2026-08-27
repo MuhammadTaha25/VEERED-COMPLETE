@@ -1,0 +1,850 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Company registration &amp; pricing — Veer.ie</title>
+<meta name="description" content="Register your company on Veer — AI-powered recruitment for the UK & Ireland. Secure login, transparent vacancy pricing, and SSL-secured payments." />
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAzMiAzMic+PHJlY3Qgd2lkdGg9JzMyJyBoZWlnaHQ9JzMyJyByeD0nNycgZmlsbD0nIzJiM2E0ZCcvPjxjaXJjbGUgY3g9JzE2JyBjeT0nMTYnIHI9JzknIGZpbGw9JyNGMjY4MEInLz48L3N2Zz4=" />
+<style>
+  :root{
+    --orange:#F2680B; --orange-d:#d9570a; --amber:#ffb347; --slate:#2b3a4d; --slate2:#3c5468;
+    --muted:#5b6b7b; --bg:#faf8f6; --card:#ffffff; --line:#e7e1da; --ok:#1f8a4c; --err:#c0392b;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--slate);background:var(--bg);line-height:1.5;-webkit-font-smoothing:antialiased}
+  a{color:var(--orange);text-decoration:none}
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;max-width:1100px;margin:0 auto}
+  .brand{display:inline-flex;align-items:center;gap:9px;font-weight:800;font-size:19px;color:var(--slate)}
+  .brand img{height:40px;width:auto;padding:6px;border-radius:10px;background:rgba(242,104,11,.10);border:1px solid rgba(242,104,11,.35)}
+  .brand .dot{color:var(--orange)}
+  .nav .signin{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:800;color:var(--orange);border:1.5px solid rgba(242,104,11,.45);background:#fff;padding:9px 16px;border-radius:999px;box-shadow:0 4px 12px rgba(242,104,11,.12);transition:.15s}
+  .nav .signin:hover{background:linear-gradient(135deg,var(--orange),var(--amber));color:#fff;border-color:transparent}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+
+  /* hero */
+  .hero{padding:32px 20px 16px;text-align:center}
+  .hero-stage{position:relative;max-width:880px;margin:0 auto}
+  .hero-stage::before{content:"";position:absolute;left:6%;right:6%;bottom:-18px;height:48px;border-radius:28px;background:linear-gradient(180deg,#ffffff,#efe9e2);box-shadow:0 30px 46px -20px rgba(43,58,77,.5);transform:perspective(900px) rotateX(38deg);transform-origin:bottom center;z-index:0}
+  .hero-inner{position:relative;z-index:1;overflow:hidden;padding:54px 46px 40px;border-radius:28px;background:linear-gradient(160deg,#ffffff,#fbf8f4);border:1px solid #efe7df;box-shadow:inset 0 2px 0 rgba(255,255,255,.9), inset 0 0 0 1px rgba(255,255,255,.5), 0 2px 4px rgba(43,58,77,.10), 0 16px 30px -12px rgba(43,58,77,.22), 0 50px 90px -36px rgba(43,58,77,.55)}
+  .hero-inner::before{content:"";position:absolute;left:0;right:0;top:0;height:42%;background:linear-gradient(180deg,rgba(255,255,255,.75),rgba(255,255,255,0));pointer-events:none;border-radius:26px 26px 0 0}
+  .hero-inner::after{content:"";position:absolute;width:260px;height:260px;right:-70px;bottom:-90px;background:radial-gradient(circle,rgba(242,104,11,.16),transparent 70%);pointer-events:none}
+  .eyebrow{color:var(--orange);font-weight:800;letter-spacing:1.1px;text-transform:uppercase;font-size:12px;display:inline-flex;align-items:center;gap:8px;background:rgba(242,104,11,.10);border:1px solid rgba(242,104,11,.30);padding:6px 13px;border-radius:999px;position:relative;z-index:1}
+  .hero h1{font-size:clamp(28px,5.4vw,44px);line-height:1.08;margin:16px 0 10px;color:var(--slate);position:relative;z-index:1;letter-spacing:-.5px}
+  .hero h1 .hl{background:linear-gradient(120deg,#F2680B,#ff9a3c);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .hero .lede{color:var(--slate2);font-size:16.5px;margin:0 auto;max-width:620px;position:relative;z-index:1}
+  .hero-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:20px 0 4px;position:relative;z-index:1}
+  .hero-cta .btn{width:auto;padding:14px 22px}
+  .hero-cta .btn.ghost{background:#e7e1da;color:var(--slate);box-shadow:none}
+  .hero-stats{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:20px;position:relative;z-index:1}
+  .stat{display:flex;flex-direction:column;align-items:center;min-width:104px;padding:16px 20px;background:linear-gradient(180deg,#ffffff,#fdfbf9);border:1px solid #efe7df;border-radius:16px;box-shadow:inset 0 2px 0 #fff, 0 10px 22px -10px rgba(43,58,77,.30);transition:transform .16s ease, box-shadow .16s ease}
+  .stat:hover{transform:translateY(-5px);box-shadow:inset 0 2px 0 #fff, 0 22px 36px -14px rgba(43,58,77,.42)}
+  .stat b{font-size:21px;color:var(--orange);line-height:1}
+  .stat span{font-size:11.5px;color:var(--muted);margin-top:5px;text-transform:uppercase;letter-spacing:.4px}
+
+  /* two-col portal */
+  .portal{display:grid;grid-template-columns:1.05fr .95fr;gap:22px;max-width:1040px;margin:22px auto 8px;align-items:start}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:24px;box-shadow:0 20px 50px rgba(43,58,77,.10);min-width:0}
+  .card h2{margin:0 0 4px;font-size:21px}
+  .card .sub{color:var(--muted);font-size:13.5px;margin:0 0 16px}
+
+  .tabs{display:flex;gap:6px;background:#f1ece6;border-radius:12px;padding:5px;margin-bottom:18px}
+  .tab{flex:1;text-align:center;padding:10px;font-weight:800;font-size:14px;border-radius:9px;cursor:pointer;color:var(--slate2);transition:.15s;min-width:0}
+  .tab.active{background:#fff;color:var(--slate);box-shadow:0 4px 10px rgba(43,58,77,.08)}
+
+  .field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+  label{font-weight:700;font-size:13.5px;color:var(--slate)}
+  .req{color:#e23b2e;font-weight:800;margin-left:2px}
+  input,select,textarea{font:inherit;font-size:15px;padding:12px 13px;border:1.5px solid var(--line);border-radius:11px;background:#fcfbfa;color:var(--slate);width:100%}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--orange);box-shadow:0 0 0 3px rgba(242,104,11,.15)}
+  input.bad,select.bad{border-color:var(--err);background:#fff6f5;box-shadow:0 0 0 3px rgba(192,57,43,.10)}
+  .pwd-wrap{position:relative}
+  .pwd-wrap input{padding-right:46px}
+  .pwd-toggle{position:absolute;right:10px;top:50%;transform:translateY(-50%);border:none;background:none;cursor:pointer;font-size:12px;font-weight:800;color:var(--orange)}
+  .meter{height:7px;border-radius:6px;background:#ece7e1;overflow:hidden;margin-top:2px}
+  .meter > i{display:block;height:100%;width:0;background:#c0392b;transition:width .2s,background .2s}
+  .meter-label{font-size:11.5px;color:var(--muted);margin-top:3px}
+  .row{display:flex;gap:12px}
+  .row > *{flex:1}
+  .consent{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--slate2);background:#f7f4f0;border:1px solid #efe7df;border-radius:12px;padding:12px 14px;margin:6px 0 14px}
+  .consent input{width:20px;height:20px;flex:0 0 20px;margin-top:2px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,var(--orange),var(--amber));color:#fff;border:none;border-radius:12px;padding:14px 18px;font-size:15.5px;font-weight:800;cursor:pointer;width:100%;box-shadow:0 8px 20px rgba(242,104,11,.28);font-family:inherit}
+  .btn:hover{filter:brightness(1.03)}
+  .btn:active{transform:translateY(1px)}
+  .btn.ghost{background:#e7e1da;color:var(--slate);box-shadow:none}
+  .linkbtn{background:none;border:none;color:var(--orange);font-weight:700;cursor:pointer;font-size:13.5px;padding:0;font-family:inherit}
+  .err{display:none;margin-top:6px;padding:9px 11px;border-radius:9px;background:#fdecea;border:1px solid #f1b7ae;color:#c0392b;font-size:12.5px;font-weight:600;line-height:1.35}
+  .err.show{display:block}
+  .err::before{content:"\26A0\00A0";font-weight:700}
+  .ok-banner{display:none;margin:0 0 16px;padding:13px 15px;border-radius:13px;background:#eaf6ee;border:1px solid #b7e2c6;color:#1f8a4c;font-size:13.5px;font-weight:600}
+  .ok-banner.show{display:block}
+
+  /* secure panel — 3D elevated container, tighter aligned list */
+  .secure{background:linear-gradient(160deg,#ffffff,#fbf8f4);border:1px solid #efe7df;
+    box-shadow:inset 0 2px 0 #fff, 0 14px 30px -16px rgba(43,58,77,.30);
+    transition:transform .18s ease, box-shadow .18s ease}
+  .secure:hover{transform:translateY(-4px);box-shadow:inset 0 2px 0 #fff, 0 26px 46px -18px rgba(43,58,77,.42)}
+  .secure h2{display:flex;align-items:center;gap:9px}
+  .secure .lock{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:9px;background:rgba(31,138,76,.12);color:var(--ok);font-size:16px}
+  .secure ul{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:8px}
+  .secure li{display:flex;gap:12px;align-items:flex-start;font-size:13px;line-height:1.45;color:var(--slate2)}
+  .secure li .tk{flex:0 0 56px;height:22px;border-radius:7px;background:rgba(242,104,11,.12);color:var(--orange);display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;letter-spacing:.4px;margin-top:1px}
+  .secure li b{color:var(--slate)}
+
+  /* pricing */
+  .section{padding:34px 20px 8px;max-width:1080px;margin:0 auto}
+  .section-head{text-align:center;max-width:720px;margin:0 auto 26px}
+  .pricing-graphic{display:inline-flex;align-items:center;justify-content:center;position:relative;margin-bottom:14px}
+  .pricing-graphic .pkg{width:64px;height:64px;filter:drop-shadow(0 10px 18px rgba(242,104,11,.35))}
+  .pricing-graphic .pkg-dot{position:absolute;width:10px;height:10px;border-radius:50%}
+  .pricing-graphic .d1{background:var(--slate2);left:-2px;top:6px;opacity:.5}
+  .pricing-graphic .d2{background:var(--amber);right:-4px;bottom:8px}
+  .pricing-graphic .card-vec{width:92px;height:62px;filter:drop-shadow(0 12px 20px rgba(242,104,11,.38))}
+  .section-head h2{font-size:clamp(28px,5vw,42px);line-height:1.08;margin:8px 0 8px;letter-spacing:-.5px}
+  .section-head .h2sub{font-size:clamp(18px,2.6vw,24px);font-weight:800;color:var(--orange);margin:2px 0 4px;letter-spacing:-.2px}
+  .section-head p{color:var(--muted);font-size:16px;line-height:1.5;margin:0}
+  .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .plan{position:relative;background:var(--card);border:1.5px solid var(--line);border-radius:20px;padding:30px 26px;display:flex;flex-direction:column;gap:6px;min-width:0;box-shadow:inset 0 2px 0 #fff, 0 12px 24px -14px rgba(43,58,77,.22);transition:transform .18s ease, box-shadow .18s ease}
+  .plan:hover{transform:translateY(-6px);box-shadow:inset 0 2px 0 #fff, 0 28px 46px -18px rgba(43,58,77,.34)}
+  .plan.sel{border-color:var(--orange);box-shadow:0 0 0 3px rgba(242,104,11,.18)}
+  .plan.featured{border-color:var(--orange);background:linear-gradient(180deg,#fffdfb,#fff6ee);box-shadow:inset 0 2px 0 #fff, 0 6px 12px rgba(242,104,11,.14), 0 24px 48px -16px rgba(242,104,11,.34);transform:translateY(-12px)}
+  .plan.featured:hover{transform:translateY(-18px);box-shadow:inset 0 2px 0 #fff, 0 8px 16px rgba(242,104,11,.18), 0 36px 64px -18px rgba(242,104,11,.44)}
+  .tag{position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--orange),var(--amber));color:#fff;font-size:11.5px;font-weight:800;padding:4px 12px;border-radius:999px;white-space:nowrap}
+  .plan h3{margin:2px 0 0;font-size:20px;color:var(--slate)}
+  .plan .ptype{font-size:13px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--orange)}
+  .plan .phead{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:6px}
+  .plan .ptitle{min-width:0}
+  .plan .pico{width:66px;height:66px;border-radius:16px;background:rgba(242,104,11,.12);color:var(--orange);display:inline-flex;align-items:center;justify-content:center;flex:0 0 66px}
+  .plan .pico svg{width:36px;height:36px}
+  .plan.featured .pico{background:linear-gradient(135deg,var(--orange),var(--amber));color:#fff;box-shadow:0 12px 24px -8px rgba(242,104,11,.55)}
+  .plan .ppromise{display:flex;gap:10px;align-items:flex-start;margin:14px 0 4px;padding:12px 14px;border-radius:12px;background:rgba(242,104,11,.08);border:1px solid rgba(242,104,11,.25)}
+  .plan .ppromise .pp-ic{flex:0 0 22px;width:22px;height:22px;color:var(--orange);margin-top:1px}
+  .plan .ppromise b{display:block;color:var(--slate);font-size:13px;letter-spacing:.2px}
+  .plan .ppromise span{display:block;font-size:12px;color:var(--slate2);line-height:1.45;margin-top:1px}
+  .plan .ppromise i{font-style:normal;font-weight:800;color:var(--orange)}
+  .price{margin:10px 0 2px;display:flex;align-items:baseline;gap:6px}
+  .price .amt{font-size:38px;font-weight:800;color:var(--slate);line-height:1}
+  .price .per{font-size:13px;color:var(--muted)}
+  .price .eur{font-size:12.5px;color:var(--slate2);font-weight:700}
+  .plan ul{list-style:none;margin:10px 0 14px;padding:0;display:grid;gap:8px;font-size:13px;color:var(--slate2)}
+  .plan ul li{display:flex;gap:8px;align-items:flex-start}
+  .plan ul li .ck{color:var(--ok);font-weight:800}
+  .plan .pick{margin-top:auto;width:100%}
+  .benchmark{margin-top:18px;background:#f7f4f0;border:1px solid #efe7df;border-radius:14px;padding:14px 16px;font-size:13px;color:var(--slate2)}
+  .benchmark b{color:var(--slate)}
+  .vat-note{text-align:center;font-size:12.5px;color:var(--muted);margin:12px 0 0}
+
+  /* payment */
+  .pay{display:grid;grid-template-columns:1fr 1.1fr;gap:22px;align-items:start;max-width:980px;margin:8px auto 0}
+  .summary{background:linear-gradient(160deg,#2b3a4d,#1d2935);color:#fff;border-radius:18px;padding:22px;box-shadow:0 18px 40px rgba(43,58,77,.18)}
+  .summary h3{margin:0 0 12px;font-size:18px}
+  .summary .line{display:flex;justify-content:space-between;font-size:14px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.12)}
+  .summary .line:last-child{border-bottom:none}
+  .summary .line.total{font-size:18px;font-weight:800;border-top:1px solid rgba(255,255,255,.22);margin-top:6px;padding-top:12px}
+  .summary .muted{opacity:.8;font-size:12.5px}
+  .ssl-badge{display:inline-flex;align-items:center;gap:7px;margin-top:14px;font-size:12px;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);padding:7px 11px;border-radius:10px}
+  .ssl-badge .lk{color:#7ee0a0;font-weight:800}
+  .pay-form .card-ico{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:13px;font-weight:800;color:var(--slate2);letter-spacing:.5px}
+  .card-wrap{position:relative}
+  .hint{font-size:12px;color:var(--muted);margin-top:4px}
+  /* plan dropdown in checkout */
+  .plan-select{margin:0 0 18px;padding:14px 15px;background:linear-gradient(160deg,#fff,#fbf8f4);border:1.5px solid var(--line);border-radius:14px;box-shadow:inset 0 2px 0 #fff,0 12px 24px -14px rgba(43,58,77,.30)}
+  .plan-select label{display:block;margin-bottom:8px}
+  .plan-select select{font-weight:800;color:var(--slate);background:#fff}
+  /* card brand logos */
+  .card-brands{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:9px}
+  .card-brands .cb-label{font-size:11px;color:var(--muted);width:100%;letter-spacing:.4px;text-transform:uppercase;font-weight:700}
+  .card-brands .cb{height:26px;width:auto;opacity:.4;filter:grayscale(.5);transition:transform .16s ease,opacity .16s ease,filter .16s ease}
+  .card-brands .cb.on{opacity:1;filter:none;transform:translateY(-2px)}
+  .card-ico svg{height:20px;width:auto;display:block}
+  .card-ico:empty{display:none}
+
+  .footer{text-align:center;padding:34px 20px 40px;margin-top:14px;color:var(--muted);font-size:12.5px}
+  .footer a{color:var(--slate2)}
+
+  @media (max-width:860px){
+    .portal,.pay{grid-template-columns:1fr}
+    .plans{grid-template-columns:1fr}
+    .plan.featured{transform:none}
+    .plan.featured:hover{transform:translateY(-6px)}
+    .row{flex-wrap:wrap}
+    .row > *{flex:1 1 100%}
+  }
+
+  /* GDPR badge + compliance popup */
+  /* GDPR badge — prominent orange CTA */
+  .gdpr-badge{display:inline-flex;align-items:center;gap:14px;width:100%;text-align:left;
+    font:inherit;color:#fff;-webkit-appearance:none;appearance:none;
+    background:linear-gradient(135deg,var(--orange),var(--amber));border:1px solid rgba(255,255,255,.28);border-radius:16px;
+    padding:14px 16px;cursor:pointer;
+    box-shadow:0 12px 26px -10px rgba(242,104,11,.60);
+    transition:transform .16s ease,box-shadow .16s ease}
+  .gdpr-badge:hover{transform:translateY(-3px);box-shadow:0 20px 36px -12px rgba(242,104,11,.72)}
+  .gdpr-badge:active{transform:translateY(-1px)}
+  .gdpr-badge .g-ico{flex:0 0 40px;width:40px;height:40px;border-radius:11px;background:rgba(255,255,255,.22);display:inline-flex;align-items:center;justify-content:center}
+  .gdpr-badge .g-ico svg{width:24px;height:auto}
+  .gdpr-badge .g-txt{display:flex;flex-direction:column;line-height:1.2}
+  .gdpr-badge .g-txt b{font-size:16px;color:#fff;letter-spacing:.3px}
+  .gdpr-badge .g-txt span{font-size:12.5px;color:rgba(255,255,255,.92);font-weight:600;letter-spacing:.2px}
+  .gdpr-badge .g-go{margin-left:auto;font-size:13px;font-weight:800;color:var(--orange);background:#fff;padding:9px 15px;border-radius:999px;box-shadow:0 4px 10px rgba(43,58,77,.18);white-space:nowrap}
+
+  .modal-overlay{position:fixed;inset:0;background:rgba(27,38,51,.55);backdrop-filter:blur(3px);
+    display:none;align-items:center;justify-content:center;padding:20px;z-index:1000;opacity:0;transition:opacity .18s ease}
+  .modal-overlay.open{display:flex;opacity:1}
+  .modal{position:relative;width:min(560px,100%);max-height:88vh;overflow:auto;
+    background:linear-gradient(160deg,#ffffff,#fbf8f4);border:1px solid #efe7df;border-radius:22px;
+    padding:30px 28px;
+    box-shadow:inset 0 2px 0 #fff,0 40px 80px -28px rgba(27,38,51,.6);
+    transform:translateY(12px) scale(.98);transition:transform .2s ease}
+  .modal-overlay.open .modal{transform:translateY(0) scale(1)}
+  .modal-head{display:flex;align-items:center;gap:14px;margin-bottom:14px;padding-right:40px}
+  .modal-head svg{width:46px;height:auto;flex:0 0 46px}
+  .modal-head h3{margin:0;font-size:22px;color:var(--slate);letter-spacing:-.3px}
+  .modal-head p{margin:2px 0 0;font-size:12.5px;color:var(--ok);font-weight:700;text-transform:uppercase;letter-spacing:.6px}
+  .modal-close{position:absolute;top:14px;right:14px;width:38px;height:38px;border-radius:50%;border:none;
+    background:#f1ece6;color:var(--slate);font-size:22px;font-weight:800;line-height:1;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;transition:.15s;box-shadow:0 4px 10px rgba(43,58,77,.12)}
+  .modal-close:hover{background:linear-gradient(135deg,var(--orange),var(--amber));color:#fff;transform:rotate(90deg)}
+  .modal-body{font-size:14px;color:var(--slate2);line-height:1.55}
+  .modal-body h4{margin:18px 0 6px;font-size:14px;color:var(--slate);display:flex;align-items:center;gap:8px}
+  .modal-body h4 .d{width:8px;height:8px;border-radius:50%;background:var(--orange);flex:0 0 8px}
+  .modal-body p{margin:0 0 6px}
+  .modal-body .note{margin-top:16px;padding:11px 13px;border-radius:12px;background:#f7f4f0;border:1px solid #efe7df;font-size:12px;color:var(--muted)}
+  .modal-foot{margin-top:20px;display:flex;gap:10px;justify-content:flex-end}
+
+  @media (max-width:520px){
+    .modal{padding:24px 18px}
+    .modal-foot .btn{width:100%}
+  }
+
+</style>
+</head>
+<body>
+  <nav class="nav">
+    <a class="brand" href="index.html"><img src="veer-brand-logo.png" alt="Veer" />Veer<span class="dot">.</span>com</a>
+    <a class="signin" href="#login">Sign in</a>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-stage">
+      <div class="hero-inner">
+      <div class="eyebrow"><span class="dot">●</span> Employers &middot; UK &amp; Ireland</div>
+      <h1>Hire in <span class="hl">days, not months.</span><br>Post a vacancy, get an explainable shortlist.</h1>
+      <p class="lede">Veer's AI screens and ranks candidates against your role &mdash; you decide who to interview. Register your company in minutes, advertise a vacancy, and pay securely online. Built to UK &amp; EU GDPR standards with SSL-protected payments.</p>
+      <div class="hero-cta">
+        <a class="btn" href="#login">Create company account &rarr;</a>
+        <a class="btn ghost" href="#plans">See pricing</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><b>80+</b><span>ATS signals</span></div>
+        <div class="stat"><b>0</b><span>black box</span></div>
+        <div class="stat"><b>Top 5</b><span>explainable shortlist</span></div>
+        <div class="stat"><b>UK &amp; IE</b><span>data residency</span></div>
+      </div>
+    </div>
+  </div>
+  </header>
+
+  <!-- LOGIN / REGISTER PORTAL -->
+  <section class="wrap" id="login">
+    <div class="portal">
+      <div class="card">
+        <div class="tabs">
+          <div class="tab active" id="tabReg" data-tab="reg">Register company</div>
+          <div class="tab" id="tabSign" data-tab="sign">Sign in</div>
+        </div>
+
+        <div class="ok-banner" id="okBanner"></div>
+
+        <!-- REGISTER -->
+        <form id="regForm" novalidate>
+          <div class="field">
+            <label for="coName">Company name <span class="req">*</span></label>
+            <input id="coName" name="coName" type="text" placeholder="Acme Ltd" autocomplete="organization" />
+            <div class="err" id="coNameErr"></div>
+          </div>
+          <div class="field">
+            <label for="email">Work email <span class="req">*</span></label>
+            <input id="email" name="email" type="email" placeholder="jobs@acme.com" autocomplete="email" inputmode="email" />
+            <div class="err" id="emailErr"></div>
+          </div>
+          <div class="field">
+            <label for="pw">Password <span class="req">*</span></label>
+            <div class="pwd-wrap">
+              <input id="pw" name="pw" type="password" placeholder="At least 12 characters" autocomplete="new-password" />
+              <button type="button" class="pwd-toggle" data-tgt="pw">Show</button>
+            </div>
+            <div class="meter"><i id="pwBar"></i></div>
+            <div class="meter-label" id="pwLabel">Use 12+ chars with upper, lower, number &amp; symbol.</div>
+            <div class="err" id="pwErr"></div>
+          </div>
+          <div class="field">
+            <label for="pw2">Confirm password <span class="req">*</span></label>
+            <div class="pwd-wrap">
+              <input id="pw2" name="pw2" type="password" placeholder="Re-enter password" autocomplete="new-password" />
+              <button type="button" class="pwd-toggle" data-tgt="pw2">Show</button>
+            </div>
+            <div class="err" id="pw2Err"></div>
+          </div>
+          <div class="consent">
+            <input id="terms" name="terms" type="checkbox" />
+            <label for="terms" style="font-weight:500">I confirm I am authorised to register this company and accept the <a href="terms.html" target="_blank" rel="noopener">Terms</a>, <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a>, and consent to Veer processing company data under UK &amp; EU GDPR.</label>
+          </div>
+          <div class="err" id="termsErr" style="margin:-8px 0 12px"></div>
+          <button class="btn" type="submit">Create account &amp; verify email</button>
+        </form>
+
+        <!-- SIGN IN -->
+        <form id="signForm" novalidate style="display:none">
+          <div class="field">
+            <label for="sEmail">Work email <span class="req">*</span></label>
+            <input id="sEmail" name="sEmail" type="email" placeholder="jobs@acme.com" autocomplete="email" inputmode="email" />
+            <div class="err" id="sEmailErr"></div>
+          </div>
+          <div class="field">
+            <label for="sPw">Password <span class="req">*</span></label>
+            <div class="pwd-wrap">
+              <input id="sPw" name="sPw" type="password" placeholder="Your password" autocomplete="current-password" />
+              <button type="button" class="pwd-toggle" data-tgt="sPw">Show</button>
+            </div>
+            <div class="err" id="sPwErr"></div>
+          </div>
+          <label style="display:flex;gap:8px;align-items:center;font-size:13px;color:var(--slate2);font-weight:500;margin-bottom:14px">
+            <input type="checkbox" style="width:18px;height:18px" /> Remember me on this device
+          </label>
+          <button class="btn" type="submit">Sign in</button>
+          <div style="text-align:center;margin-top:12px"><button type="button" class="linkbtn">Forgot password?</button></div>
+        </form>
+      </div>
+
+      <!-- SECURE PANEL -->
+      <aside class="card secure">
+        <h2><span class="lock">🔒</span> How we keep you secure</h2>
+        <p class="sub">Industry-standard controls applied to every company account.</p>
+        <button class="gdpr-badge" type="button" id="gdprTrigger" aria-haspopup="dialog" aria-controls="gdprModal">
+          <span class="g-ico"><svg viewBox="0 0 48 56" aria-hidden="true"><path d="M24 2 L44 10 V28 C44 42 35 50 24 54 C13 50 4 42 4 28 V10 Z" fill="#ffffff"/><path d="M16 28 L22 34 L33 21" fill="none" stroke="#F2680B" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <span class="g-txt"><b>GDPR Compliant</b><span>UK &amp; EU &middot; tap to view our controls</span></span>
+          <span class="g-go">View &rarr;</span>
+        </button>
+        <ul>
+          <li><span class="tk">TLS</span><div><b>Encrypted in transit.</b> HTTPS/TLS 1.2+ on every request; HSTS enforced.</div></li>
+          <li><span class="tk">HASH</span><div><b>Passwords never stored.</b> Hashed with Argon2id + per-user salt server-side.</div></li>
+          <li><span class="tk">CSRF</span><div><b>CSRF-protected forms.</b> Synchroniser-token on all state-changing requests.</div></li>
+          <li><span class="tk">2FA</span><div><b>Optional MFA.</b> TOTP / authenticator app enforced for admin seats.</div></li>
+          <li><span class="tk">RATE</span><div><b>Brute-force defence.</b> Rate-limited login with progressive lockout &amp; captcha.</div></li>
+          <li><span class="tk">GDPR</span><div><b>UK &amp; EU data residency.</b> Data stored in UK/Ireland; right to export &amp; erase.</div></li>
+          <li><span class="tk">COOKIE</span><div><b>Hardened sessions.</b> HttpOnly, Secure, SameSite cookies with short idle timeout.</div></li>
+          <li><span class="tk">PCI</span><div><b>Payments handled by Stripe.</b> PCI-DSS Level 1; we never see or store card numbers.</div></li>
+        </ul>
+      </aside>
+    </div>
+  </section>
+
+  <!-- FEE STRUCTURE -->
+  <section class="section" id="plans">
+    <div class="section-head">
+      <div class="pricing-graphic" aria-hidden="true">
+        <svg class="pkg" viewBox="0 0 64 64">
+          <defs><linearGradient id="pkgG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F2680B"/><stop offset="1" stop-color="#d9570a"/></linearGradient></defs>
+          <path d="M12 22 L32 12 L52 22 L52 44 L32 54 L12 44 Z" fill="url(#pkgG)"/>
+          <path d="M12 22 L32 32 L52 22" fill="none" stroke="#fff" stroke-width="2.5" stroke-linejoin="round"/>
+          <path d="M32 32 V54" stroke="#fff" stroke-width="2.5"/>
+          <path d="M26 38 L30 42 L39 32" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="pkg-dot d1"></span><span class="pkg-dot d2"></span>
+      </div>
+      <div class="eyebrow" style="background:rgba(242,104,11,.10);border:1px solid rgba(242,104,11,.30);color:var(--orange);font-weight:800;letter-spacing:1px;text-transform:uppercase;font-size:12px;display:inline-flex;padding:6px 13px;border-radius:999px">Pricing</div>
+      <h2>Choose the package that fits your hiring</h2>
+      <p>Transparent plans for the UK &amp; Ireland. <b>Candidates are never charged</b> to apply — that's the law here, and our policy everywhere.</p>
+    </div>
+
+    <div class="plans">
+      <!-- Single -->
+      <div class="plan" data-plan="single">
+        <div class="phead">
+          <div class="ptitle">
+            <div class="ptype">One-off</div>
+            <h3>Single vacancy</h3>
+          </div>
+          <div class="pico"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h12l6 6v18a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z"/><path d="M20 4v6h6"/><path d="M11 16h10M11 20h10M11 24h6"/></svg></div>
+        </div>
+        <div class="price"><span class="amt">£149</span></div>
+        <div class="price"><span class="eur">€169</span><span class="per">one payment</span></div>
+        <ul>
+          <li><span class="ck">✓</span> 1 live vacancy, 30 days</li>
+          <li><span class="ck">✓</span> AI screening + top-5 explainable shortlist</li>
+          <li><span class="ck">✓</span> Candidate messaging &amp; interview tools</li>
+          <li><span class="ck">✓</span> UK &amp; IE data residency</li>
+        </ul>
+<div class="ppromise"><span class="pp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg></span><div><b>Price promise</b><span>No price increase for 12 months &middot; Quality-vetted CVs, <i>assured</i>.</span></div></div>
+        <button class="btn ghost pick" type="button" data-plan="single">Choose Single</button>
+      </div>
+
+      <!-- Monthly -->
+      <div class="plan featured" data-plan="monthly">
+        <div class="tag">Most popular</div>
+        <div class="phead">
+          <div class="ptitle">
+            <div class="ptype">Subscription</div>
+            <h3>Team — monthly</h3>
+          </div>
+          <div class="pico"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M4 27c0-4 4-6 8-6s8 2 8 6"/><path d="M22 9a4 4 0 0 1 0 8"/><path d="M23 21c4 0 7 2 7 6"/></svg></div>
+        </div>
+        <div class="price"><span class="amt">£399</span><span class="per">/ month</span></div>
+        <div class="price"><span class="eur">€449</span><span class="per">ex. VAT</span></div>
+        <ul>
+          <li><span class="ck">✓</span> Up to <b>5 active vacancies</b></li>
+          <li><span class="ck">✓</span> Everything in Single, plus:</li>
+          <li><span class="ck">✓</span> Analytics dashboard &amp; priority AI matching</li>
+          <li><span class="ck">✓</span> Branded company page &amp; multi-seat access</li>
+        </ul>
+<div class="ppromise"><span class="pp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg></span><div><b>Price promise</b><span>No price increase for 12 months &middot; Quality-vetted CVs, <i>assured</i>.</span></div></div>
+        <button class="btn pick" type="button" data-plan="monthly">Choose Team</button>
+      </div>
+
+      <!-- Enterprise -->
+      <div class="plan" data-plan="enterprise">
+        <div class="phead">
+          <div class="ptitle">
+            <div class="ptype">Unlimited</div>
+            <h3>Enterprise</h3>
+          </div>
+          <div class="pico"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 28V6l10-3 10 3v22"/><path d="M6 28h20"/><path d="M11 11h2M19 11h2M11 16h2M19 16h2M11 21h2M19 21h2M14 26h4"/></svg></div>
+        </div>
+        <div class="price"><span class="amt">Custom</span></div>
+        <div class="price"><span class="eur">from £1,499 / €1,699</span><span class="per">/ month</span></div>
+        <ul>
+          <li><span class="ck">✓</span> <b>Unlimited vacancies &amp; seats</b></li>
+          <li><span class="ck">✓</span> SSO/SAML, API &amp; ATS integrations</li>
+          <li><span class="ck">✓</span> Custom AI model &amp; dedicated CSM</li>
+          <li><span class="ck">✓</span> Contract &amp; invoicing options</li>
+        </ul>
+<div class="ppromise"><span class="pp-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg></span><div><b>Price promise</b><span>No price increase for 12 months &middot; Quality-vetted CVs, <i>assured</i>.</span></div></div>
+        <button class="btn ghost pick" type="button" data-plan="enterprise">Talk to sales</button>
+      </div>
+    </div>
+
+    <div class="benchmark">
+      <b>How we compare (UK &amp; IE, 2025–26 research):</b> Indeed now enforces a <b>£25/day minimum per job</b> (≈£750/mo per listing); traditional agencies charge <b>15–25% of first-year salary</b> (20–30% for senior/exec). Snaphunt's paid plans run ~<b>$265–450/mo</b>; SMB AI-ATS tools (Manatal, Workable, JuggleHire) sit at <b>£15–140/user/mo</b>. Veer bundles AI screening + explainable shortlisting into flat, predictable pricing.
+    </div>
+    <div class="vat-note">Prices exclude VAT. UK 20% / Ireland 23% applied at checkout based on billing country.</div>
+  </section>
+
+  <!-- SECURE SSL PAYMENT -->
+  <section class="section" id="pay">
+    <div class="section-head">
+      <div class="pricing-graphic" aria-hidden="true">
+        <svg class="card-vec" viewBox="0 0 84 56" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="cardG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F2680B"/><stop offset="1" stop-color="#d9570a"/></linearGradient></defs>
+          <rect x="8" y="10" width="68" height="40" rx="7" fill="url(#cardG)"/>
+          <rect x="8" y="10" width="68" height="13" rx="7" fill="rgba(255,255,255,.16)"/>
+          <rect x="16" y="30" width="11" height="8" rx="2" fill="#ffd27a"/>
+          <rect x="16" y="42" width="26" height="3" rx="1.5" fill="#fff" opacity=".8"/>
+          <circle cx="62" cy="41" r="5" fill="#ffb347" opacity=".95"/>
+          <circle cx="56" cy="41" r="5" fill="#fff" opacity=".55"/>
+        </svg>
+        <span class="pkg-dot d1"></span><span class="pkg-dot d2"></span>
+      </div>
+      <div class="eyebrow" style="background:rgba(242,104,11,.10);border:1px solid rgba(242,104,11,.30);color:var(--orange);font-weight:800;letter-spacing:1px;text-transform:uppercase;font-size:12px;display:inline-flex;padding:6px 13px;border-radius:999px">Checkout</div>
+      <h2>Ready for your next-level AI recruitment experience?</h2>
+      <p class="h2sub">Let&rsquo;s get started.</p>
+      <p>Pick the plan that fits, add your card, and you&rsquo;re hiring in minutes. Every payment is tokenised by Stripe and protected with 256-bit SSL &mdash; we never see or store your card number.</p>
+    </div>
+
+    <div class="pay">
+      <div class="summary" id="paySummary">
+        <h3>Order summary</h3>
+        <div class="line"><span>Plan</span><span id="smPlan">— select a plan —</span></div>
+        <div class="line"><span>Billing</span><span id="smCycle">—</span></div>
+        <div class="line"><span>Subtotal</span><span id="smSub">£0.00</span></div>
+        <div class="line"><span>VAT</span><span id="smVat">£0.00</span></div>
+        <div class="line total"><span>Total due</span><span id="smTotal">£0.00</span></div>
+        <div class="ssl-badge"><span class="lk">🔒</span> 256-bit SSL &middot; Powered by Stripe (PCI-DSS L1)</div>
+      </div>
+
+      <form class="card pay-form" id="payForm" novalidate>
+        <h2 style="margin-bottom:4px">Card details</h2>
+        <p class="sub">We never store your card number. Payment is tokenised by Stripe.</p>
+
+        <div class="plan-select">
+          <label for="planSelect">Choose your plan <span class="req">*</span></label>
+          <select id="planSelect" name="planSelect">
+            <option value="">&mdash; select a plan &mdash;</option>
+            <option value="single">Single vacancy &mdash; &pound;149 (one-off)</option>
+            <option value="monthly">Team &mdash; monthly &mdash; &pound;399 / month</option>
+            <option value="enterprise">Enterprise &mdash; from &pound;1,499 / month</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="chName">Cardholder name <span class="req">*</span></label>
+          <input id="chName" name="chName" type="text" placeholder="Jane Recruiter" autocomplete="cc-name" />
+          <div class="err" id="chNameErr"></div>
+        </div>
+        <div class="field">
+          <label for="card">Card number <span class="req">*</span></label>
+          <div class="card-wrap">
+            <input id="card" name="card" type="text" inputmode="numeric" placeholder="4242 4242 4242 4242" autocomplete="cc-number" maxlength="23" />
+            <span class="card-ico" id="cardBrand"></span>
+          </div>
+          <div class="card-brands" id="cardBrands">
+            <span class="cb-label">We accept</span>
+            <svg class="cb" data-brand="VISA" viewBox="0 0 40 26" xmlns="http://www.w3.org/2000/svg" aria-label="Visa"><rect x="0.5" y="0.5" width="39" height="25" rx="4" fill="#ffffff" stroke="#e2dcd5"/><text x="20" y="17.5" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-style="italic" font-weight="800" font-size="11" fill="#1A1F71" letter-spacing=".5">VISA</text></svg>
+            <svg class="cb" data-brand="MC" viewBox="0 0 44 26" xmlns="http://www.w3.org/2000/svg" aria-label="Mastercard"><circle cx="16" cy="13" r="11" fill="#EB001B"/><circle cx="28" cy="13" r="11" fill="#F79E1B" opacity=".85"/></svg>
+            <svg class="cb" data-brand="AMEX" viewBox="0 0 44 26" xmlns="http://www.w3.org/2000/svg" aria-label="American Express"><rect x="0.5" y="0.5" width="43" height="25" rx="4" fill="#1F72CD"/><text x="22" y="16.5" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="800" font-size="9" fill="#ffffff" letter-spacing=".5">AMEX</text></svg>
+            <svg class="cb" data-brand="MAESTRO" viewBox="0 0 44 26" xmlns="http://www.w3.org/2000/svg" aria-label="Maestro"><circle cx="16" cy="13" r="11" fill="#0099DF"/><circle cx="28" cy="13" r="11" fill="#ED0006" opacity=".85"/></svg>
+          </div>
+          <div class="err" id="cardErr"></div>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label for="exp">Expiry (MM/YY) <span class="req">*</span></label>
+            <input id="exp" name="exp" type="text" inputmode="numeric" placeholder="08/27" autocomplete="cc-exp" maxlength="5" />
+            <div class="err" id="expErr"></div>
+          </div>
+          <div class="field">
+            <label for="cvc">CVC <span class="req">*</span></label>
+            <input id="cvc" name="cvc" type="text" inputmode="numeric" placeholder="123" autocomplete="cc-csc" maxlength="4" />
+            <div class="err" id="cvcErr"></div>
+          </div>
+        </div>
+        <div class="field">
+          <label for="country">Billing country <span class="req">*</span></label>
+          <select id="country" name="country">
+            <option value="">Select…</option>
+            <option value="GB">United Kingdom (20% VAT)</option>
+            <option value="IE">Ireland (23% VAT)</option>
+            <option value="OTHER">Other (no VAT)</option>
+          </select>
+          <div class="err" id="countryErr"></div>
+        </div>
+        <div class="field">
+          <label for="vat">VAT number <span style="color:var(--muted);font-weight:500">(optional)</span></label>
+          <input id="vat" name="vat" type="text" placeholder="GB123456789" autocomplete="off" />
+        </div>
+        <div class="consent">
+          <input id="payConsent" name="payConsent" type="checkbox" />
+          <label for="payConsent" style="font-weight:500">I authorise Veer to charge the total above and accept the <a href="terms.html#payment" target="_blank" rel="noopener">Payment Terms</a>. I understand my card data is processed securely by Stripe.</label>
+        </div>
+        <div class="err" id="payConsentErr" style="margin:-8px 0 12px"></div>
+        <button class="btn" type="submit" id="payBtn">Pay securely</button>
+        <div class="ok-banner" id="payOk" style="margin-top:14px"></div>
+      </form>
+    </div>
+  </section>
+
+  <footer class="footer">
+    Prototype build &middot; Veer.ie — AI-powered recruitment for the UK &amp; Ireland. Payments are simulated in this prototype. <a href="privacy.html" style="color:inherit;text-decoration:underline">Privacy</a> &middot; <a href="terms.html" style="color:inherit;text-decoration:underline">Terms</a>
+  </footer>
+
+
+  <!-- GDPR COMPLIANCE POPUP -->
+  <div class="modal-overlay" id="gdprModal" role="dialog" aria-modal="true" aria-labelledby="gdprTitle">
+    <div class="modal">
+      <button class="modal-close" type="button" id="gdprClose" aria-label="Close and return to registration">&times;</button>
+      <div class="modal-head">
+        <svg viewBox="0 0 48 56" aria-hidden="true"><defs><linearGradient id="gdm" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F2680B"/><stop offset="1" stop-color="#d9570a"/></linearGradient></defs><path d="M24 2 L44 10 V28 C44 42 35 50 24 54 C13 50 4 42 4 28 V10 Z" fill="url(#gdb)"/><path d="M16 28 L22 34 L33 21" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div>
+          <h3 id="gdprTitle">GDPR compliance</h3>
+          <p>UK &amp; EU &middot; verified controls</p>
+        </div>
+      </div>
+      <div class="modal-body">
+        <h4><span class="d"></span>Data residency</h4>
+        <p>Our approved architecture stores all company and candidate data in an EU West (Ireland) region, with no transfer of personal data outside the UK/EEA without appropriate safeguards (Art. 44&ndash;49). This prototype build is not yet connected to that production database &mdash; see our full <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a> for current status.</p>
+        <h4><span class="d"></span>Your rights</h4>
+        <p>Right of access, rectification, erasure, restriction, portability and objection (Art. 15&ndash;22). Contact us to exercise any of these &mdash; full detail in our <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a>.</p>
+        <h4><span class="d"></span>Lawful basis</h4>
+        <p>We process under legitimate interest for recruitment matching and consent where required. Candidates are never charged to apply &mdash; that is the law here and our policy everywhere.</p>
+        <h4><span class="d"></span>Sub-processors</h4>
+        <p>Payments are handled by Stripe (PCI-DSS Level 1). Hosting and email sub-processors are bound by a Data Processing Agreement under Art. 28.</p>
+        <div class="note">This shield is Veer&rsquo;s own original mark &mdash; not an official EU emblem &mdash; so there is no copyright or trademark issue with displaying it.</div>
+      </div>
+      <div class="modal-foot">
+        <a class="btn ghost" href="privacy.html" target="_blank" rel="noopener" style="width:auto;padding:11px 18px">Read full Privacy Policy</a>
+        <a class="btn ghost" href="register.html" style="width:auto;padding:11px 18px">Back to registration</a>
+      </div>
+    </div>
+  </div>
+
+<script>
+(function(){
+  var $ = function(id){ return document.getElementById(id); };
+
+  /* ---- best-effort default billing country ---- */
+  /* A visible, editable default — never a silent decision. Timezone is a coarse
+     proxy; production should use the server-side approximate-country signal
+     already recorded for assessment security events (see server.js). */
+  function detectDefaultCountry(){
+    try {
+      var tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+      if (tz === 'Europe/Dublin') return 'IE';
+      if (/^Europe\/(London|Belfast)$/.test(tz)) return 'GB';
+    } catch (e) {}
+    return '';
+  }
+
+  /* ---- tabs ---- */
+  var regForm = $('regForm'), signForm = $('signForm');
+  function showTab(t){
+    var reg = (t === 'reg');
+    $('tabReg').classList.toggle('active', reg);
+    $('tabSign').classList.toggle('active', !reg);
+    regForm.style.display = reg ? '' : 'none';
+    signForm.style.display = reg ? 'none' : '';
+  }
+  $('tabReg').addEventListener('click', function(){ showTab('reg'); });
+  $('tabSign').addEventListener('click', function(){ showTab('sign'); });
+
+  /* ---- password toggle ---- */
+  document.querySelectorAll('.pwd-toggle').forEach(function(b){
+    b.addEventListener('click', function(){
+      var el = $(b.getAttribute('data-tgt'));
+      var show = el.type === 'password';
+      el.type = show ? 'text' : 'password';
+      b.textContent = show ? 'Hide' : 'Show';
+    });
+  });
+
+  /* ---- password strength ---- */
+  function scorePw(p){
+    var s = 0;
+    if(p.length >= 12) s++;
+    if(/[a-z]/.test(p) && /[A-Z]/.test(p)) s++;
+    if(/\d/.test(p)) s++;
+    if(/[^A-Za-z0-9]/.test(p)) s++;
+    return s; // 0..4
+  }
+  function updatePw(){
+    var p = $('pw').value;
+    var s = scorePw(p);
+    var bar = $('pwBar'), label = $('pwLabel');
+    var pct = [0,25,55,80,100][s];
+    var col = ['#c0392b','#c0392b','#e67e22','#e0a800','#1f8a4c'][s];
+    bar.style.width = pct + '%';
+    bar.style.background = col;
+    var txt = ['Use 12+ chars with upper, lower, number & symbol.','Weak — add length & variety','Fair','Good','Strong'];
+    label.textContent = p ? txt[s] : txt[0];
+  }
+  $('pw').addEventListener('input', updatePw);
+
+  /* ---- validation helpers ---- */
+  function setErr(id, msg){ var e=$(id+'Err'); if(msg){e.textContent=msg;e.classList.add('show');} else {e.textContent='';e.classList.remove('show');} }
+  function mark(id,bad){ var el=$(id); if(el) el.classList.toggle('bad',!!bad); }
+  function isEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+
+  /* ---- register submit ---- */
+  $('regForm').addEventListener('submit', async function(e){
+    e.preventDefault();
+    ['coName','email','pw','pw2','terms'].forEach(function(f){ mark(f,false); setErr(f,''); });
+    var ok = true;
+    if(!$('coName').value.trim()){ setErr('coName','Enter your company name.'); mark('coName',true); ok=false; }
+    if(!isEmail($('email').value.trim())){ setErr('email','Enter a valid work email.'); mark('email',true); ok=false; }
+    var p = $('pw').value;
+    if(p.length < 12){ setErr('pw','Password must be at least 12 characters.'); mark('pw',true); ok=false; }
+    else if(scorePw(p) < 3){ setErr('pw','Use a stronger password (mix of cases, number & symbol).'); mark('pw',true); ok=false; }
+    if($('pw2').value !== p){ setErr('pw2','Passwords do not match.'); mark('pw2',true); ok=false; }
+    if(!$('terms').checked){ setErr('terms','Please accept the terms to continue.'); ok=false; }
+    if(!ok) return;
+
+    try {
+      var res = await fetch('/api/recruiters/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          companyName: $('coName').value.trim(),
+          email: $('email').value.trim(),
+          password: p
+        })
+      });
+      var data = await res.json();
+      if(!res.ok || !data.ok) {
+        alert(data.error || 'Company registration failed');
+        return;
+      }
+      window.__recruiterId = data.recruiterId;
+      sessionStorage.setItem('veerRecruiter', JSON.stringify({ id: data.recruiterId, company: $('coName').value.trim(), email: $('email').value.trim() }));
+      var b = $('okBanner');
+      b.className = 'ok-banner show';
+      b.replaceChildren('✅ Recruiter account created for ', Object.assign(document.createElement('b'), {textContent: $('coName').value.trim()}), '. Choose a plan below to complete checkout.');
+      b.scrollIntoView({behavior:'smooth', block:'center'});
+    } catch(err) {
+      console.error('Registration error:', err);
+    }
+  });
+
+  /* ---- sign in submit ---- */
+  $('signForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    ['sEmail','sPw'].forEach(function(f){ mark(f,false); setErr(f,''); });
+    var ok = true;
+    if(!isEmail($('sEmail').value.trim())){ setErr('sEmail','Enter your work email.'); mark('sEmail',true); ok=false; }
+    if($('sPw').value.length < 1){ setErr('sPw','Enter your password.'); mark('sPw',true); ok=false; }
+    if(!ok) return;
+    var b = $('okBanner');
+    b.className = 'ok-banner show';
+    b.replaceChildren('✅ Signed in as ', Object.assign(document.createElement('b'), {textContent: $('sEmail').value.trim()}), '.');
+    b.scrollIntoView({behavior:'smooth', block:'center'});
+  });
+
+  /* ---- plan selection ---- */
+  /* Fixed market price points per currency — deliberately chosen round numbers,
+     not a live/derived conversion. Update both columns together if prices change. */
+  var PLANS = {
+    single:    { name:'Single vacancy', cycle:'One-off', period:'one payment',      gbp:149,  eur:169 },
+    monthly:   { name:'Team — monthly', cycle:'Monthly', period:'/ month',          gbp:399,  eur:449 },
+    enterprise:{ name:'Enterprise',     cycle:'Custom',  period:'/ month (from)',   gbp:1499, eur:1699 }
+  };
+  var CURRENCY = { GB: { code:'gbp', symbol:'£', vat:0.20 }, IE: { code:'eur', symbol:'€', vat:0.23 }, OTHER: { code:'gbp', symbol:'£', vat:0 } };
+  var selected = null;
+  function currencyFor(c){ return CURRENCY[c] || { code:'gbp', symbol:'£', vat:0 }; }
+  function renderSummary(){
+    if(!selected){ return; }
+    var p = PLANS[selected];
+    var cur = currencyFor($('country').value);
+    var sub = p[cur.code];
+    var vat = (selected === 'enterprise') ? 0 : Math.round(sub * cur.vat * 100)/100;
+    var total = (selected === 'enterprise') ? 0 : sub + vat;
+    $('smPlan').textContent = p.name;
+    $('smCycle').textContent = p.cycle;
+    $('smSub').textContent = cur.symbol + sub.toFixed(2);
+    $('smVat').textContent = (selected === 'enterprise') ? '—' : cur.symbol + vat.toFixed(2);
+    $('smTotal').textContent = (selected === 'enterprise') ? 'Contact sales' : cur.symbol + total.toFixed(2);
+    $('payBtn').textContent = (selected === 'enterprise') ? 'Request enterprise quote' : 'Pay ' + cur.symbol + (selected==='enterprise'?0:total.toFixed(2));
+  }
+  document.querySelectorAll('.plan').forEach(function(card){
+    card.addEventListener('click', function(e){
+      if(e.target.closest('.pick')) return;
+      selectPlan(card.getAttribute('data-plan'));
+    });
+  });
+  document.querySelectorAll('.pick').forEach(function(btn){
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      selectPlan(btn.getAttribute('data-plan'));
+    });
+  });
+  function selectPlan(key){
+    selected = key;
+    document.querySelectorAll('.plan').forEach(function(c){ c.classList.toggle('sel', c.getAttribute('data-plan')===key); });
+    var ps = $('planSelect'); if(ps) ps.value = key;
+    renderSummary();
+    $('pay').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+  $('country').addEventListener('change', renderSummary);
+  $('planSelect').addEventListener('change', function(){ if(this.value) selectPlan(this.value); });
+
+  /* ---- card formatting + luhn ---- */
+  function luhn(num){
+    var s = 0, alt = false;
+    for(var i=num.length-1;i>=0;i--){
+      var d = parseInt(num.charAt(i),10);
+      if(alt){ d *= 2; if(d>9) d -= 9; }
+      s += d; alt = !alt;
+    }
+    return s % 10 === 0;
+  }
+  function brandOf(num){
+    if(/^4/.test(num)) return 'VISA';
+    if(/^(5[1-5]|2[2-7])/.test(num)) return 'MC';
+    if(/^3[47]/.test(num)) return 'AMEX';
+    if(/^(6759|676[0-9]|670[0-9]|5018|5020|5038)/.test(num)) return 'MAESTRO';
+    return 'CARD';
+  }
+  function brandSvg(b){
+    if(b==='VISA') return '<svg viewBox="0 0 40 24" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="24" rx="4" fill="#fff" stroke="#e2dcd5"/><text x="20" y="16" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-style="italic" font-weight="800" font-size="11" fill="#1A1F71">VISA</text></svg>';
+    if(b==='MC') return '<svg viewBox="0 0 44 24" xmlns="http://www.w3.org/2000/svg"><circle cx="16" cy="12" r="11" fill="#EB001B"/><circle cx="28" cy="12" r="11" fill="#F79E1B" opacity=".85"/></svg>';
+    if(b==='AMEX') return '<svg viewBox="0 0 44 24" xmlns="http://www.w3.org/2000/svg"><rect width="43" height="23" x=".5" y=".5" rx="4" fill="#1F72CD"/><text x="22" y="15.5" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="800" font-size="9" fill="#fff">AMEX</text></svg>';
+    if(b==='MAESTRO') return '<svg viewBox="0 0 44 24" xmlns="http://www.w3.org/2000/svg"><circle cx="16" cy="12" r="11" fill="#0099DF"/><circle cx="28" cy="12" r="11" fill="#ED0006" opacity=".85"/></svg>';
+    return '';
+  }
+  function highlightBrands(b){
+    var els = document.querySelectorAll('#cardBrands .cb');
+    for(var i=0;i<els.length;i++){ els[i].classList.toggle('on', els[i].getAttribute('data-brand')===b); }
+  }
+  $('card').addEventListener('input', function(){
+    var raw = this.value.replace(/\D/g,'').slice(0,19);
+    var parts = raw.match(/.{1,4}/g);
+    this.value = parts ? parts.join(' ') : '';
+    var b = brandOf(raw);
+    $('cardBrand').innerHTML = brandSvg(b);
+    highlightBrands(b);
+  });
+  $('exp').addEventListener('input', function(){
+    var v = this.value.replace(/\D/g,'').slice(0,4);
+    if(v.length >= 3) v = v.slice(0,2) + '/' + v.slice(2);
+    this.value = v;
+  });
+  $('cvc').addEventListener('input', function(){ this.value = this.value.replace(/\D/g,'').slice(0,4); });
+
+  /* ---- payment submit ---- */
+  $('payForm').addEventListener('submit', async function(e){
+    e.preventDefault();
+    ['chName','card','exp','cvc','country','payConsent'].forEach(function(f){ mark(f,false); setErr(f,''); });
+    var ok = true;
+    if(!$('chName').value.trim()){ setErr('chName','Enter the cardholder name.'); mark('chName',true); ok=false; }
+    if(!selected){ alert('Please choose a plan first.'); return; }
+    var raw = $('card').value.replace(/\s/g,'');
+    if(raw.length < 13 || !luhn(raw)){ setErr('card','Enter a valid card number.'); mark('card',true); ok=false; }
+    var ex = $('exp').value;
+    var mm = parseInt(ex.slice(0,2),10), yy = parseInt(ex.slice(3,5),10);
+    var now = new Date(); var curY = now.getFullYear()%100, curM = now.getMonth()+1;
+    if(!(mm>=1&&mm<=12) || !(yy>=curY) || (yy===curY && mm<curM)){ setErr('exp','Enter a valid future expiry date.'); ok=false; }
+    if(!/^\d{3,4}$/.test($('cvc').value)){ setErr('cvc','Enter the 3–4 digit CVC.'); mark('cvc',true); ok=false; }
+    if(!$('country').value){ setErr('country','Select a billing country.'); mark('country',true); ok=false; }
+    if(!$('payConsent').checked){ setErr('payConsent','Please authorise the payment.'); ok=false; }
+    if(!ok) return;
+
+    if(selected === 'enterprise'){
+      var o = $('payOk'); o.className='ok-banner show'; o.replaceChildren('✅ Thanks — our enterprise team will email ', Object.assign(document.createElement('b'), {textContent: $('chName').value.trim()}), ' a custom quote & contract.');
+      return;
+    }
+
+    try {
+      var recObj = JSON.parse(sessionStorage.getItem('veerRecruiter') || 'null');
+      var res = await fetch('/api/recruiters/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          recruiterId: recObj ? recObj.id : null,
+          plan: selected,
+          billingCountry: $('country').value,
+          cardholderName: $('chName').value.trim()
+        })
+      });
+      var data = await res.json();
+      if(!res.ok || !data.ok) {
+        alert(data.error || 'Payment failed');
+        return;
+      }
+      var o2 = $('payOk'); o2.className='ok-banner show';
+      o2.replaceChildren('✅ Payment of ', Object.assign(document.createElement('b'), {textContent: data.currencySymbol + data.totalAmount.toFixed(2) + ' ' + data.currency}), ' authorised (simulated). Recruiter account upgraded to ', Object.assign(document.createElement('b'), {textContent: selected}), '. Welcome to Veer!');
+      o2.scrollIntoView({behavior:'smooth', block:'center'});
+    } catch(err) {
+      console.error('Checkout error:', err);
+    }
+  });
+
+  /* ---- GDPR compliance modal ---- */
+  var gdprModal = $('gdprModal');
+  function openGdpr(){ gdprModal.classList.add('open'); document.body.style.overflow='hidden'; }
+  function closeGdpr(){ gdprModal.classList.remove('open'); document.body.style.overflow=''; }
+  var gdprTrig = $('gdprTrigger');
+  if(gdprTrig) gdprTrig.addEventListener('click', openGdpr);
+  var gdprClose = $('gdprClose');
+  if(gdprClose) gdprClose.addEventListener('click', function(){ closeGdpr(); window.location.href = 'register.html'; });
+  gdprModal.addEventListener('click', function(e){ if(e.target === gdprModal) closeGdpr(); });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && gdprModal.classList.contains('open')) closeGdpr(); });
+
+  /* Pre-select a likely billing country so the right currency shows by default —
+     the dropdown stays fully visible and editable, this is a starting guess, not a lock-in. */
+  var guessedCountry = detectDefaultCountry();
+  if (guessedCountry && $('country') && !$('country').value) {
+    $('country').value = guessedCountry;
+  }
+
+})();
+</script>
+</body>
+</html>

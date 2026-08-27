@@ -1,0 +1,615 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Post a vacancy — Veer.ie</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="dns-prefetch" href="https://fonts.googleapis.com">
+
+<meta name="description" content="Post a job vacancy with Veer — AI-powered recruitment for the UK and Ireland." />
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAzMiAzMic+PHJlY3Qgd2lkdGg9JzMyJyBoZWlnaHQ9JzMyJyByeD0nNycgZmlsbD0nIzJiM2E0ZCcvPjxjaXJjbGUgY3g9JzE2JyBjeT0nMTYnIHI9JzknIGZpbGw9JyNGMjY4MEInLz48L3N2Zz4=" />
+<style>
+  :root{
+    --slate:#2b3a4d; --slate2:#3c5468;
+    --orange:#F2680B; --orange-d:#D9570A; --amber:#F8A03C; --orange-l:#FFF1E6;
+    --bad:#dc2626; --err:#dc2626;
+    --ink:#1f2a36; --muted:#5e6b78;
+    --line:#ece7e1; --bg:#faf8f6; --card:#ffffff;
+    --ok:#15803d; --warn:#b45309;
+    --shadow:0 10px 30px rgba(43,58,77,.10);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5;-webkit-font-smoothing:antialiased}
+  a{color:var(--orange);text-decoration:none}
+  .wrap{max-width:1140px;margin:0 auto;padding:0 22px}
+  header.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:66px}
+  .brand{display:flex;align-items:center;gap:11px;font-weight:800;font-size:20px;letter-spacing:-.3px;color:var(--ink)}
+  .brand img{height:34px;width:34px;border-radius:8px;background:#fff;padding:2px;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+  .brand .dot{color:var(--orange)}
+  .nav-links{display:flex;gap:26px;align-items:center}
+  .nav-links a{color:var(--muted);font-weight:600;font-size:14.5px;padding:9px 2px;display:inline-flex;align-items:center}
+  .nav-links a:hover{color:var(--ink)}
+  .nav-toggle{display:none;background:none;border:none;cursor:pointer;padding:10px}
+  .nav-toggle span{display:block;width:22px;height:2px;background:var(--slate);margin:4px 0;transition:.3s}
+  @media(max-width:880px){
+    .nav-toggle{display:block;order:2}
+    .brand{order:1}
+    .nav-in{display:flex;justify-content:space-between;align-items:center}
+    .nav-links{display:none;position:absolute;top:66px;left:0;width:100%;background:#fff;flex-direction:column;gap:0!important;padding:10px 0;border-bottom:1px solid var(--line);box-shadow:0 10px 15px rgba(0,0,0,.05);z-index:100}
+    .nav-links.active{display:flex}
+    .nav-links a{width:100%;padding:15px 22px;border-bottom:1px solid var(--bg)}
+    .nav-links .btn{margin:15px 22px;display:flex;justify-content:center}
+  }
+  .hero{padding:26px 20px 8px;text-align:center;max-width:760px;margin:0 auto}
+  .eyebrow{color:var(--orange);font-weight:800;letter-spacing:1.2px;text-transform:uppercase;font-size:12.5px}
+  .hero h1{font-size:clamp(30px,5vw,42px);line-height:1.12;margin:10px 0 8px;color:var(--slate)}
+  .hero p{color:var(--muted);font-size:15.5px;margin:0 auto;max-width:560px}
+  .card{max-width:720px;margin:22px auto 40px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:26px 24px;box-shadow:0 14px 40px rgba(43,58,77,.08)}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .field{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+  .field.full{grid-column:1 / -1}
+  label{font-weight:700;font-size:14px;color:var(--slate)}
+  .req{color:var(--orange)}
+  input,select,textarea{font:inherit;font-size:15px;padding:12px 13px;border:1.5px solid var(--line);border-radius:11px;background:#fff;color:var(--slate);width:100%}
+  textarea{min-height:120px;resize:vertical}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--orange);box-shadow:0 0 0 3px rgba(242,104,11,.15)}
+  .row{display:flex;gap:10px}
+  .row > *{flex:1}
+  .salary-row select,.phone-row select{flex:0 0 120px;font-weight:700}
+  .equiv{font-size:14px;font-weight:700;color:var(--slate2);margin-top:2px;min-height:20px}
+  .equiv b{color:var(--orange)}
+  .hint{font-size:12.5px;color:var(--muted)}
+  .err{color:var(--err);font-size:12.5px;font-weight:600;display:none}
+  .err.show{display:block}
+  input.bad,select.bad,textarea.bad{border-color:var(--err)}
+  .consent{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;color:var(--slate2);margin:6px 0 18px}
+  .consent input{width:20px;height:20px;flex:0 0 20px;margin-top:2px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,var(--orange),var(--amber));color:#fff;border:none;border-radius:11px;padding:15px 20px;font-size:16px;font-weight:800;cursor:pointer;width:100%;box-shadow:0 8px 20px rgba(242,104,11,.3);font-family:inherit;transition:.18s}
+  .btn:hover{filter:brightness(1.03);transform:translateY(-1px)}
+  .btn:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+  .btn.ghost{background:#fff;color:var(--slate);border:1px solid var(--line);box-shadow:none;width:auto}
+  .btn.ghost:hover{border-color:var(--orange);color:var(--orange);filter:none;transform:translateY(-1px)}
+  .btn.slate{background:var(--slate);color:#fff;box-shadow:0 8px 20px rgba(43,58,77,.25);width:auto}
+  .btn.slate:hover{background:var(--slate2);filter:none;transform:translateY(-1px)}
+  .note{text-align:center;font-size:12.5px;color:var(--muted);max-width:720px;margin:0 auto 40px;padding:0 20px}
+  .ok{display:none;text-align:center;padding:30px 20px}
+  .ok.show{display:block}
+  .ok h2{color:var(--ok);margin:0 0 6px;font-size:24px}
+  .ok .sum{text-align:left;max-width:480px;margin:18px auto;background:#f6f8f6;border:1px solid var(--line);border-radius:14px;padding:16px 18px;font-size:14px}
+  .ok .sum div{margin:5px 0}
+  .ok .sum b{color:var(--slate)}
+  @media (max-width:680px){
+    .grid{grid-template-columns:1fr} .hero h1{font-size:28px} .card{padding:20px 16px;border-radius:14px;margin:16px 12px 32px}
+    .salary-row,.phone-row{flex-wrap:wrap}
+    .salary-row select,.phone-row select{flex:1 1 45%}
+    .salary-row input,.phone-row input{flex:1 1 100%}
+  }
+
+  .hero-graphic{display:inline-flex;align-items:center;justify-content:center;margin-bottom:14px}
+  .hero-graphic svg{width:60px;height:60px;filter:drop-shadow(0 10px 18px rgba(242,104,11,.35))}
+  .stat .sic{width:30px;height:30px;margin:0 auto 6px;display:block;color:var(--orange)}
+
+
+  /* ===== UI uplift + mandatory-field error boxes ===== */
+  body{background:radial-gradient(1200px 620px at 50% -12%, #ffffff 0%, #faf8f6 55%, #f2ede6 100%);min-height:100vh}
+  .hero{position:relative;padding-top:36px}
+  .hero h1{background:linear-gradient(120deg,#2b3a4d,#1d2935);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:#2b3a4d}
+  .hero p{max-width:600px}
+  .card{box-shadow:0 26px 70px rgba(43,58,77,.13);border-radius:22px;border-color:#efe7df}
+  .field{margin-bottom:18px}
+  .field label{font-size:13.5px;letter-spacing:.2px;margin-bottom:2px}
+  .req{color:#e23b2e;font-size:15px;margin-left:3px;font-weight:800}
+  input,select,textarea{background:#fcfbfa;transition:border-color .15s ease, box-shadow .15s ease, background .15s ease}
+  input:hover,select:hover,textarea:hover{border-color:#d9cfc4}
+  input.bad,select.bad,textarea.bad{border-color:#c0392b;background:#fff6f5;box-shadow:0 0 0 3px rgba(192,57,43,.10)}
+  .btn{transition:filter .15s ease, transform .05s ease}
+  .btn:active{transform:translateY(1px)}
+  .consent{background:#f7f4f0;border:1px solid #efe7df;border-radius:12px;padding:12px 14px;margin:12px 0 18px}
+  .consent input:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+  /* per-field error: a box with red fonts */
+  .err{display:none;margin-top:6px;padding:9px 11px;border-radius:9px;background:#fdecea;border:1px solid #f1b7ae;color:#c0392b;font-size:12.5px;font-weight:600;line-height:1.35}
+  .err.show{display:block}
+  .err::before{content:"\26A0\00A0";font-weight:700}
+  /* top-level error summary */
+  .err-summary{display:none;margin:0 0 20px;padding:15px 17px;border-radius:13px;background:#fdecea;border:1.5px solid #e6a89c;color:#c0392b}
+  .err-summary.show{display:block}
+  .err-summary h3{margin:0 0 5px;font-size:15px;font-weight:800}
+  .err-summary ul{margin:6px 0 0;padding-left:18px;font-size:13.5px;line-height:1.65}
+  /* preview + success polish */
+  .ok.preview{background:linear-gradient(180deg,#ffffff,#fbf8f4)}
+  .ok h2{font-size:22px}
+  .ok .sum{box-shadow:inset 0 0 0 1px #efe7df}
+  .note{opacity:.85}
+
+  /* ===== hero redesign: hook + appeal ===== */
+  .hero{padding:40px 20px 22px;text-align:center}
+  .hero-stage{position:relative;max-width:840px;margin:0 auto}
+  .hero-stage::before{content:"";position:absolute;left:6%;right:6%;bottom:-18px;height:48px;border-radius:28px;background:linear-gradient(180deg,#ffffff,#efe9e2);box-shadow:0 30px 46px -20px rgba(43,58,77,.5);transform:perspective(900px) rotateX(38deg);transform-origin:bottom center;z-index:0}
+  .hero-inner{position:relative;z-index:1;overflow:hidden;padding:54px 46px 40px;border-radius:28px;background:linear-gradient(160deg,#ffffff,#fbf8f4);border:1px solid #efe7df;box-shadow:inset 0 2px 0 rgba(255,255,255,.9), inset 0 0 0 1px rgba(255,255,255,.5), 0 2px 4px rgba(43,58,77,.10), 0 16px 30px -12px rgba(43,58,77,.22), 0 50px 90px -36px rgba(43,58,77,.55)}
+  .hero-inner::before{content:"";position:absolute;left:0;right:0;top:0;height:42%;background:linear-gradient(180deg,rgba(255,255,255,.75),rgba(255,255,255,0));pointer-events:none;border-radius:26px 26px 0 0}
+  .hero-inner::after{content:"";position:absolute;width:260px;height:260px;right:-70px;bottom:-90px;background:radial-gradient(circle,rgba(242,104,11,.16),transparent 70%);pointer-events:none}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(242,104,11,.10);border:1px solid rgba(242,104,11,.30);padding:6px 13px;border-radius:999px;color:var(--orange);font-weight:800;letter-spacing:1px;text-transform:uppercase;font-size:12px}
+  .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--orange);display:inline-block}
+  .hero h1{font-size:clamp(30px,6vw,46px);line-height:1.08;margin:16px 0 10px;font-weight:800;letter-spacing:-.5px}
+  .hero h1 .hl{background:linear-gradient(120deg,#F2680B,#ff9a3c);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .hero p{font-size:16.5px;max-width:620px;margin:0 auto;color:var(--slate2)}
+  .hero-stats{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:22px}
+  .stat{display:flex;flex-direction:column;align-items:center;min-width:104px;padding:16px 20px;background:linear-gradient(180deg,#ffffff,#fdfbf9);border:1px solid #efe7df;border-radius:16px;box-shadow:inset 0 2px 0 #fff, 0 10px 22px -10px rgba(43,58,77,.30);transition:transform .16s ease, box-shadow .16s ease}
+  .stat:hover{transform:translateY(-5px);box-shadow:inset 0 2px 0 #fff, 0 22px 36px -14px rgba(43,58,77,.42)}
+  .stat b{font-size:24px;color:var(--orange);line-height:1}
+  .stat span{font-size:12px;color:var(--muted);margin-top:5px;text-transform:uppercase;letter-spacing:.5px}
+  @media (max-width:680px){ .hero{padding:26px 14px 18px} .hero-inner{padding:28px 18px;border-radius:20px} .hero-stats{gap:10px;margin-top:18px} .stat{min-width:82px;padding:10px 12px} .stat b{font-size:24px} }
+  footer.site-footer{background:var(--slate);color:#aeb9d4;padding:34px 0;font-size:13.5px;margin-top:0}
+  .foot-in{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;align-items:center}
+  /* description word counter + 3000-word limit */
+  .counter{font-size:12.5px;color:var(--muted);margin-top:6px;text-align:right}
+  .counter.over{color:#c0392b;font-weight:700}
+  /* vacancy title: "Other" manual entry (max 300 words) */
+  .title-other{margin-top:10px}
+  .title-other textarea{min-height:auto;resize:vertical}
+  .demo-note{background:#fff7ed;border:1px solid #fed7aa;color:#9a3b0a;padding:11px 14px;border-radius:11px;font-size:13.5px;margin-top:16px}
+
+  /* Bottom CTA section for consistency */
+  .bottom-cta {
+    text-align: center;
+    padding: 40px 20px;
+    background: #fff;
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+</style>
+</head>
+<body>
+  <header class="nav">
+    <div class="wrap nav-in">
+      <button class="nav-toggle" onclick="toggleMenu()" aria-label="Toggle Navigation">
+        <span></span><span></span><span></span>
+      </button>
+      <a class="brand" href="index.html"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAzMiAzMic+PHJlY3Qgd2lkdGg9JzMyJyBoZWlnaHQ9JzMyJyByeD0nNycgZmlsbD0nIzJiM2E0ZCcvPjxjaXJjbGUgY3g9JzE2JyBjeT0nMTYnIHI9JzknIGZpbGw9JyNGMjY4MEInLz48L3N2Zz4=" alt="Veer" style="height:34px;width:34px;border-radius:8px;background:#fff;padding:2px;box-shadow:0 2px 8px rgba(0,0,0,.12)" />Veer<span class="dot">.</span>com</a>
+      <nav class="nav-links">
+        <a href="index.html#how">How it works</a>
+        <a href="index.html#employers">For employers</a>
+        <a href="index.html#why">Why Veer</a>
+      </nav>
+      <a class="btn ghost" href="index.html">&larr; Back to site</a>
+    </div>
+  </header>
+
+  <header class="hero">
+    <div class="hero-stage">
+      <div class="hero-inner">
+      <div class="hero-graphic" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M12 22 L32 12 L52 22 L52 44 L32 54 L12 44 Z" fill="#F2680B"/><path d="M12 22 L32 32 L52 22" fill="none" stroke="#fff" stroke-width="2.5" stroke-linejoin="round"/><path d="M32 32 V54" stroke="#fff" stroke-width="2.5"/><path d="M26 38 L30 42 L39 32" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="eyebrow"><span class="dot"></span> Employers &middot; UK &amp; Ireland</div>
+      <h1>Post a vacancy.<br><span class="hl">Hire in days, not months.</span></h1>
+      <p>Reach pre-matched, explainably shortlisted candidates across the UK &amp; Ireland. Fill in the role below — Veer's AI screens, you decide.</p>
+      <div class="hero-stats">
+        <div class="stat"><span class="sic"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21c3-3 5-3 8 0s5 3 8 0 5-3 8 0"/><path d="M5 14c3-3 5-3 8 0s5 3 8 0 5-3 8 0"/><path d="M5 28c3-3 5-3 8 0s5 3 8 0 5-3 8 0"/></svg></span><b>80+</b><span>ATS signals</span></div>
+        <div class="stat"><span class="sic"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4l10 4v8c0 7-5 11-10 12-5-1-10-5-10-12V8z"/><path d="M11 16l3.5 3.5L21 12"/></svg></span><b>0</b><span>black box</span></div>
+        <div class="stat"><span class="sic"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M16 28c6-7 10-12 10-18a10 10 0 1 0-20 0c0 6 4 11 10 18z"/><circle cx="16" cy="11" r="3.5"/></svg></span><b>UK &amp; IE</b><span>data residency</span></div>
+      </div>
+    </div>
+    </div>
+  </header>
+
+  <main class="card">
+    <div class="err-summary" id="errSummary" role="alert"></div>
+    <form id="vacForm" novalidate>
+      <div class="grid">
+        <div class="field">
+          <label for="company">Company name <span class="req">*</span></label>
+          <input id="company" name="company" type="text" placeholder="Acme Ltd" autocomplete="organization" />
+          <div class="err" id="companyErr"></div>
+        </div>
+        <div class="field">
+          <label for="website">Company website <span class="req">*</span></label>
+          <input id="website" name="website" type="url" placeholder="https://acme.com" autocomplete="url" inputmode="url" />
+          <div class="err" id="websiteErr"></div>
+        </div>
+
+        <div class="field full">
+          <label for="title">Vacancy title <span class="req">*</span></label>
+          <select id="title" name="title">
+            <option value="">Select a role…</option>
+            <optgroup label="AI / Machine Learning">
+              <option>AI Engineer</option>
+              <option>Machine Learning Engineer</option>
+              <option>Deep Learning Engineer</option>
+              <option>MLOps Engineer</option>
+              <option>LLM Engineer</option>
+              <option>Generative AI Engineer</option>
+              <option>NLP Engineer</option>
+              <option>Computer Vision Engineer</option>
+              <option>Data Scientist</option>
+              <option>Applied Scientist</option>
+              <option>AI Research Scientist</option>
+            </optgroup>
+            <optgroup label="Software Engineering">
+              <option>Software Engineer</option>
+              <option>Senior Software Engineer</option>
+              <option>Staff Software Engineer</option>
+              <option>Backend Engineer</option>
+              <option>Frontend Engineer</option>
+              <option>Full Stack Engineer</option>
+              <option>Mobile Engineer</option>
+              <option>DevOps Engineer</option>
+              <option>Site Reliability Engineer</option>
+              <option>Platform Engineer</option>
+              <option>Cloud Engineer</option>
+            </optgroup>
+            <optgroup label="Software Architecture &amp; Leadership">
+              <option>Software Architect</option>
+              <option>Solutions Architect</option>
+              <option>ML / AI Architect</option>
+              <option>Principal Architect</option>
+              <option>Enterprise Architect</option>
+              <option>Technical Lead</option>
+              <option>Engineering Manager</option>
+              <option>Head of Engineering</option>
+              <option>CTO</option>
+            </optgroup>
+            <option value="__other__">Other — write your own title</option>
+          </select>
+          <div class="err" id="titleErr"></div>
+          <div class="title-other" id="titleOtherWrap" style="display:none">
+            <textarea id="titleOther" name="titleOther" rows="2" maxlength="2000" placeholder="e.g. Principal Robotics Perception Engineer" autocomplete="off"></textarea>
+            <div class="counter" id="titleCount">0 / 300 words</div>
+          </div>
+        </div>
+
+        <div class="field full">
+          <label for="desc">Vacancy description <span class="req">*</span></label>
+          <textarea id="desc" name="desc" placeholder="What the role involves, must-haves, and nice-to-haves..."></textarea>
+          <div class="counter" id="descCount">0 / 3000 words</div>
+          <div class="err" id="descErr"></div>
+        </div>
+
+        <div class="field full">
+          <label for="location">Location <span class="req">*</span></label>
+          <input id="location" name="location" type="text" placeholder="Dublin, Ireland" autocomplete="address-level2" />
+          <div class="err" id="locationErr"></div>
+        </div>
+        <div class="field">
+          <label for="empType">Employment type <span class="req">*</span></label>
+          <select id="empType" name="empType">
+            <option value="">Select…</option>
+            <option value="Full-time">Full-time</option>
+            <option value="Part-time">Part-time</option>
+            <option value="Contract">Contract</option>
+            <option value="Internship">Internship</option>
+          </select>
+          <div class="err" id="empTypeErr"></div>
+        </div>
+        <div class="field">
+          <label for="work">Work arrangement <span class="req">*</span></label>
+          <select id="work" name="work">
+            <option value="">Select…</option>
+            <option value="Remote">Remote</option>
+            <option value="Hybrid">Hybrid</option>
+            <option value="On-site">On-site</option>
+          </select>
+          <div class="err" id="workErr"></div>
+        </div>
+
+        <div class="field full">
+          <label for="salary">Salary package <span class="req">*</span></label>
+          <div class="row salary-row">
+            <select id="cur" aria-label="Currency">
+              <option value="GBP">£ GBP</option>
+              <option value="EUR">€ EUR</option>
+            </select>
+            <input id="salary" name="salary" type="number" min="0" step="1000" inputmode="numeric" placeholder="e.g. 60000" aria-describedby="salHint" />
+            <select id="period" aria-label="Pay period">
+              <option value="year">/ year</option>
+              <option value="month">/ month</option>
+            </select>
+          </div>
+          <div class="equiv" id="equiv"></div>
+          <div class="hint" id="salHint">Shown in both £ and € at an indicative rate (1 GBP ≈ 1.17 EUR).</div>
+          <div class="err" id="salaryErr"></div>
+        </div>
+
+        <div class="field">
+          <label for="contact">Contact person <span class="req">*</span></label>
+          <input id="contact" name="contact" type="text" placeholder="Jane Recruiter" autocomplete="name" />
+          <div class="err" id="contactErr"></div>
+        </div>
+        <div class="field">
+          <label for="email">Contact email <span class="req">*</span></label>
+          <input id="email" name="email" type="email" placeholder="jobs@acme.com" autocomplete="email" inputmode="email" />
+          <div class="err" id="emailErr"></div>
+        </div>
+
+        <div class="field">
+          <label for="phone">Contact phone <span class="req">*</span></label>
+          <div class="row phone-row">
+            <select id="cc" aria-label="Country code">
+              <option value="44">+44 (UK)</option>
+              <option value="353">+353 (IE)</option>
+              <option value="1">+1 (US/CA)</option>
+              <option value="61">+61 (AU)</option>
+              <option value="49">+49 (DE)</option>
+              <option value="33">+33 (FR)</option>
+              <option value="34">+34 (ES)</option>
+              <option value="31">+31 (NL)</option>
+              <option value="91">+91 (IN)</option>
+              <option value="971">+971 (AE)</option>
+              <option value="27">+27 (ZA)</option>
+              <option value="55">+55 (BR)</option>
+            </select>
+            <input id="phone" name="phone" type="tel" inputmode="tel" placeholder="7700 900000" autocomplete="tel-national" aria-describedby="phoneHint" />
+          </div>
+          <div class="hint" id="phoneHint">International format (E.164), e.g. +447700900000</div>
+          <div class="err" id="phoneErr"></div>
+        </div>
+        <div class="field">
+          <label for="linkedin">LinkedIn <span class="req">*</span></label>
+          <input id="linkedin" name="linkedin" type="url" placeholder="linkedin.com/in/your-name" inputmode="url" autocomplete="url" />
+          <div class="err" id="linkedinErr"></div>
+        </div>
+      </div>
+
+      <div class="consent">
+        <input id="consent" name="consent" type="checkbox" />
+        <label for="consent" style="font-weight:500">I confirm I have the right to advertise this role and consent to Veer storing the contact details above under UK GDPR / EU GDPR for candidate matching.</label>
+      </div>
+      <div class="err" id="consentErr" style="margin:-10px 0 14px"></div>
+
+      <button class="btn" type="submit">Preview vacancy &rarr;</button>
+    </form>
+
+    <div class="ok preview" id="preview">
+      <h2>Preview your vacancy</h2>
+      <p style="color:var(--muted)">Check everything is correct, then publish. Submissions are reviewed before going live.</p>
+      <div class="sum" id="prevSum"></div>
+      <div class="demo-note">Demo mode: this prototype doesn't send your vacancy anywhere or contact a live backend. In production, submissions are reviewed by Veer's team before going live.</div>
+      <div class="row" style="gap:12px;margin-top:8px">
+        <button class="btn ghost" id="editBtn" type="button">Edit</button>
+        <button class="btn" id="publishBtn" type="button">Publish vacancy &rarr;</button>
+      </div>
+    </div>
+
+    <div class="ok" id="ok">
+      <h2>Vacancy received</h2>
+      <p id="okMsg" style="color:var(--muted)"></p>
+      <div class="sum" id="okSum"></div>
+      <div class="demo-note">Demo mode: no vacancy was actually published or sent to a server.</div>
+      <a class="btn" style="max-width:240px;margin:6px auto 0" href="index.html">Done</a>
+    </div>
+  </main>
+
+  <section class="bottom-cta">
+    <a href="vacancy.html" class="btn" style="width:auto; min-width:200px;" onclick="location.reload(); return false;">Post another vacancy</a>
+    <a href="index.html" class="btn slate" style="width:auto; min-width:200px;">Home page</a>
+  </section>
+
+  <footer class="site-footer">
+    <div class="wrap foot-in">
+      <div class="brand" style="color:#fff;font-size:17px"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAzMiAzMic+PHJlY3Qgd2lkdGg9JzMyJyBoZWlnaHQ9JzMyJyByeD0nNycgZmlsbD0nIzJiM2E0ZCcvPjxjaXJjbGUgY3g9JzE2JyBjeT0nMTYnIHI9JzknIGZpbGw9JyNGMjY4MEInLz48L3N2Zz4=" alt="Veer" style="height:36px;width:36px;border-radius:10px;padding:5px;background:#fff" /> Veer<span style="color:var(--orange)">.</span>com</div>
+      <div>© 2026 Veer.ie — AI-powered recruitment for the UK &amp; Ireland. Prototype build.</div>
+      <div style="display:flex;gap:18px"><a href="privacy.html" style="color:#c9d0da">Privacy</a><a href="terms.html" style="color:#c9d0da">Terms</a></div>
+    </div>
+  </footer>
+
+<script>
+function toggleMenu(){ document.querySelector('.nav-links').classList.toggle('active'); }
+(function(){
+  var $ = function(id){ return document.getElementById(id); };
+  var RATE = 1.17; // indicative GBP->EUR
+
+  function digits(s){ return (s||'').replace(/[^0-9]/g,''); }
+
+  function updateEquiv(){
+    var amt = parseFloat($('salary').value);
+    var cur = $('cur').value;
+    var period = $('period').value;
+    var out = $('equiv');
+    if(!isFinite(amt) || amt <= 0){ out.textContent=''; return; }
+    if(cur === 'GBP'){
+      var eur = Math.round(amt * RATE);
+      out.innerHTML = '≈ <b>€' + eur.toLocaleString() + '</b> / ' + period;
+    } else {
+      var gbp = Math.round(amt / RATE);
+      out.innerHTML = '≈ <b>£' + gbp.toLocaleString() + '</b> / ' + period;
+    }
+  }
+  ['salary','cur','period'].forEach(function(id){ $(id).addEventListener('input', updateEquiv); $(id).addEventListener('change', updateEquiv); });
+
+  function setErr(id, msg){
+    var e = $(id + 'Err');
+    if(msg){ e.textContent = msg; e.classList.add('show'); }
+    else { e.textContent=''; e.classList.remove('show'); }
+  }
+  function mark(id, bad){ var el=$(id); if(el){ el.classList.toggle('bad', !!bad); } }
+
+  function isUrl(v){ try{ var u=new URL(v); return u.protocol==='http:'||u.protocol==='https:'; }catch(e){ return false; } }
+  function isEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+  function isLinkedIn(v){
+    var s=(v||'').trim();
+    if(!s) return false;
+    if(!/^https?:\/\//i.test(s)) s='https://'+s;
+    return /^https?:\/\/(www\.)?linkedin\.com\/(in|pub|company)\/.+/i.test(s);
+  }
+
+  var LABELS = { company:'Company name', website:'Company website', title:'Vacancy title', desc:'Description', location:'Location', empType:'Employment type', work:'Work arrangement', salary:'Salary package', contact:'Contact person', email:'Email address', phone:'Phone number', linkedin:'LinkedIn profile', consent:'Consent to store details' };
+  var MAX_WORDS = 3000;
+  function wordCount(s){ return (s.trim().match(/\S+/g) || []).length; }
+  var descEl = $('desc');
+  function updateDescCount(){ var wc = wordCount(descEl.value); var c = $('descCount'); c.textContent = wc + ' / ' + MAX_WORDS + ' words'; c.classList.toggle('over', wc > MAX_WORDS); }
+  descEl.addEventListener('input', updateDescCount);
+  updateDescCount();
+
+  // ---- vacancy title: preset dropdown + "Other" manual entry (max 300 words) ----
+  var titleOther = $('titleOther');
+  var titleOtherWrap = $('titleOtherWrap');
+  var MAX_TITLE_WORDS = 300;
+  function getTitle(){ return $('title').value === '__other__' ? titleOther.value.trim() : $('title').value.trim(); }
+  function updateTitleOther(){
+    var show = $('title').value === '__other__';
+    titleOtherWrap.style.display = show ? '' : 'none';
+    if(!show){ setErr('title',''); titleOther.classList.remove('bad'); }
+    updateTitleCount();
+  }
+  function updateTitleCount(){
+    var wc = wordCount(titleOther.value);
+    var c = $('titleCount');
+    c.textContent = wc + ' / ' + MAX_TITLE_WORDS + ' words';
+    c.classList.toggle('over', wc > MAX_TITLE_WORDS);
+  }
+  $('title').addEventListener('change', updateTitleOther);
+  titleOther.addEventListener('input', updateTitleCount);
+
+  function summaryRow(label){
+    var div = document.createElement('div');
+    div.append(Object.assign(document.createElement('b'), {textContent: label + ':'}), ' ');
+    for (var i = 1; i < arguments.length; i++) div.append(arguments[i]);
+    return div;
+  }
+  function safeLink(hrefValue, textValue){
+    var a = document.createElement('a');
+    a.href = /^https?:\/\//i.test(hrefValue) ? hrefValue : '#';
+    a.target = '_blank'; a.rel = 'noopener';
+    a.textContent = textValue;
+    return a;
+  }
+  function buildSummary(){
+    var amt = parseFloat($('salary').value);
+    var cur = $('cur').value;
+    var period = $('period').value;
+    var salLine = (cur === 'GBP')
+      ? '£' + amt.toLocaleString() + ' / ' + period + '  (≈ €' + Math.round(amt*RATE).toLocaleString() + ')'
+      : '€' + amt.toLocaleString() + ' / ' + period + '  (≈ £' + Math.round(amt/RATE).toLocaleString() + ')';
+    var li = $('linkedin').value.trim(); if(!/^https?:\/\//i.test(li)) li = 'https://' + li;
+    var website = $('website').value.trim();
+    var nat = digits($('phone').value);
+    var e164 = '+' + $('cc').value + nat;
+    var frag = document.createDocumentFragment();
+    frag.append(
+      summaryRow('Title', getTitle()),
+      summaryRow('Type', $('empType').value, ' · ', Object.assign(document.createElement('b'), {textContent: 'Arrangement:'}), ' ', $('work').value),
+      summaryRow('Location', $('location').value.trim()),
+      summaryRow('Salary', salLine),
+      summaryRow('Company', $('company').value.trim(), ' · ', safeLink(website, website)),
+      summaryRow('Contact', $('contact').value.trim(), ' · ', e164),
+      summaryRow('Email', $('email').value.trim()),
+      summaryRow('LinkedIn', safeLink(li, li)),
+    );
+    return frag;
+  }
+
+  function showPreview(){
+    $('prevSum').replaceChildren(buildSummary());
+    $('vacForm').style.display = 'none';
+    $('preview').classList.add('show');
+  }
+
+  function showSummary(missing){
+    var box = $('errSummary');
+    if(!missing.length){ box.className = 'err-summary'; box.replaceChildren(); return; }
+    var h3 = document.createElement('h3');
+    h3.textContent = 'There is a problem';
+    var ul = document.createElement('ul');
+    missing.forEach(function(m){
+      var li = document.createElement('li');
+      li.textContent = m + ' is required.';
+      ul.appendChild(li);
+    });
+    box.replaceChildren(h3, ul);
+    box.className = 'err-summary show';
+    box.scrollIntoView({ behavior:'smooth', block:'center' });
+  }
+
+  async function publishVacancy(){
+    var amt = parseFloat($('salary').value);
+    var nat = digits($('phone').value);
+    var li = $('linkedin').value.trim(); if(!/^https?:\/\//i.test(li)) li = 'https://' + li;
+    var recObj = JSON.parse(sessionStorage.getItem('veerRecruiter') || 'null');
+    var payload = {
+      recruiterId: recObj ? recObj.id : null,
+      company: $('company').value.trim(),
+      website: $('website').value.trim(),
+      title: getTitle(),
+      description: $('desc').value.trim(),
+      location: $('location').value.trim(),
+      employmentType: $('empType').value,
+      workArrangement: $('work').value,
+      salary: { amount: amt, currency: $('cur').value, period: $('period').value },
+      contact: $('contact').value.trim(),
+      email: $('email').value.trim(),
+      phone: '+' + $('cc').value + nat,
+      linkedin: li
+    };
+
+    try {
+      var res = await fetch('/api/jobs/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      var data = await res.json();
+      if (!res.ok || !data.ok) {
+        alert(data.error || 'Failed to publish vacancy');
+        return;
+      }
+      $('okMsg').textContent = 'Thanks — your "' + payload.title + '" vacancy at ' + payload.company + ' is published live on Veer.';
+      $('okSum').replaceChildren(buildSummary());
+      $('preview').classList.remove('show');
+      $('ok').classList.add('show');
+    } catch (err) {
+      console.error('Publish error:', err);
+    }
+  }
+
+  $('vacForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    var ok = true;
+    var missing = [];
+    $('errSummary').className = 'err-summary';
+    var fields = ['company','website','title','desc','location','empType','work','salary','contact','email','phone','linkedin'];
+    fields.forEach(function(f){ mark(f,false); setErr(f,''); });
+    setErr('consent','');
+    titleOther.classList.remove('bad');
+
+    function fail(f, msg){ ok=false; mark(f,true); setErr(f, msg); missing.push(LABELS[f] || f); }
+
+    if(!$('company').value.trim()) fail('company','Enter the company name.');
+    if(!isUrl($('website').value.trim())) fail('website','Enter a valid website URL (https://…).');
+    if(!$('title').value) fail('title','Select a vacancy title.');
+    else if($('title').value === '__other__'){
+      if(!titleOther.value.trim()){ fail('title','Enter your vacancy title.'); titleOther.classList.add('bad'); }
+      else if(wordCount(titleOther.value) > MAX_TITLE_WORDS){ fail('title','Title exceeds the 300-word maximum.'); titleOther.classList.add('bad'); }
+    }
+    if($('desc').value.trim().length < 30) fail('desc','Add a description (at least 30 characters).');
+    if(wordCount($('desc').value) > MAX_WORDS) fail('desc','Description exceeds the 3000-word maximum.');
+    if(!$('location').value.trim()) fail('location','Enter a location.');
+    if(!$('empType').value) fail('empType','Select an employment type.');
+    if(!$('work').value) fail('work','Select a work arrangement.');
+
+    var sal = parseFloat($('salary').value);
+    if(!isFinite(sal) || sal <= 0) fail('salary','Enter a salary amount greater than 0.');
+    else updateEquiv();
+
+    if(!$('contact').value.trim()) fail('contact','Enter a contact person.');
+    if(!isEmail($('email').value.trim())) fail('email','Enter a valid email address.');
+
+    var nat = digits($('phone').value);
+    if(nat.length < 7 || nat.length > 14) fail('phone','Enter a valid national number (7–14 digits).');
+
+    if(!isLinkedIn($('linkedin').value.trim())) fail('linkedin','Enter a LinkedIn profile URL (linkedin.com/in/…).');
+    if(!$('consent').checked) { ok=false; setErr('consent','Please confirm consent to store these details.'); }
+
+    if(!ok){ showSummary(missing); return; }
+    showPreview();
+  });
+
+  $('editBtn').addEventListener('click', function(){ $('preview').classList.remove('show'); $('vacForm').style.display = ''; });
+  $('publishBtn').addEventListener('click', function(){ publishVacancy(); });
+})();
+</script>
+</body>
+</html>

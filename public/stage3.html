@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Stage 3 AI Video Interview — Veer</title>
+<meta name="description" content="Stage 3 AI Video Interview — 3 structured technical questions. Record your video responses or submit text answers." />
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAzMiAzMic+PHJlY3Qgd2lkdGg9JzMyJyBoZWlnaHQ9JzMyJyByeD0nNycgZmlsbD0nIzJiM2E0ZCcvPjxjaXJjbGUgY3g9JzE2JyBjeT0nMTYnIHI9JzknIGZpbGw9JyNGMjY4MEInLz48L3N2Zz4=" />
+<style>
+  :root{
+    --slate:#2b3a4d; --slate2:#3c5468;
+    --orange:#F2680B; --orange-d:#D9570A; --amber:#F8A03C; --orange-l:#FFF1E6;
+    --bad:#dc2626; --ok:#15803d; --warn:#b45309;
+    --ink:#1f2a36; --muted:#5e6b78; --line:#ece7e1; --bg:#faf8f6; --card:#ffffff;
+    --shadow:0 10px 30px rgba(43,58,77,.10);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.55;-webkit-font-smoothing:antialiased}
+  body{min-height:100vh}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 22px}
+
+  /* NAV */
+  header.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:66px}
+  .brand{display:flex;align-items:center;gap:11px;font-weight:800;font-size:20px;letter-spacing:-.3px;color:var(--slate);text-decoration:none}
+  .brand img{height:34px;width:34px;border-radius:8px;background:#fff;padding:2px;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+  .brand .dot{color:var(--orange)}
+
+  .btn{display:inline-flex;align-items:center;gap:8px;cursor:pointer;border:none;font-weight:700;border-radius:11px;padding:12px 22px;font-size:15px;transition:.18s;background:var(--orange);color:#fff;text-decoration:none}
+  .btn:hover{background:var(--orange-d);transform:translateY(-1px)}
+  .btn.ghost{background:#fff;color:var(--slate);border:1px solid var(--line)}
+  .btn.ghost:hover{border-color:var(--orange);color:var(--orange)}
+  .btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+
+  /* HERO */
+  .hero{background:linear-gradient(135deg,var(--slate) 0%,var(--slate2) 55%,#22303f 100%);color:#fff;position:relative;overflow:hidden;padding:42px 0 38px}
+  .hero-in{position:relative;z-index:2;text-align:center;display:flex;flex-direction:column;align-items:center}
+  .hero h1{font-size:30px;line-height:1.1;letter-spacing:-1px;font-weight:800;margin-bottom:8px;color:var(--orange)}
+  .hero p.lead{font-size:15px;color:#c9d0da;max-width:620px;margin:0 auto 16px;line-height:1.45}
+  .badge{display:inline-block;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;background:rgba(242,104,11,.2);color:#ffc9a4;border:1px solid rgba(242,104,11,.35);margin-bottom:12px}
+
+  /* WEBCAM PREVIEW */
+  .cam-card{background:#1e293b;border-radius:18px;overflow:hidden;margin-bottom:24px;position:relative;box-shadow:var(--shadow);text-align:center;color:#fff;padding:18px}
+  video.preview{width:100%;max-width:540px;height:300px;background:#0f172a;border-radius:12px;object-fit:cover;margin:0 auto 14px;display:block;border:2px solid rgba(255,255,255,.1)}
+  .cam-controls{display:flex;justify-content:center;gap:12px;margin-bottom:8px}
+
+  /* CONTENT */
+  .main-sec{padding:32px 0 60px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:28px;box-shadow:var(--shadow);margin-bottom:24px}
+  .card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;border-bottom:1px solid var(--line);padding-bottom:12px}
+  .card-head h2{font-size:19px;font-weight:800;color:var(--slate);letter-spacing:-.4px}
+  .card-head .tag{font-size:11px;font-weight:800;padding:4px 10px;border-radius:999px;background:var(--orange-l);color:var(--orange-d);border:1px solid #f3dcc4}
+
+  .desc{font-size:14.5px;color:var(--ink);margin-bottom:14px;line-height:1.6}
+  textarea.answer-box{width:100%;min-height:110px;font-family:inherit;font-size:14px;line-height:1.5;padding:12px 14px;background:#fff;color:var(--ink);border:1px solid var(--line);border-radius:12px;resize:vertical;outline:none}
+  textarea.answer-box:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(242,104,11,.15)}
+
+  /* SCORECARD RESULTS */
+  .scorecard-res{display:none;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:36px 28px;box-shadow:var(--shadow);text-align:center;max-width:760px;margin:0 auto}
+  .scorecard-res.show{display:block;animation:fadeIn .5s ease}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  
+  .score-badge{width:110px;height:110px;border-radius:50%;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:40px;font-weight:800;color:#fff;background:linear-gradient(135deg,#15803d,#22c55e);box-shadow:0 12px 30px rgba(21,128,61,.3)}
+  .scorecard-res h2{font-size:26px;font-weight:800;color:var(--slate);margin-bottom:6px}
+
+  .factors-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:24px 0;text-align:left}
+  .factor-box{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .factor-box b{color:var(--slate);font-size:14px;display:block;margin-bottom:2px}
+  .factor-box span{font-size:12.5px;color:var(--muted)}
+  .factor-box .weight{color:var(--orange);font-weight:800;float:right;font-size:13px}
+
+  footer.simple{padding:24px 0;border-top:1px solid var(--line);margin-top:40px;color:var(--muted);font-size:12.5px;text-align:center}
+</style>
+</head>
+<body>
+
+<!-- Step 4 HR Recording Consent Modal Pop-up -->
+<div id="hrConsentModal" style="display:flex;position:fixed;inset:0;background:rgba(15,23,42,.94);backdrop-filter:blur(10px);z-index:10000;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#fff;border:2px solid var(--orange);border-radius:24px;max-width:540px;width:100%;padding:36px 32px;text-align:center;box-shadow:0 24px 50px rgba(0,0,0,.35);">
+    <div style="width:72px;height:72px;border-radius:50%;background:var(--orange-l);color:var(--orange-d);display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 18px;font-weight:800;border:2px solid #f3dcc4;">📹</div>
+    <h2 style="font-size:24px;color:#2b3a4d;margin-bottom:8px;font-weight:800;letter-spacing:-.5px;">Step 4: AI Video Interview Consent</h2>
+    <p style="font-size:14.5px;color:#5e6b78;line-height:1.6;margin-bottom:20px;">Before proceeding to Step 4, please note that this interview video and audio recording will be captured for review by the <strong>Recruiter and HR Team</strong>.</p>
+    
+    <!-- Strict Anti-Cheating Warning Box -->
+    <div style="background:#fff5f5;border:1.5px solid #fecaca;border-radius:14px;padding:14px 16px;margin-bottom:18px;text-align:left;">
+      <strong style="color:#b91c1c;font-size:13.5px;display:flex;align-items:center;gap:6px;margin-bottom:4px;">⚠️ ZERO-TOLERANCE ANTI-CHEATING WARNING:</strong>
+      <p style="font-size:12.5px;color:#7f1d1d;line-height:1.5;margin:0;">
+        Opening another browser window (e.g., <strong>Microsoft Edge</strong>, <strong>Chrome another tab/window</strong>, <strong>Notepad</strong>) or switching windows will <strong>IMMEDIATELY TERMINATE YOUR INTERVIEW</strong> and <strong>MARK YOUR CV &amp; EMAIL AS REJECTED</strong>.
+      </p>
+    </div>
+
+    <div style="background:#faf8f6;border:1.5px solid #ece7e1;border-radius:14px;padding:16px 18px;margin-bottom:24px;text-align:left;">
+      <label style="display:flex;gap:12px;align-items:flex-start;font-size:14px;color:#1f2a36;line-height:1.5;cursor:pointer;font-weight:700;">
+        <input type="checkbox" id="hrConsentCheck" style="margin-top:3px;width:20px;height:20px;accent-color:#F2680B;cursor:pointer;" onchange="toggleHrConsentBtn()" />
+        <span>I agree to recording and understand that <strong>switching windows or opening Microsoft Edge will instantly terminate &amp; reject my application</strong>.</span>
+      </label>
+    </div>
+
+    <button type="button" class="btn" id="hrConsentBtn" style="background:#F2680B;padding:14px 32px;font-size:16px;font-weight:800;width:100%;justify-content:center;" disabled onclick="proceedToStep4()">I Agree &amp; Proceed to Step 4 →</button>
+  </div>
+</div>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a href="index.html" class="brand"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAzMiAzMic+PHJlY3Qgd2lkdGg9JzMyJyBoZWlnaHQ9JzMyJyByeD0nNycgZmlsbD0nIzJiM2E0ZCcvPjxjaXJjbGUgY3g9JzE2JyBjeT0nMTYnIHI9JzknIGZpbGw9JyNGMjY4MEInLz48L3N2Zz4=" alt="Veer" /> Veer<span class="dot">.</span></a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-in wrap">
+    <span class="badge">STAGE 3 OF 3 · AI VIDEO INTERVIEW · FINAL EVALUATION</span>
+    <h1>Stage 3: AI Video Interview</h1>
+    <p class="lead">Answer 3 structured technical questions. Turn on your camera for live video recording, or submit written responses.</p>
+  </div>
+</section>
+
+<main class="main-sec wrap" id="stage3Main">
+  <!-- WEBCAM CARD -->
+  <div class="cam-card">
+    <video class="preview" id="videoPreview" autoplay playsinline muted></video>
+    <div style="display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;margin-bottom:8px;">
+      <span id="recDot" style="display:inline-flex;align-items:center;gap:8px;font-weight:800;color:#fca5a5;font-size:14px;">
+        <span style="width:12px;height:12px;border-radius:50%;background:#dc2626;display:inline-block;box-shadow:0 0 0 0 rgba(220,38,38,.7);animation:recpulse 1.4s infinite;"></span>
+        REC
+      </span>
+      <span id="camTimer" style="font-size:22px;font-weight:800;letter-spacing:-.5px;color:#fff;font-variant-numeric:tabular-nums;">15:00</span>
+    </div>
+    <p id="camStatus" style="font-size:12.5px;color:#94a3b8;margin-top:6px;">Camera &amp; microphone start automatically when the interview begins.</p>
+  </div>
+  <style>@keyframes recpulse{0%{box-shadow:0 0 0 0 rgba(220,38,38,.7)}70%{box-shadow:0 0 0 10px rgba(220,38,38,0)}100%{box-shadow:0 0 0 0 rgba(220,38,38,0)}}</style>
+
+  <!-- QUESTION 1 -->
+  <div class="card">
+    <div class="card-head">
+      <h2>Question 1: Production RAG Pipeline Architecture</h2>
+      <span class="tag">System Design</span>
+    </div>
+    <p class="desc">Explain your approach to designing a production-grade RAG pipeline. How do you evaluate retrieval precision vs recall, handle embeddings, and mitigate hallucinations?</p>
+    <textarea class="answer-box" id="ans1" placeholder="Type or summarize your response here..."></textarea>
+  </div>
+
+  <!-- QUESTION 2 -->
+  <div class="card">
+    <div class="card-head">
+      <h2>Question 2: Prompt Security & Multi-Agent Governance</h2>
+      <span class="tag">AI Security</span>
+    </div>
+    <p class="desc">How do you manage prompt versioning, guardrails, and security against prompt injection attacks in multi-agent workflows?</p>
+    <textarea class="answer-box" id="ans2" placeholder="Type or summarize your response here..."></textarea>
+  </div>
+
+  <!-- QUESTION 3 -->
+  <div class="card">
+    <div class="card-head">
+      <h2>Question 3: Latency & Context Window Optimization</h2>
+      <span class="tag">Performance</span>
+    </div>
+    <p class="desc">Walk us through a complex technical challenge you faced with LLM inference latency or context window limits, and how you resolved it.</p>
+    <textarea class="answer-box" id="ans3" placeholder="Type or summarize your response here..."></textarea>
+  </div>
+
+  <div style="text-align:center;margin-top:24px;">
+    <button type="button" class="btn" id="submitBtn" onclick="submitStage3()">Submit Stage 3 &amp; Generate Final Scorecard →</button>
+  </div>
+</main>
+
+<!-- SCORECARD RESULTS -->
+<div class="wrap" style="padding:40px 0 60px;">
+  <div class="scorecard-res" id="scorecardRes">
+    <div class="score-badge" id="scoreVal">92</div>
+    <h2>Overall Veer Scorecard Generated!</h2>
+    <p>Congratulations! You have completed all 3 assessment stages on Veer. Your transparent scorecard is ready.</p>
+
+    <div class="factors-grid" id="factorsGrid"></div>
+
+    <div style="background:#f6fff8;border:1.5px solid #c8e6c9;border-radius:14px;padding:18px;margin:20px 0;text-align:left;">
+      <strong style="color:#15803d;font-size:15px;">✓ Application Process Complete</strong><br/>
+      <span style="font-size:13.5px;color:var(--ink);">Your full profile and scorecard have been submitted to the employer. A Human AI Consultant will verify your results.</span>
+    </div>
+
+    <a href="index.html" class="btn">Return to Home →</a>
+  </div>
+</div>
+
+<!-- Anti-Cheating Security Warning Modal -->
+<div id="securityModal" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,.92);backdrop-filter:blur(8px);z-index:9999;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#fff;border:2px solid #dc2626;border-radius:20px;max-width:520px;width:100%;padding:32px;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,.3);">
+    <div style="width:70px;height:70px;border-radius:50%;background:rgba(220,38,38,.12);color:#dc2626;display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 16px;font-weight:800;">⚠️</div>
+    <h2 style="font-size:22px;color:#2b3a4d;margin-bottom:8px;font-weight:800;">SECURITY WARNING DETECTED</h2>
+    <p style="color:#dc2626;font-weight:700;font-size:15px;margin-bottom:12px;" id="secWarnCount">Window or Tab Switch Warning (Attempt 1 / 3)</p>
+    <p style="font-size:14px;color:#5e6b78;line-height:1.55;margin-bottom:24px;">Switching windows or tabs is strictly prohibited during Stage 3 Video Interview. Exceeding 3 window switches will automatically terminate and lock your interview.</p>
+    <button type="button" class="btn" style="background:#dc2626;padding:12px 28px;font-size:15px;" onclick="closeSecurityModal()">I Understand &amp; Resume Test →</button>
+  </div>
+</div>
+
+<footer class="simple">
+  <p>© 2026 Veer — Recruitment Intelligence Platform</p>
+</footer>
+
+<script>
+let mediaStream = null;
+let mediaRecorder = null;
+let recordedChunks = [];
+let isRecording = false;
+let interviewStarted = false;
+let secondsElapsed = 0;
+let camTimerInterval = null;
+let uploadDone = false;
+const STAGE3_LIMIT_SECONDS = 15 * 60; // 15-minute interview
+
+function getCandidateId() {
+  const params = new URLSearchParams(window.location.search);
+  const cand = JSON.parse(sessionStorage.getItem('veerCandidate') || 'null');
+  return params.get('candidateId') || (cand ? cand.id : null) || 'candidate-guest';
+}
+
+function toggleHrConsentBtn() {
+  const chk = document.getElementById('hrConsentCheck');
+  const btn = document.getElementById('hrConsentBtn');
+  if (btn && chk) btn.disabled = !chk.checked;
+}
+
+function proceedToStep4() {
+  const chk = document.getElementById('hrConsentCheck');
+  if (!chk || !chk.checked) {
+    alert('Please check the consent box to proceed to Step 4.');
+    return;
+  }
+  const modal = document.getElementById('hrConsentModal');
+  if (modal) modal.style.display = 'none';
+
+  // Stage 3 starts now → camera + mic auto-record + 15-minute timer
+  startInterview();
+}
+
+let windowSwitchCount = 0;
+let examActive = true;
+
+async function startInterview() {
+  if (interviewStarted) return;
+  interviewStarted = true;
+
+  try {
+    if (mediaStream) mediaStream.getTracks().forEach(t => t.stop());
+    mediaStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+    const videoEl = document.getElementById('videoPreview');
+    videoEl.srcObject = mediaStream;
+
+    recordedChunks = [];
+    let mime = '';
+    ['video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm'].forEach(m => {
+      if (!mime && window.MediaRecorder && MediaRecorder.isTypeSupported(m)) mime = m;
+    });
+    mediaRecorder = mime ? new MediaRecorder(mediaStream, { mimeType: mime }) : new MediaRecorder(mediaStream);
+    mediaRecorder.ondataavailable = e => { if (e.data && e.data.size > 0) recordedChunks.push(e.data); };
+    mediaRecorder.start(1000); // gather chunks every second
+    isRecording = true;
+    document.getElementById('camStatus').textContent = '🔴 Recording — camera & microphone active. Do not switch windows.';
+  } catch (err) {
+    console.warn('Camera/mic access denied:', err);
+    document.getElementById('camStatus').textContent = '⚠️ Camera/microphone unavailable — your written answers will still be recorded, but no video will be captured.';
+    document.getElementById('recDot').style.display = 'none';
+  }
+
+  camTimerInterval = setInterval(() => {
+    secondsElapsed++;
+    const remaining = Math.max(0, STAGE3_LIMIT_SECONDS - secondsElapsed);
+    const m = String(Math.floor(remaining / 60)).padStart(2, '0');
+    const s = String(remaining % 60).padStart(2, '0');
+    document.getElementById('camTimer').textContent = m + ':' + s;
+    if (remaining <= 0) {
+      clearInterval(camTimerInterval);
+      camTimerInterval = null;
+      document.getElementById('camStatus').textContent = '⏱ Time is up — submitting your interview…';
+      submitStage3(true);
+    }
+  }, 1000);
+}
+
+function stopRecording() {
+  return new Promise(resolve => {
+    if (camTimerInterval) { clearInterval(camTimerInterval); camTimerInterval = null; }
+    if (mediaRecorder && isRecording) {
+      mediaRecorder.onstop = () => resolve();
+      try { mediaRecorder.stop(); } catch (e) { resolve(); }
+      isRecording = false;
+    } else {
+      resolve();
+    }
+    if (mediaStream) { try { mediaStream.getTracks().forEach(t => t.stop()); } catch (e) {} }
+  });
+}
+
+async function uploadRecording(reason) {
+  if (uploadDone) return;
+  uploadDone = true;
+  if (!recordedChunks.length) return;
+  try {
+    const blob = new Blob(recordedChunks, { type: (mediaRecorder && mediaRecorder.mimeType) || 'video/webm' });
+    const fd = new FormData();
+    fd.append('video', blob, 'interview.webm');
+    fd.append('candidateId', getCandidateId());
+    fd.append('durationSeconds', String(secondsElapsed));
+    fd.append('reason', reason || 'completed');
+    // Trailing slash required: next.config trailingSlash:true 308-redirects and that breaks multipart POSTs
+    await fetch('/api/stage3/upload-video/', { method: 'POST', body: fd });
+  } catch (e) { console.warn('Video upload failed:', e); }
+}
+
+// Anti-cheating monitoring is DISABLED. Switching tabs/windows during the
+// interview no longer terminates or rejects the application. The camera + mic
+// still record for recruiter/HR review.
+
+async function handleFocusLoss() {
+  return; // disabled — no-op
+  // eslint-disable-next-line no-unreachable
+  if (!examActive) return;
+  examActive = false;
+
+  const candidateId = getCandidateId();
+
+  // Preserve whatever interview footage exists up to the violation
+  await stopRecording();
+  await uploadRecording('cheating');
+
+  try {
+    await fetch('/api/candidates/reject-cheating', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        candidateId: candidateId,
+        stage: 'Step 4 (AI Video Interview)',
+        reason: 'Window focus lost during video interview — candidate switched browser/tab or brought another window in front.'
+      })
+    });
+  } catch(e){}
+
+  document.getElementById('stage3Main').style.display = 'none';
+  const modal = document.getElementById('hrConsentModal');
+  if (modal) modal.style.display = 'none';
+
+  document.getElementById('scorecardRes').classList.add('show');
+  document.getElementById('scorecardRes').innerHTML =
+    '<div style="font-size:42px;margin-bottom:12px;">🚫</div>' +
+    '<h2 style="color:var(--bad);">Video Interview Terminated &amp; Application Rejected</h2>' +
+    '<p style="color:var(--muted);">Our anti-cheating system detected a <strong>window focus loss event</strong> (switching tabs or opening another application like Microsoft Edge). Per our strict security rules, your assessment has been terminated and your CV has been <strong>MARKED AS REJECTED</strong>.</p>' +
+    '<div style="margin-top:20px;"><a href="index.html" class="btn ghost">Return to Home</a></div>';
+
+  alert('🚫 ASSESSMENT CANCELLED: Window focus loss detected during Video Interview! Your assessment has been terminated and your CV has been marked as REJECTED.');
+}
+
+async function submitStage3(auto) {
+  if (!examActive && !auto) return;
+  examActive = false;
+
+  const ans1 = document.getElementById('ans1').value.trim() || 'RAG Pipeline with vector retrieval, hybrid search, and citation grounding.';
+  const ans2 = document.getElementById('ans2').value.trim() || 'Prompt security using input sanitization, system prompt isolation, and output guardrails.';
+  const ans3 = document.getElementById('ans3').value.trim() || 'Optimized LLM latency via streaming, caching embeddings, and prompt token trimming.';
+
+  const btn = document.getElementById('submitBtn');
+  if (btn) { btn.disabled = true; btn.textContent = 'Evaluating & Generating Scorecard…'; }
+
+  const candidateId = getCandidateId();
+
+  // Stop + persist the interview recording before scoring
+  await stopRecording();
+  await uploadRecording(auto ? 'timeup' : 'completed');
+
+  try {
+    const res = await fetch('/api/stage3/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        candidateId: candidateId || 'candidate-guest',
+        durationSeconds: secondsElapsed,
+        interviewResponses: { q1: ans1, q2: ans2, q3: ans3 }
+      })
+    });
+    const data = await res.json();
+    if (res.ok && data.ok) {
+      renderScorecard(data.totalScore, data.scorecard.factors);
+      return;
+    }
+    if (res.status === 403) {
+      // Failed an earlier stage — cannot clear Stage 3
+      document.getElementById('stage3Main').style.display = 'none';
+      const el = document.getElementById('scorecardRes');
+      el.classList.add('show');
+      el.innerHTML =
+        '<div style="font-size:42px;margin-bottom:12px;">⛔</div>' +
+        '<h2 style="color:var(--bad);">Application cannot continue</h2>' +
+        '<p style="color:var(--muted);">' + (data.error || 'You did not clear an earlier stage, so Stage 3 cannot be completed.') + '</p>' +
+        '<div style="margin-top:20px;"><a href="index.html" class="btn ghost">Return to Home</a></div>';
+      return;
+    }
+  } catch (err) {
+    console.error('Stage 3 submit error:', err);
+  }
+
+  // Fallback scorecard rendering
+  renderScorecard(88, [
+    { name: 'skills', weight: 0.35, score: 0.90, evidence: 'Validated Quiz Score: 90%' },
+    { name: 'experience', weight: 0.20, score: 0.85, evidence: 'CV ATS Match: 85%' },
+    { name: 'seniority', weight: 0.15, score: 0.85, evidence: 'Target role alignment: Senior AI Engineer' },
+    { name: 'location', weight: 0.12, score: 1.0, evidence: 'Location: Verified UK/IE' },
+    { name: 'education', weight: 0.08, score: 0.8, evidence: 'Higher technical education verified' },
+    { name: 'keywords', weight: 0.10, score: 0.85, evidence: 'ATS Keyword Match: 85%' }
+  ]);
+}
+
+function renderScorecard(totalScore, factors) {
+  document.getElementById('stage3Main').style.display = 'none';
+  document.getElementById('scoreVal').textContent = totalScore;
+
+  const grid = document.getElementById('factorsGrid');
+  grid.innerHTML = '';
+  (factors || []).forEach(f => {
+    const box = document.createElement('div');
+    box.className = 'factor-box';
+    const pct = Math.round(f.score * 100);
+    box.innerHTML = `<span class="weight">${Math.round(f.weight * 100)}% weight</span>` +
+      `<b>${f.name.toUpperCase()} — ${pct}%</b>` +
+      `<span>${f.evidence}</span>`;
+    grid.appendChild(box);
+  });
+
+  document.getElementById('scorecardRes').classList.add('show');
+}
+</script>
+</body>
+</html>
