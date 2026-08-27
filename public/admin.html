@@ -270,7 +270,7 @@ function render(){
       : '<span class="tag fail">'+r.verdictLabel+'</span>';
     const video = r.recording
       ? `<button class="linkbtn" onclick='playVideo(${JSON.stringify(r).replace(/'/g,"&#39;")})'>▶ ${fmtDur(r.recording.durationSeconds)}</button>` +
-        ` <a class="linkbtn" href="${r.recording.url}/?dl=1" download title="Download .webm">⬇</a>`
+        ` <a class="linkbtn" href="${r.recording.url}?dl=1" download title="Download .webm">⬇</a>`
       : '<span class="muted">none</span>';
     return `<tr>
       <td><b>${esc(r.name)}</b><br><span class="muted">${esc(r.targetRole||'')}</span></td>
@@ -297,7 +297,7 @@ function playVideo(r){
     `${r.email} · duration ${fmtDur(r.recording.durationSeconds)} · ${fmtBytes(r.recording.sizeBytes)} · captured ${r.recording.reason} · ${r.recording.createdAt}`;
   const v = document.getElementById('vmVideo');
   v.src = r.recording.url;
-  document.getElementById('vmDownload').href = r.recording.url + '/?dl=1';
+  document.getElementById('vmDownload').href = r.recording.url + '?dl=1';
   document.getElementById('vmOpen').href = r.recording.url;
   document.getElementById('videoModal').classList.add('show');
 }
@@ -443,7 +443,7 @@ function candidateSectionHtml(r){
     <tr><td><b>Location</b></td><td>${esc(r.location||'—')}</td></tr>
     <tr><td><b>Registered</b></td><td>${esc(r.registeredAt||'—')}</td></tr>
     <tr><td><b>Application status</b></td><td>${esc(r.applicationStatus||'—')}</td></tr>
-    <tr><td><b>Interview video</b></td><td>${r.recording?(esc(location.origin+r.recording.url+'/?dl=1')+'  ('+fmtDur(r.recording.durationSeconds)+', '+fmtBytes(r.recording.sizeBytes)+')'):'none'}</td></tr>
+    <tr><td><b>Interview video</b></td><td>${r.recording?(esc(location.origin+r.recording.url+'?dl=1')+'  ('+fmtDur(r.recording.durationSeconds)+', '+fmtBytes(r.recording.sizeBytes)+')'):'none'}</td></tr>
     </table>`;
   let answers = '';
   if (r.stage2Submissions && Object.keys(r.stage2Submissions).length) {
@@ -519,7 +519,7 @@ function downloadCsv(){
       r.name, r.email, r.targetRole, r.registeredAt, r.applicationStatus,
       r.atsScore, r.stage1Percentage, r.stage1Passed, r.stage2Score, r.stage2Passed,
       r.stage3Seconds, r.stage3Passed, r.totalScore, r.verdictLabel, r.cheatingFlag, r.cheatingReason,
-      r.recording ? (location.origin + r.recording.url + '/?dl=1') : '', r.recording ? r.recording.durationSeconds : ''
+      r.recording ? (location.origin + r.recording.url + '?dl=1') : '', r.recording ? r.recording.durationSeconds : ''
     ].map(esc).join(','));
   });
   saveBlob('veer-candidates-'+stamp()+'.csv', new Blob([lines.join('\n')], {type:'text/csv'}));
@@ -550,7 +550,7 @@ function downloadReport(){
       <td><b>${r.totalScore!=null?r.totalScore:'—'}</b></td>
       <td>${esc(r.verdictLabel)}</td>
       <td>${r.cheatingFlag?('⚠ '+esc(r.cheatingReason||'yes')):'—'}</td>
-      <td>${r.recording?('<a href="'+location.origin+r.recording.url+'/?dl=1">download ('+fmtDur(r.recording.durationSeconds)+')</a>'):'—'}</td>
+      <td>${r.recording?('<a href="'+location.origin+r.recording.url+'?dl=1">download ('+fmtDur(r.recording.durationSeconds)+')</a>'):'—'}</td>
     </tr>`).join('');
   const html = `<!doctype html><html><head><meta charset="utf-8"><title>Veer Assessment Report — ${stamp()}</title>
   <style>
