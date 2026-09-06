@@ -133,32 +133,65 @@
   <!-- QUESTION 1 -->
   <div class="card">
     <div class="card-head">
-      <h2>Question 1: Tell us about yourself</h2>
-      <span class="tag">Introduction</span>
+      <h2 id="q1title">Question 1</h2>
+      <span class="tag" id="q1tag"></span>
     </div>
-    <p class="desc">Briefly introduce yourself. What is your background, and what kind of role are you looking for?</p>
+    <p class="desc" id="q1desc"></p>
     <textarea class="answer-box" id="ans1" placeholder="Speak your answer to the camera, and optionally type a short summary here..."></textarea>
   </div>
 
   <!-- QUESTION 2 -->
   <div class="card">
     <div class="card-head">
-      <h2>Question 2: A project you're proud of</h2>
-      <span class="tag">Experience</span>
+      <h2 id="q2title">Question 2</h2>
+      <span class="tag" id="q2tag"></span>
     </div>
-    <p class="desc">Tell us about a project or piece of work you are proud of. What did you build or do, and what was your part in it?</p>
+    <p class="desc" id="q2desc"></p>
     <textarea class="answer-box" id="ans2" placeholder="Speak your answer to the camera, and optionally type a short summary here..."></textarea>
   </div>
 
   <!-- QUESTION 3 -->
   <div class="card">
     <div class="card-head">
-      <h2>Question 3: Solving a problem</h2>
-      <span class="tag">Problem solving</span>
+      <h2 id="q3title">Question 3</h2>
+      <span class="tag" id="q3tag"></span>
     </div>
-    <p class="desc">Describe a time you faced a difficult problem at work, in study, or in a project. How did you approach it, and what was the outcome?</p>
+    <p class="desc" id="q3desc"></p>
     <textarea class="answer-box" id="ans3" placeholder="Speak your answer to the camera, and optionally type a short summary here..."></textarea>
   </div>
+
+  <script>
+  /* 3 plain interview questions picked at random from this pool. */
+  var INTERVIEW_QUESTIONS = [
+    { tag:'Introduction', title:'Tell us about yourself', desc:'Briefly introduce yourself. What is your background, and what kind of role are you looking for?' },
+    { tag:'Experience', title:'A project you are proud of', desc:'Tell us about a project or piece of work you are proud of. What did you do, and what was your part in it?' },
+    { tag:'Problem solving', title:'Solving a difficult problem', desc:'Describe a time you faced a difficult problem at work, in study, or in a project. How did you approach it, and what happened?' },
+    { tag:'Motivation', title:'Why this field', desc:'What interests you about working with technology or AI, and how have you been learning about it?' },
+    { tag:'Teamwork', title:'Working with others', desc:'Tell us about a time you worked in a team. What was your role and how did the team do?' },
+    { tag:'Learning', title:'Learning something new', desc:'Describe something new you learned recently (a tool, a skill, a topic). How did you go about learning it?' },
+    { tag:'Strengths', title:'Your strengths', desc:'What are you good at, and can you give an example of using that strength?' },
+    { tag:'Challenge', title:'Handling a mistake', desc:'Tell us about a time something went wrong or you made a mistake. What did you learn from it?' },
+    { tag:'Goals', title:'Where you want to grow', desc:'What skills or areas do you most want to improve over the next year, and why?' },
+    { tag:'Communication', title:'Explaining something', desc:'Describe a time you had to explain something technical or complex to someone. How did you make it clear?' },
+    { tag:'Initiative', title:'Going beyond', desc:'Tell us about a time you did more than what was asked, or suggested an improvement.' },
+    { tag:'Work style', title:'How you organise your work', desc:'How do you plan and keep track of your work when you have several things to do?' },
+    { tag:'AI interest', title:'AI in everyday life', desc:'Where do you see AI being useful in everyday life or in a job you would like? Give an example.' },
+    { tag:'Adaptability', title:'A change of plan', desc:'Tell us about a time plans changed suddenly. How did you adjust?' },
+    { tag:'Curiosity', title:'A topic you enjoy', desc:'Tell us about a topic you find genuinely interesting and why.' }
+  ];
+  (function pickInterview(){
+    var a = INTERVIEW_QUESTIONS.slice();
+    for (var i = a.length - 1; i > 0; i--){ var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+    function set(n, q){
+      document.getElementById('q'+n+'title').textContent = 'Question ' + n + ': ' + q.title;
+      document.getElementById('q'+n+'tag').textContent = q.tag;
+      document.getElementById('q'+n+'desc').textContent = q.desc;
+    }
+    var apply = function(){ set(1, a[0]); set(2, a[1]); set(3, a[2]); };
+    if (document.readyState !== 'loading') apply();
+    else document.addEventListener('DOMContentLoaded', apply);
+  })();
+  </script>
 
   <div style="text-align:center;margin-top:24px;">
     <button type="button" class="btn" id="submitBtn" onclick="submitStage3()">Submit Stage 3 &amp; Generate Final Scorecard →</button>
