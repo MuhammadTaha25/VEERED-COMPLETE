@@ -7,7 +7,7 @@
  */
 import { requireAdmin } from '../../../../../lib/auth/index.js';
 import { dbGet } from '../../../../../lib/db/index.js';
-import { storage, VIDEO_BUCKET } from '../../../../../lib/storage/index.js';
+import { readVideo } from '../../../../../lib/storage/index.js';
 
 export async function GET(req, { params }) {
   const admin = await requireAdmin();
@@ -33,10 +33,7 @@ export async function GET(req, { params }) {
     : `inline; filename="${downloadName}"`;
 
   try {
-    const { data, error } = await storage().storage.from(VIDEO_BUCKET).download(rec.file_path);
-    if (error || !data) return new Response('Video unavailable', { status: 404 });
-
-    const full = Buffer.from(await data.arrayBuffer());
+    const full = await readVideo(rec.file_path);
     const total = full.length;
     const range = req.headers.get('range');
 
