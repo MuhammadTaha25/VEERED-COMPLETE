@@ -133,31 +133,31 @@
   <!-- QUESTION 1 -->
   <div class="card">
     <div class="card-head">
-      <h2>Question 1: Production RAG Pipeline Architecture</h2>
-      <span class="tag">System Design</span>
+      <h2>Question 1: Tell us about yourself</h2>
+      <span class="tag">Introduction</span>
     </div>
-    <p class="desc">Explain your approach to designing a production-grade RAG pipeline. How do you evaluate retrieval precision vs recall, handle embeddings, and mitigate hallucinations?</p>
-    <textarea class="answer-box" id="ans1" placeholder="Type or summarize your response here..."></textarea>
+    <p class="desc">Briefly introduce yourself. What is your background, and what kind of role are you looking for?</p>
+    <textarea class="answer-box" id="ans1" placeholder="Speak your answer to the camera, and optionally type a short summary here..."></textarea>
   </div>
 
   <!-- QUESTION 2 -->
   <div class="card">
     <div class="card-head">
-      <h2>Question 2: Prompt Security & Multi-Agent Governance</h2>
-      <span class="tag">AI Security</span>
+      <h2>Question 2: A project you're proud of</h2>
+      <span class="tag">Experience</span>
     </div>
-    <p class="desc">How do you manage prompt versioning, guardrails, and security against prompt injection attacks in multi-agent workflows?</p>
-    <textarea class="answer-box" id="ans2" placeholder="Type or summarize your response here..."></textarea>
+    <p class="desc">Tell us about a project or piece of work you are proud of. What did you build or do, and what was your part in it?</p>
+    <textarea class="answer-box" id="ans2" placeholder="Speak your answer to the camera, and optionally type a short summary here..."></textarea>
   </div>
 
   <!-- QUESTION 3 -->
   <div class="card">
     <div class="card-head">
-      <h2>Question 3: Latency & Context Window Optimization</h2>
-      <span class="tag">Performance</span>
+      <h2>Question 3: Solving a problem</h2>
+      <span class="tag">Problem solving</span>
     </div>
-    <p class="desc">Walk us through a complex technical challenge you faced with LLM inference latency or context window limits, and how you resolved it.</p>
-    <textarea class="answer-box" id="ans3" placeholder="Type or summarize your response here..."></textarea>
+    <p class="desc">Describe a time you faced a difficult problem at work, in study, or in a project. How did you approach it, and what was the outcome?</p>
+    <textarea class="answer-box" id="ans3" placeholder="Speak your answer to the camera, and optionally type a short summary here..."></textarea>
   </div>
 
   <div style="text-align:center;margin-top:24px;">
@@ -411,9 +411,9 @@ async function submitStage3(auto) {
   if (!examActive && !auto) return;
   examActive = false;
 
-  const ans1 = document.getElementById('ans1').value.trim() || 'RAG Pipeline with vector retrieval, hybrid search, and citation grounding.';
-  const ans2 = document.getElementById('ans2').value.trim() || 'Prompt security using input sanitization, system prompt isolation, and output guardrails.';
-  const ans3 = document.getElementById('ans3').value.trim() || 'Optimized LLM latency via streaming, caching embeddings, and prompt token trimming.';
+  const ans1 = document.getElementById('ans1').value.trim() || 'Answered on camera.';
+  const ans2 = document.getElementById('ans2').value.trim() || 'Answered on camera.';
+  const ans3 = document.getElementById('ans3').value.trim() || 'Answered on camera.';
 
   const btn = document.getElementById('submitBtn');
   if (btn) { btn.disabled = true; btn.textContent = 'Evaluating & Generating Scorecard…'; }

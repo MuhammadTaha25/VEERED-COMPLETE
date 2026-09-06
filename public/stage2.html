@@ -74,7 +74,7 @@
   <div class="hero-in wrap">
     <span class="badge">STAGE 2 OF 3 · CODING CHALLENGE · 2 PROBLEMS</span>
     <h1>Stage 2: Technical Coding Challenge</h1>
-    <p class="lead">Demonstrate your practical AI/ML engineering skills. Solve these 2 coding problems in Python below.</p>
+    <p class="lead">Two short Python problems to check your basic coding. A starter solution is already filled in for each — edit it or write your own.</p>
   </div>
 </section>
 
@@ -86,63 +86,31 @@
   <!-- PROBLEM 1 -->
   <div class="card">
     <div class="card-head">
-      <h2>Problem 1: Explainable RAG Keyword & Vector Scorer</h2>
-      <span class="tag">Python · RAG / Matching</span>
+      <h2>Problem 1: Count matching keywords</h2>
+      <span class="tag">Python · Basics</span>
     </div>
-    <p class="desc">Write a Python function <code>score_candidate_rag(cv_text, jd_keywords)</code> that compares candidate CV text against job description keywords and returns a dictionary with matched keywords, missing keywords, and match score percentage.</p>
+    <p class="desc">Write a Python function <code>count_matches(text, keywords)</code> that returns how many of the words in the <code>keywords</code> list appear anywhere in <code>text</code> (case-insensitive). Example: <code>count_matches("I know Python and SQL", ["python", "java", "sql"])</code> returns <code>2</code>.</p>
     <label class="code-label">Python Solution:</label>
-    <textarea class="code-box" id="code1" spellcheck="false">def score_candidate_rag(cv_text, jd_keywords):
-    """
-    Evaluates candidate CV text against required JD keywords.
-    Returns: dict with score (0-100), matched list, missing list, and pass (>=80).
-    """
-    if not cv_text or not jd_keywords:
-        return {"score": 0, "matched": [], "missing": jd_keywords, "passed": False}
-
-    cv_lower = cv_text.toLowerCase() if hasattr(cv_text, 'toLowerCase') else str(cv_text).lower()
-    matched = [kw for kw in jd_keywords if kw.lower() in cv_lower]
-    missing = [kw for kw in jd_keywords if kw.lower() not in cv_lower]
-    score = round((len(matched) / len(jd_keywords)) * 100)
-
-    return {
-        "score": score,
-        "matched": matched,
-        "missing": missing,
-        "passed": score >= 80
-    }
+    <textarea class="code-box" id="code1" spellcheck="false">def count_matches(text, keywords):
+    text_lower = text.lower()
+    count = 0
+    for word in keywords:
+        if word.lower() in text_lower:
+            count = count + 1
+    return count
 </textarea>
   </div>
 
   <!-- PROBLEM 2 -->
   <div class="card">
     <div class="card-head">
-      <h2>Problem 2: Async Rate Limiter for LLM API Calls</h2>
-      <span class="tag">Python · Async / MLOps</span>
+      <h2>Problem 2: Reverse a string</h2>
+      <span class="tag">Python · Basics</span>
     </div>
-    <p class="desc">Implement an async rate-limiter wrapper for an LLM API endpoint in Python to guarantee no more than 5 requests per second are issued.</p>
+    <p class="desc">Write a Python function <code>reverse_text(s)</code> that returns the string <code>s</code> with its characters in reverse order. Example: <code>reverse_text("hello")</code> returns <code>"olleh"</code>.</p>
     <label class="code-label">Python Solution:</label>
-    <textarea class="code-box" id="code2" spellcheck="false">import asyncio
-import time
-
-class LLMRateLimiter:
-    def __init__(self, max_calls=5, period=1.0):
-        self.max_calls = max_calls
-        self.period = period
-        self.timestamps = []
-
-    async def acquire(self):
-        now = time.time()
-        # Remove timestamps older than period
-        self.timestamps = [t for t in self.timestamps if now - t < self.period]
-        if len(self.timestamps) >= self.max_calls:
-            sleep_time = self.period - (now - self.timestamps[0])
-            await asyncio.sleep(sleep_time)
-        self.timestamps.append(time.time())
-
-async def rate_limited_llm_call(prompt, rate_limiter):
-    await rate_limiter.acquire()
-    # Simulated LLM API call
-    return f"Response for: {prompt}"
+    <textarea class="code-box" id="code2" spellcheck="false">def reverse_text(s):
+    return s[::-1]
 </textarea>
   </div>
 
