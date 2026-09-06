@@ -1,13 +1,13 @@
 /**
  * GET /api/admin/video/[id]
- * Admin-only. Streams a Stage 3 interview recording from Supabase Storage,
- * proxied through this origin (so the browser <video> element and download
- * links work without cross-origin redirects). Supports HTTP Range requests.
- * `?dl=1` forces a download with a friendly filename.
+ * Admin-only. Redirects to a short-lived Supabase Storage signed URL for the
+ * recording. `?dl=1` forces a download (attachment) with a friendly filename;
+ * otherwise the URL streams inline for the <video> player (range/seek supported
+ * by Supabase Storage).
  */
 import { requireAdmin } from '../../../../../lib/auth/index.js';
 import { dbGet } from '../../../../../lib/db/index.js';
-import { readVideo } from '../../../../../lib/storage/index.js';
+import { signedVideoUrl } from '../../../../../lib/storage/index.js';
 
 export async function GET(req, { params }) {
   const admin = await requireAdmin();
@@ -27,46 +27,12 @@ export async function GET(req, { params }) {
   const cand = await dbGet('SELECT first_name, last_name FROM candidates WHERE id = ?', [rec.candidate_id]);
   const safeName = `${(cand?.first_name || 'candidate')}_${(cand?.last_name || '')}`.replace(/[^a-zA-Z0-9_-]/g, '') || 'candidate';
   const downloadName = `${safeName}_stage3_interview_${String(rec.id).slice(0, 8)}.webm`;
-  const mime = rec.mime_type || 'video/webm';
-  const disposition = wantsDownload
-    ? `attachment; filename="${downloadName}"`
-    : `inline; filename="${downloadName}"`;
 
   try {
-    const full = await readVideo(rec.file_path);
-    const total = full.length;
-    const range = req.headers.get('range');
-
-    if (range) {
-      const m = /bytes=(\d*)-(\d*)/.exec(range);
-      const start = m && m[1] ? parseInt(m[1], 10) : 0;
-      const end = m && m[2] ? parseInt(m[2], 10) : total - 1;
-      const chunk = full.subarray(start, end + 1);
-      return new Response(chunk, {
-        status: 206,
-        headers: {
-          'Content-Type': mime,
-          'Content-Range': `bytes ${start}-${end}/${total}`,
-          'Accept-Ranges': 'bytes',
-          'Content-Length': String(chunk.length),
-          'Content-Disposition': disposition,
-          'Cache-Control': 'private, max-age=0, no-store',
-        },
-      });
-    }
-
-    return new Response(full, {
-      status: 200,
-      headers: {
-        'Content-Type': mime,
-        'Content-Length': String(total),
-        'Accept-Ranges': 'bytes',
-        'Content-Disposition': disposition,
-        'Cache-Control': 'private, max-age=0, no-store',
-      },
-    });
+    const signed = await signedVideoUrl(rec.file_path, wantsDownload ? downloadName : undefined);
+    return Response.redirect(signed, 302);
   } catch (err) {
     console.error('[ADMIN VIDEO ERROR]', err);
-    return new Response('Video unavailable', { status: 500 });
+    return new Response('Video unavailable', { status: 404 });
   }
 }

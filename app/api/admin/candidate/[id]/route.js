@@ -88,7 +88,7 @@ export async function GET(req, { params }) {
       recording: rec ? {
         id: rec.id, durationSeconds: rec.duration_seconds, sizeBytes: rec.size_bytes,
         reason: rec.reason, createdAt: rec.created_at,
-        url: `/api/admin/video/${rec.id}/`, downloadUrl: `/api/admin/video/${rec.id}/?dl=1`,
+        url: `/api/admin/video/${rec.id}`, downloadUrl: `/api/admin/video/${rec.id}/?dl=1`,
       } : null,
     },
     verdict: sc?.verdict || null,

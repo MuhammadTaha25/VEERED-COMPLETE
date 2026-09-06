@@ -133,65 +133,32 @@
   <!-- QUESTION 1 -->
   <div class="card">
     <div class="card-head">
-      <h2 id="q1title">Question 1</h2>
-      <span class="tag" id="q1tag"></span>
+      <h2>Question 1: Production RAG Pipeline Architecture</h2>
+      <span class="tag">System Design</span>
     </div>
-    <p class="desc" id="q1desc"></p>
-    <textarea class="answer-box" id="ans1" placeholder="Speak your answer to the camera, and optionally type a short summary here..."></textarea>
+    <p class="desc">Explain your approach to designing a production-grade RAG pipeline. How do you evaluate retrieval precision vs recall, handle embeddings, and mitigate hallucinations?</p>
+    <textarea class="answer-box" id="ans1" placeholder="Type or summarize your response here..."></textarea>
   </div>
 
   <!-- QUESTION 2 -->
   <div class="card">
     <div class="card-head">
-      <h2 id="q2title">Question 2</h2>
-      <span class="tag" id="q2tag"></span>
+      <h2>Question 2: Prompt Security & Multi-Agent Governance</h2>
+      <span class="tag">AI Security</span>
     </div>
-    <p class="desc" id="q2desc"></p>
-    <textarea class="answer-box" id="ans2" placeholder="Speak your answer to the camera, and optionally type a short summary here..."></textarea>
+    <p class="desc">How do you manage prompt versioning, guardrails, and security against prompt injection attacks in multi-agent workflows?</p>
+    <textarea class="answer-box" id="ans2" placeholder="Type or summarize your response here..."></textarea>
   </div>
 
   <!-- QUESTION 3 -->
   <div class="card">
     <div class="card-head">
-      <h2 id="q3title">Question 3</h2>
-      <span class="tag" id="q3tag"></span>
+      <h2>Question 3: Latency & Context Window Optimization</h2>
+      <span class="tag">Performance</span>
     </div>
-    <p class="desc" id="q3desc"></p>
-    <textarea class="answer-box" id="ans3" placeholder="Speak your answer to the camera, and optionally type a short summary here..."></textarea>
+    <p class="desc">Walk us through a complex technical challenge you faced with LLM inference latency or context window limits, and how you resolved it.</p>
+    <textarea class="answer-box" id="ans3" placeholder="Type or summarize your response here..."></textarea>
   </div>
-
-  <script>
-  /* 3 plain interview questions picked at random from this pool. */
-  var INTERVIEW_QUESTIONS = [
-    { tag:'Introduction', title:'Tell us about yourself', desc:'Briefly introduce yourself. What is your background, and what kind of role are you looking for?' },
-    { tag:'Experience', title:'A project you are proud of', desc:'Tell us about a project or piece of work you are proud of. What did you do, and what was your part in it?' },
-    { tag:'Problem solving', title:'Solving a difficult problem', desc:'Describe a time you faced a difficult problem at work, in study, or in a project. How did you approach it, and what happened?' },
-    { tag:'Motivation', title:'Why this field', desc:'What interests you about working with technology or AI, and how have you been learning about it?' },
-    { tag:'Teamwork', title:'Working with others', desc:'Tell us about a time you worked in a team. What was your role and how did the team do?' },
-    { tag:'Learning', title:'Learning something new', desc:'Describe something new you learned recently (a tool, a skill, a topic). How did you go about learning it?' },
-    { tag:'Strengths', title:'Your strengths', desc:'What are you good at, and can you give an example of using that strength?' },
-    { tag:'Challenge', title:'Handling a mistake', desc:'Tell us about a time something went wrong or you made a mistake. What did you learn from it?' },
-    { tag:'Goals', title:'Where you want to grow', desc:'What skills or areas do you most want to improve over the next year, and why?' },
-    { tag:'Communication', title:'Explaining something', desc:'Describe a time you had to explain something technical or complex to someone. How did you make it clear?' },
-    { tag:'Initiative', title:'Going beyond', desc:'Tell us about a time you did more than what was asked, or suggested an improvement.' },
-    { tag:'Work style', title:'How you organise your work', desc:'How do you plan and keep track of your work when you have several things to do?' },
-    { tag:'AI interest', title:'AI in everyday life', desc:'Where do you see AI being useful in everyday life or in a job you would like? Give an example.' },
-    { tag:'Adaptability', title:'A change of plan', desc:'Tell us about a time plans changed suddenly. How did you adjust?' },
-    { tag:'Curiosity', title:'A topic you enjoy', desc:'Tell us about a topic you find genuinely interesting and why.' }
-  ];
-  (function pickInterview(){
-    var a = INTERVIEW_QUESTIONS.slice();
-    for (var i = a.length - 1; i > 0; i--){ var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
-    function set(n, q){
-      document.getElementById('q'+n+'title').textContent = 'Question ' + n + ': ' + q.title;
-      document.getElementById('q'+n+'tag').textContent = q.tag;
-      document.getElementById('q'+n+'desc').textContent = q.desc;
-    }
-    var apply = function(){ set(1, a[0]); set(2, a[1]); set(3, a[2]); };
-    if (document.readyState !== 'loading') apply();
-    else document.addEventListener('DOMContentLoaded', apply);
-  })();
-  </script>
 
   <div style="text-align:center;margin-top:24px;">
     <button type="button" class="btn" id="submitBtn" onclick="submitStage3()">Submit Stage 3 &amp; Generate Final Scorecard →</button>
@@ -242,27 +209,11 @@ let camTimerInterval = null;
 let uploadDone = false;
 const STAGE3_LIMIT_SECONDS = 15 * 60; // 15-minute interview
 
-let _resolvedCandidateId = null;
-
 function getCandidateId() {
-  if (_resolvedCandidateId) return _resolvedCandidateId;
   const params = new URLSearchParams(window.location.search);
-  let cand = null;
-  try { cand = JSON.parse(sessionStorage.getItem('veerCandidate') || 'null'); } catch (e) {}
-  _resolvedCandidateId = params.get('candidateId') || (cand && cand.id) || '';
-  return _resolvedCandidateId;
+  const cand = JSON.parse(sessionStorage.getItem('veerCandidate') || 'null');
+  return params.get('candidateId') || (cand ? cand.id : null) || 'candidate-guest';
 }
-
-// If the URL has no candidateId, ask the server who we are (the candidate is
-// logged in after registering) and pin it — so the video/scorecard link to the
-// real candidate, never to a "guest".
-(async function resolveCandidate() {
-  if (getCandidateId()) return;
-  try {
-    const me = await (await fetch('/api/auth/me')).json();
-    if (me && me.user && me.user.id) _resolvedCandidateId = me.user.id;
-  } catch (e) {}
-})();
 
 function toggleHrConsentBtn() {
   const chk = document.getElementById('hrConsentCheck');
@@ -292,31 +243,23 @@ async function startInterview() {
 
   try {
     if (mediaStream) mediaStream.getTracks().forEach(t => t.stop());
-    mediaStream = await navigator.mediaDevices.getUserMedia({
-      video: { width: { ideal: 640 }, height: { ideal: 480 }, frameRate: { ideal: 15, max: 24 } },
-      audio: true
-    });
+    mediaStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
     const videoEl = document.getElementById('videoPreview');
     videoEl.srcObject = mediaStream;
 
     recordedChunks = [];
     let mime = '';
-    ['video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm;codecs=vp8', 'video/webm', 'video/mp4'].forEach(m => {
+    ['video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm'].forEach(m => {
       if (!mime && window.MediaRecorder && MediaRecorder.isTypeSupported(m)) mime = m;
     });
-    const recOpts = { videoBitsPerSecond: 500000, audioBitsPerSecond: 64000 };
-    if (mime) recOpts.mimeType = mime;
-    try { mediaRecorder = new MediaRecorder(mediaStream, recOpts); }
-    catch (e) { mediaRecorder = mime ? new MediaRecorder(mediaStream, { mimeType: mime }) : new MediaRecorder(mediaStream); }
+    mediaRecorder = mime ? new MediaRecorder(mediaStream, { mimeType: mime }) : new MediaRecorder(mediaStream);
     mediaRecorder.ondataavailable = e => { if (e.data && e.data.size > 0) recordedChunks.push(e.data); };
-    mediaRecorder.onerror = e => console.error('MediaRecorder error:', e.error || e);
-    // 4s timeslice: chunks are flushed periodically so nothing is lost if the tab dies.
-    mediaRecorder.start(4000);
+    mediaRecorder.start(1000); // gather chunks every second
     isRecording = true;
-    document.getElementById('camStatus').textContent = '🔴 Recording — camera & microphone active.';
+    document.getElementById('camStatus').textContent = '🔴 Recording — camera & microphone active. Do not switch windows.';
   } catch (err) {
-    console.error('Camera/mic access failed:', err && (err.name + ': ' + err.message));
-    document.getElementById('camStatus').textContent = '⚠️ Camera/microphone unavailable (' + (err && err.name || 'error') + ') — your written answers will still be saved, but no video will be captured.';
+    console.warn('Camera/mic access denied:', err);
+    document.getElementById('camStatus').textContent = '⚠️ Camera/microphone unavailable — your written answers will still be recorded, but no video will be captured.';
     document.getElementById('recDot').style.display = 'none';
   }
 
@@ -338,64 +281,31 @@ async function startInterview() {
 function stopRecording() {
   return new Promise(resolve => {
     if (camTimerInterval) { clearInterval(camTimerInterval); camTimerInterval = null; }
-
-    let done = false;
-    const finish = () => {
-      if (done) return;
-      done = true;
-      // Only NOW is it safe to release the camera/mic — after the recorder has
-      // flushed its final chunk. Stopping tracks earlier loses the recording.
-      try { if (mediaStream) mediaStream.getTracks().forEach(t => t.stop()); } catch (e) {}
-      resolve();
-    };
-
-    if (mediaRecorder && (mediaRecorder.state === 'recording' || mediaRecorder.state === 'paused')) {
+    if (mediaRecorder && isRecording) {
+      mediaRecorder.onstop = () => resolve();
+      try { mediaRecorder.stop(); } catch (e) { resolve(); }
       isRecording = false;
-      mediaRecorder.onstop = finish;
-      try {
-        if (mediaRecorder.state === 'recording') mediaRecorder.requestData(); // force-flush pending data
-        mediaRecorder.stop();
-      } catch (e) { finish(); }
-      setTimeout(finish, 4000); // safety net if onstop never fires
     } else {
-      isRecording = false;
-      finish();
+      resolve();
     }
+    if (mediaStream) { try { mediaStream.getTracks().forEach(t => t.stop()); } catch (e) {} }
   });
 }
 
 async function uploadRecording(reason) {
   if (uploadDone) return;
   uploadDone = true;
-  const type = (mediaRecorder && mediaRecorder.mimeType) || 'video/webm';
-  const blob = recordedChunks.length ? new Blob(recordedChunks, { type }) : null;
-  const status = document.getElementById('camStatus');
+  if (!recordedChunks.length) return;
   try {
-    if (!blob || blob.size === 0) {
-      console.warn('[STAGE3] No video data captured (chunks=' + recordedChunks.length + ').');
-      if (status) status.textContent = '⚠️ No video was captured for this interview.';
-      return;
-    }
-    if (status) status.textContent = '⬆️ Uploading interview video (' + (blob.size / 1048576).toFixed(1) + ' MB)…';
+    const blob = new Blob(recordedChunks, { type: (mediaRecorder && mediaRecorder.mimeType) || 'video/webm' });
     const fd = new FormData();
     fd.append('video', blob, 'interview.webm');
     fd.append('candidateId', getCandidateId());
     fd.append('durationSeconds', String(secondsElapsed));
     fd.append('reason', reason || 'completed');
     // Trailing slash required: next.config trailingSlash:true 308-redirects and that breaks multipart POSTs
-    const res = await fetch('/api/stage3/upload-video/', { method: 'POST', body: fd });
-    const data = await res.json().catch(() => ({}));
-    if (res.ok && data.ok) {
-      console.log('[STAGE3] Video uploaded:', data.recordingId, data.sizeBytes, 'bytes');
-      if (status) status.textContent = '✓ Interview video saved.';
-    } else {
-      console.error('[STAGE3] Video upload failed:', res.status, data);
-      if (status) status.textContent = '⚠️ Video upload failed (HTTP ' + res.status + ').';
-    }
-  } catch (e) {
-    console.error('[STAGE3] Video upload error:', e);
-    if (status) status.textContent = '⚠️ Video upload error: ' + (e && e.message || e);
-  }
+    await fetch('/api/stage3/upload-video/', { method: 'POST', body: fd });
+  } catch (e) { console.warn('Video upload failed:', e); }
 }
 
 // Anti-cheating monitoring is DISABLED. Switching tabs/windows during the
@@ -444,25 +354,25 @@ async function submitStage3(auto) {
   if (!examActive && !auto) return;
   examActive = false;
 
-  const ans1 = document.getElementById('ans1').value.trim() || 'Answered on camera.';
-  const ans2 = document.getElementById('ans2').value.trim() || 'Answered on camera.';
-  const ans3 = document.getElementById('ans3').value.trim() || 'Answered on camera.';
+  const ans1 = document.getElementById('ans1').value.trim() || 'RAG Pipeline with vector retrieval, hybrid search, and citation grounding.';
+  const ans2 = document.getElementById('ans2').value.trim() || 'Prompt security using input sanitization, system prompt isolation, and output guardrails.';
+  const ans3 = document.getElementById('ans3').value.trim() || 'Optimized LLM latency via streaming, caching embeddings, and prompt token trimming.';
 
   const btn = document.getElementById('submitBtn');
   if (btn) { btn.disabled = true; btn.textContent = 'Evaluating & Generating Scorecard…'; }
 
-  // Stop + persist the interview recording BEFORE scoring
+  const candidateId = getCandidateId();
+
+  // Stop + persist the interview recording before scoring
   await stopRecording();
   await uploadRecording(auto ? 'timeup' : 'completed');
-
-  const candidateId = getCandidateId(); // resolved (incl. via /api/auth/me) by now
 
   try {
     const res = await fetch('/api/stage3/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        candidateId: candidateId || undefined, // server falls back to the logged-in session
+        candidateId: candidateId || 'candidate-guest',
         durationSeconds: secondsElapsed,
         interviewResponses: { q1: ans1, q2: ans2, q3: ans3 }
       })

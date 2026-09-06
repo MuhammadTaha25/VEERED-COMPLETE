@@ -87,7 +87,7 @@ export async function GET() {
           sizeBytes: rec.size_bytes,
           reason: rec.reason,
           createdAt: rec.created_at,
-          url: `/api/admin/video/${rec.id}/`,
+          url: `/api/admin/video/${rec.id}`,
         } : null,
       };
     });

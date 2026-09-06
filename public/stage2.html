@@ -74,7 +74,7 @@
   <div class="hero-in wrap">
     <span class="badge">STAGE 2 OF 3 · CODING CHALLENGE · 2 PROBLEMS</span>
     <h1>Stage 2: Technical Coding Challenge</h1>
-    <p class="lead">Two short Python problems to check your basic coding. A starter solution is already filled in for each — edit it or write your own.</p>
+    <p class="lead">Demonstrate your practical AI/ML engineering skills. Solve these 2 coding problems in Python below.</p>
   </div>
 </section>
 
@@ -86,23 +86,64 @@
   <!-- PROBLEM 1 -->
   <div class="card">
     <div class="card-head">
-      <h2 id="p1title">Problem 1</h2>
-      <span class="tag" id="p1tag">Python · Basics</span>
+      <h2>Problem 1: Explainable RAG Keyword & Vector Scorer</h2>
+      <span class="tag">Python · RAG / Matching</span>
     </div>
-    <p class="desc" id="p1desc"></p>
+    <p class="desc">Write a Python function <code>score_candidate_rag(cv_text, jd_keywords)</code> that compares candidate CV text against job description keywords and returns a dictionary with matched keywords, missing keywords, and match score percentage.</p>
     <label class="code-label">Python Solution:</label>
-    <textarea class="code-box" id="code1" spellcheck="false"></textarea>
+    <textarea class="code-box" id="code1" spellcheck="false">def score_candidate_rag(cv_text, jd_keywords):
+    """
+    Evaluates candidate CV text against required JD keywords.
+    Returns: dict with score (0-100), matched list, missing list, and pass (>=80).
+    """
+    if not cv_text or not jd_keywords:
+        return {"score": 0, "matched": [], "missing": jd_keywords, "passed": False}
+
+    cv_lower = cv_text.toLowerCase() if hasattr(cv_text, 'toLowerCase') else str(cv_text).lower()
+    matched = [kw for kw in jd_keywords if kw.lower() in cv_lower]
+    missing = [kw for kw in jd_keywords if kw.lower() not in cv_lower]
+    score = round((len(matched) / len(jd_keywords)) * 100)
+
+    return {
+        "score": score,
+        "matched": matched,
+        "missing": missing,
+        "passed": score >= 80
+    }
+</textarea>
   </div>
 
   <!-- PROBLEM 2 -->
   <div class="card">
     <div class="card-head">
-      <h2 id="p2title">Problem 2</h2>
-      <span class="tag" id="p2tag">Python · Basics</span>
+      <h2>Problem 2: Async Rate Limiter for LLM API Calls</h2>
+      <span class="tag">Python · Async / MLOps</span>
     </div>
-    <p class="desc" id="p2desc"></p>
+    <p class="desc">Implement an async rate-limiter wrapper for an LLM API endpoint in Python to guarantee no more than 5 requests per second are issued.</p>
     <label class="code-label">Python Solution:</label>
-    <textarea class="code-box" id="code2" spellcheck="false"></textarea>
+    <textarea class="code-box" id="code2" spellcheck="false">import asyncio
+import time
+
+class LLMRateLimiter:
+    def __init__(self, max_calls=5, period=1.0):
+        self.max_calls = max_calls
+        self.period = period
+        self.timestamps = []
+
+    async def acquire(self):
+        now = time.time()
+        # Remove timestamps older than period
+        self.timestamps = [t for t in self.timestamps if now - t < self.period]
+        if len(self.timestamps) >= self.max_calls:
+            sleep_time = self.period - (now - self.timestamps[0])
+            await asyncio.sleep(sleep_time)
+        self.timestamps.append(time.time())
+
+async def rate_limited_llm_call(prompt, rate_limiter):
+    await rate_limiter.acquire()
+    # Simulated LLM API call
+    return f"Response for: {prompt}"
+</textarea>
   </div>
 
   <div style="text-align:center;margin-top:20px;">
@@ -142,60 +183,6 @@
 <script>
 let windowSwitchCount = 0;
 let examActive = true;
-
-/* ─── Beginner coding tasks. Two are picked at random each attempt.
-   Each starter already works, so a candidate can edit it or submit as-is. ─── */
-var CODING_TASKS = [
-  { tag:'Python · Basics', title:'Reverse a string',
-    desc:'Write <code>reverse_text(s)</code> that returns the string <code>s</code> with its characters in reverse order. Example: <code>reverse_text("hello")</code> → <code>"olleh"</code>.',
-    code:'def reverse_text(s):\n    return s[::-1]\n' },
-  { tag:'Python · Basics', title:'Sum of a list',
-    desc:'Write <code>total(numbers)</code> that returns the sum of all numbers in the list. Example: <code>total([1, 2, 3, 4])</code> → <code>10</code>.',
-    code:'def total(numbers):\n    result = 0\n    for n in numbers:\n        result = result + n\n    return result\n' },
-  { tag:'Python · Basics', title:'Is it even?',
-    desc:'Write <code>is_even(n)</code> that returns <code>True</code> if <code>n</code> is an even number, otherwise <code>False</code>. Example: <code>is_even(4)</code> → <code>True</code>.',
-    code:'def is_even(n):\n    return n % 2 == 0\n' },
-  { tag:'Python · Text', title:'Count the vowels',
-    desc:'Write <code>count_vowels(s)</code> that returns how many vowels (a, e, i, o, u) are in the string <code>s</code>. Example: <code>count_vowels("banana")</code> → <code>3</code>.',
-    code:'def count_vowels(s):\n    vowels = "aeiou"\n    count = 0\n    for ch in s.lower():\n        if ch in vowels:\n            count = count + 1\n    return count\n' },
-  { tag:'Python · Lists', title:'Find the largest number',
-    desc:'Write <code>largest(numbers)</code> that returns the biggest number in the list. Example: <code>largest([3, 9, 2, 7])</code> → <code>9</code>.',
-    code:'def largest(numbers):\n    biggest = numbers[0]\n    for n in numbers:\n        if n > biggest:\n            biggest = n\n    return biggest\n' },
-  { tag:'Python · AI basics', title:'Count matching keywords',
-    desc:'Write <code>count_matches(text, keywords)</code> that returns how many words from the <code>keywords</code> list appear in <code>text</code> (case-insensitive). Example: <code>count_matches("I know Python and SQL", ["python","java","sql"])</code> → <code>2</code>.',
-    code:'def count_matches(text, keywords):\n    text_lower = text.lower()\n    count = 0\n    for word in keywords:\n        if word.lower() in text_lower:\n            count = count + 1\n    return count\n' },
-  { tag:'Python · ML basics', title:'Average score as a percentage',
-    desc:'Write <code>average_percent(scores)</code> that returns the average of a list of scores (each 0–100), rounded to a whole number. Example: <code>average_percent([80, 90, 100])</code> → <code>90</code>.',
-    code:'def average_percent(scores):\n    return round(sum(scores) / len(scores))\n' },
-  { tag:'Python · Logic', title:'Check for a palindrome',
-    desc:'Write <code>is_palindrome(s)</code> that returns <code>True</code> if <code>s</code> reads the same forwards and backwards. Example: <code>is_palindrome("level")</code> → <code>True</code>.',
-    code:'def is_palindrome(s):\n    return s == s[::-1]\n' },
-  { tag:'Python · Basics', title:'FizzBuzz for one number',
-    desc:'Write <code>fizzbuzz(n)</code>: return <code>"Fizz"</code> if n divides by 3, <code>"Buzz"</code> if it divides by 5, <code>"FizzBuzz"</code> if by both, otherwise the number as a string. Example: <code>fizzbuzz(15)</code> → <code>"FizzBuzz"</code>.',
-    code:'def fizzbuzz(n):\n    if n % 15 == 0:\n        return "FizzBuzz"\n    if n % 3 == 0:\n        return "Fizz"\n    if n % 5 == 0:\n        return "Buzz"\n    return str(n)\n' },
-  { tag:'Python · Text', title:'Count the words',
-    desc:'Write <code>word_count(sentence)</code> that returns how many words are in the sentence (words are separated by spaces). Example: <code>word_count("the quick brown fox")</code> → <code>4</code>.',
-    code:'def word_count(sentence):\n    return len(sentence.split())\n' },
-  { tag:'Python · Lists', title:'Keep the passing scores',
-    desc:'Write <code>passing(scores, pass_mark)</code> that returns a new list with only the scores that are greater than or equal to <code>pass_mark</code>. Example: <code>passing([40, 70, 90, 55], 60)</code> → <code>[70, 90]</code>.',
-    code:'def passing(scores, pass_mark):\n    return [s for s in scores if s >= pass_mark]\n' },
-  { tag:'Python · Math', title:'Factorial',
-    desc:'Write <code>factorial(n)</code> that returns n! (1×2×…×n). Example: <code>factorial(5)</code> → <code>120</code>. Assume n ≥ 0.',
-    code:'def factorial(n):\n    result = 1\n    for i in range(2, n + 1):\n        result = result * i\n    return result\n' }
-];
-(function pickTasks(){
-  var a = CODING_TASKS.slice();
-  for (var i = a.length - 1; i > 0; i--){ var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
-  var one = a[0], two = a[1];
-  function set(n, t){
-    document.getElementById('p'+n+'title').textContent = 'Problem ' + n + ': ' + t.title;
-    document.getElementById('p'+n+'tag').textContent = t.tag;
-    document.getElementById('p'+n+'desc').innerHTML = t.desc;
-    document.getElementById('code'+n).value = t.code;
-  }
-  if (document.readyState !== 'loading') { set(1, one); set(2, two); }
-  else document.addEventListener('DOMContentLoaded', function(){ set(1, one); set(2, two); });
-})();
 
 // Per-stage 40-minute timer
 let s2Seconds = 40 * 60;
